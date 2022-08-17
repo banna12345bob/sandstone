@@ -1,0 +1,34 @@
+{
+    "0": {
+        "name":"foyer",
+        "description":"Large room with a single chair in the corner",
+        "furnature":{
+            "chair":{
+                "description":"Old smells nice",
+                "objects" : {
+                    "spoon" : "underneath the chair room 0",
+                    "brick":"ontop of the table room 0"
+                }
+            },
+            "table":{
+                "description":"Old looks comfortable",
+                "objects" : {
+                    "brick" : "ontop of the table room 0"
+                }
+            }
+        },
+        "directions":{
+            "north":"1",
+            "south":"0"
+        }
+    },
+    "1": {
+        "name":"kitchen",
+        "description":"Smaller room smells like burnt food",
+        "furnature":{},
+        "directions":{
+            "north":"1",
+            "south":"0"
+        }
+    }
+}

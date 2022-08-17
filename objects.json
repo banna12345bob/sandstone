@@ -1,0 +1,12 @@
+{
+    "spoon": {
+        "description":"Looks like a spoon",
+        "colour": "green",
+        "material": "metal"
+    },
+    "brick": {
+        "description":"Looks like a brick",
+        "colour": "red",
+        "material": "brick"
+    }
+}

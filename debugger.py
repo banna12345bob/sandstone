@@ -4,6 +4,7 @@ import colorama
 class debugger:
     def __init__(self):
        self.debuggerEnabled = True
+       colorama.init()
 
     def fatal(self, msg):
         if self.debuggerEnabled == True:

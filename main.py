@@ -1,37 +1,19 @@
 import commands
 from commands import commands
 
-# Honestly I am suprised that any of this works
-# objects = FileRead.readFile("objects.json")
-# rooms = FileRead.readFile("rooms.json")
-# for lis in objects:
-#     for room in rooms:
-#         for i in rooms[room]["furnature"]:
-#             if lis in rooms[room]["furnature"][i]["objects"]:
-#                 print(f'The {objects[lis]["colour"]} {lis} is {rooms[room]["furnature"][i]["objects"][lis]}')
-#     print(f"colour: {objects[lis]['colour']}")
-#     print(f"material: {objects[lis]['material']}")
-# print(interpreter.room(room).getName())
-# print(interpreter.room(room).getDesciption())
-# print(interpreter.room(room).getFurnature())
-# print(interpreter.room(room).getFurnatureDescription("chair"))
-# print(interpreter.room(room).getDirection("north"))
-# print(interpreter.room(room).getFunratureObjects("chair"))
-# print(interpreter.room(room).getFunratureObjectDescriptions("chair", "spoon"))
-
-# print(interpreter.object().getObjects())
-# print(interpreter.object().getDescription("spoon"))
-# print(interpreter.object().getColour("spoon"))
-
 room = 0
 inp = input("Command: ")
 while inp:
-    # For this degign if a function returns 0 it means that it didn't work
-    if commands(room).direction(inp) != 0:
-        print(commands(room).direction(inp))
-        if commands(room).direction(inp) != "Unknown command":
-            room = commands(room).direction(inp)
-    else:
-        room = 0
-    inp = input("Command: ")
+    try:
+        giveCommand = commands(room).giveCommand(inp)
+        # For this design if a function returns 0 it means that it didn't work
+        if giveCommand != 0:
+            print(giveCommand)
+            if giveCommand != "Unknown command":
+                room = giveCommand
+        else:
+            room = 0
+        inp = input("Command: ")
+    except:
+        break
 

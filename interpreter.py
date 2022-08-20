@@ -13,7 +13,7 @@ class room:
         try:
             return self.file[str(self.room)]["name"]
         except:
-            print(debugger().error(f"Room {self.room} not found"))
+            debugger().error(f"Room {self.room} not found")
             return 0
         
 
@@ -24,7 +24,7 @@ class room:
         try:
             return rFile[str(room)]["description"]
         except:
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"Room {room} not found")
             return 0
 
 
@@ -37,7 +37,7 @@ class room:
                 furnatures.append(furnature)
             return furnatures
         except:
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"Room {room} not found")
             return 0
 
     def getFurnatureDescription(self, furnature):
@@ -50,7 +50,7 @@ class room:
                 description = rFile[str(room)]["furnature"][furnature]["description"]
             return description
         except:
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"Room {room} not found")
             return 0
 
     def getFunratureObjects(self, furnature):
@@ -64,7 +64,7 @@ class room:
                     objects.append(i)
             return objects
         except:
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"Room {room} not found")
             return 0
 
     def getFunratureObjectDescriptions(self, furnature, object):
@@ -78,7 +78,19 @@ class room:
                 des = rFile[str(room)]["furnature"][furnature]["objects"][object]
             return des
         except:
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"Room {room} not found")
+            return 0
+
+    def getDirections(self):
+        rFile = self.file
+        room = self.room
+        rDirections = []
+        try:
+            for direction in rFile[str(room)]["directions"]:
+                rDirections.append(direction)
+            return rDirections
+        except:
+            debugger().error(f"getDirections function room {room} not found")
             return 0
 
     def getDirection(self, direction):
@@ -87,13 +99,13 @@ class room:
         rDirections = ""
         direction = direction.lower()
         try:
-            if direction in rFile[str(room)]["directions"]:
+            if direction in self.getDirections():
                 rDirections = rFile[str(room)]["directions"][direction]
             return rDirections
         except:
             # Just a quick error catcher 
             # NOTE: this is not a "quick" error cathcer as I build a debug interface for it
-            print(debugger().error(f"Room {room} not found"))
+            debugger().error(f"getDirection function room {room} not found")
             return 0
 
 class object:

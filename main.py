@@ -1,5 +1,5 @@
-import FileRead
-import interpreter
+import commands
+from commands import commands
 
 # Honestly I am suprised that any of this works
 # objects = FileRead.readFile("objects.json")
@@ -11,16 +11,27 @@ import interpreter
 #                 print(f'The {objects[lis]["colour"]} {lis} is {rooms[room]["furnature"][i]["objects"][lis]}')
 #     print(f"colour: {objects[lis]['colour']}")
 #     print(f"material: {objects[lis]['material']}")
+# print(interpreter.room(room).getName())
+# print(interpreter.room(room).getDesciption())
+# print(interpreter.room(room).getFurnature())
+# print(interpreter.room(room).getFurnatureDescription("chair"))
+# print(interpreter.room(room).getDirection("north"))
+# print(interpreter.room(room).getFunratureObjects("chair"))
+# print(interpreter.room(room).getFunratureObjectDescriptions("chair", "spoon"))
+
+# print(interpreter.object().getObjects())
+# print(interpreter.object().getDescription("spoon"))
+# print(interpreter.object().getColour("spoon"))
 
 room = 0
-print(interpreter.room(room).getName())
-print(interpreter.room(room).getDesciption())
-print(interpreter.room(room).getFurnature())
-print(interpreter.room(room).getFurnatureDescription("chair"))
-print(interpreter.room(room).getDirections("north"))
-print(interpreter.room(room).getFunratureObjects("chair"))
-print(interpreter.room(room).getFunratureObjectDescriptions("chair", "spoon"))
+inp = input("Command: ")
+while inp:
+    # For this degign if a function returns 0 it means that it didn't work
+    if commands(room).direction(inp) != 0:
+        print(commands(room).direction(inp))
+        if commands(room).direction(inp) != "Unknown command":
+            room = commands(room).direction(inp)
+    else:
+        room = 0
+    inp = input("Command: ")
 
-print(interpreter.object().getObjects())
-print(interpreter.object().getDescription("spoon"))
-print(interpreter.object().getColour("spoon"))

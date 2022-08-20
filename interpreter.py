@@ -1,5 +1,5 @@
 import FileRead
-import interpreter
+from debugger import debugger
 
 
 class room:
@@ -56,13 +56,20 @@ class room:
             des = rFile[str(room)]["furnature"][furnature]["objects"][object]
         return des
 
-    def getDirections(self, direction):
+    def getDirection(self, direction):
         rFile = self.file
         room = self.room
+        rDirections = ""
         direction = direction.lower()
-        if direction in rFile[str(room)]["directions"]:
-            rDirections = rFile[str(room)]["directions"][direction]
-        return rDirections
+        try:
+            if direction in rFile[str(room)]["directions"]:
+                rDirections = rFile[str(room)]["directions"][direction]
+            return rDirections
+        except KeyError:
+            # Just a quick error catcher 
+            # NOTE: this is not a "quick" error cathcer as I build a debug interface for it
+            print(debugger().error(f"Room {room} not found"))
+            return 0
 
 class object:
     file = "objects.json"

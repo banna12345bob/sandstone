@@ -27,7 +27,7 @@
         "description":"Smaller room smells like burnt food",
         "furnature":{},
         "directions":{
-            "north":"1",
+            "north":"2",
             "south":"0"
         }
     }

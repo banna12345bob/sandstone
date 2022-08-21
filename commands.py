@@ -24,6 +24,15 @@ class commands:
                 quit()
             elif command[0] == "load" and debugger().debuggerEnabled:
                 return FileRead.readFile(command[1])
+            elif command[0] == "debug" and debugger().debuggerEnabled:
+                if command[1] == "info":
+                    return debugger().info(command[2])
+                elif command[1] == "warning":
+                    return debugger().warning(command[2])
+                elif command[1] == "error":
+                    return debugger().error(command[2])
+                elif command[1] == "fatal":
+                    return debugger().fatal(command[2])
             else:
                 return "Unknown command"
         except:

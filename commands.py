@@ -22,15 +22,13 @@ class commands:
                     return "No description found"
             elif command[0] == "quit" or command[0] ==  "exit":
                 quit()
-            elif command[0] == "load" and debugger().debuggerEnabled:
-                return File().readFile(command[1])
-            elif command[0] == "save":
+            elif command[0] == "save" and debugger().debuggerEnabled:
                 save = {}
                 save["currentRoom"] = self.currentRoom
                 File().writeFile("save.json", save)
                 return "Saved file"
-            elif command[0] == "load":
-                return int(File().readFile("save.json"))
+            elif command[0] == "load" and debugger().debuggerEnabled:
+                return int(File().readFile("save.json")["currentRoom"])
             elif command[0] == "debug" and debugger().debuggerEnabled:
                 if command[1] == "info":
                     return debugger().info(command[2])

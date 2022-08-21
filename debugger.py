@@ -5,7 +5,7 @@ import FileRead
 # Don't look here it's really ugly but it works
 class debugger:
     def __init__(self):
-        if FileRead.readFile("options.json")["debuggerEnabled"] == "True":
+        if FileRead.File().readFile("options.json")["debuggerEnabled"] == "True":
             self.debuggerEnabled = True
         else:
             self.debuggerEnabled = False

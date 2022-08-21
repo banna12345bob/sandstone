@@ -33,6 +33,8 @@ class commands:
                     return debugger().error(command[2])
                 elif command[1] == "fatal":
                     return debugger().fatal(command[2])
+                else:
+                    return "Unknown command"
             else:
                 return "Unknown command"
         except:

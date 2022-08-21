@@ -1,11 +1,15 @@
 from time import sleep
 import colorama
+import FileRead
 
 # Don't look here it's really ugly but it works
 class debugger:
     def __init__(self):
-       self.debuggerEnabled = True
-       colorama.init()
+        if FileRead.readFile("options.json")["debuggerEnabled"] == "True":
+            self.debuggerEnabled = True
+        else:
+            self.debuggerEnabled = False
+        colorama.init()
 
     def fatal(self, msg):
         if self.debuggerEnabled == True:

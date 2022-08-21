@@ -5,7 +5,7 @@ from debugger import debugger
 class room:
     file = "rooms.json"
 
-    def __init__(self, room = 0, dFile = file):
+    def __init__(self, room = 1, dFile = file):
         self.file = FileRead.readFile(dFile)
         self.room = room
 
@@ -43,7 +43,7 @@ class room:
     def getFurnatureDescription(self, furnature):
         rFile = self.file
         room = self.room
-        description = "No furnature description found"
+        description = ""
         furnature = furnature.lower()
         try:
             if furnature in self.getFurnature():
@@ -90,7 +90,7 @@ class room:
                 rDirections.append(direction)
             return rDirections
         except:
-            debugger().error(f"getDirections function room {room} not found")
+            debugger().error(f"Room {room} not found")
             return 0
 
     def getDirection(self, direction):
@@ -105,7 +105,7 @@ class room:
         except:
             # Just a quick error catcher 
             # NOTE: this is not a "quick" error cathcer as I build a debug interface for it
-            debugger().error(f"getDirection function room {room} not found")
+            debugger().error(f"Room {room} not found")
             return 0
 
 class object:

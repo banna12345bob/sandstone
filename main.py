@@ -1,7 +1,7 @@
 import commands
 from commands import commands
 
-room = 0
+room = 1
 inp = input("Command: ")
 while inp:
     try:
@@ -9,11 +9,10 @@ while inp:
         # For this design if a function returns 0 it means that it didn't work
         if giveCommand != 0:
             print(giveCommand)
-            if giveCommand != "Unknown command":
+            if giveCommand != "Unknown command" and isinstance(giveCommand, int):
                 room = giveCommand
         else:
-            room = 0
+            room = 1
         inp = input("Command: ")
     except:
         break
-

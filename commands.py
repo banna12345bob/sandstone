@@ -8,8 +8,14 @@ class commands:
 
     def giveCommand(self, command):
         try:
-            if command in interpreter.room(self.currentRoom).getDirections():
-                return self.direction(command)
+            command = command.split(" ")
+            if command[0] in interpreter.room(self.currentRoom).getDirections():
+                return int(self.direction(command[0]))
+            elif command[0] == "look":
+                if command[1] == "room":
+                    return self.look()
+                elif command[1] in interpreter.room(self.currentRoom).getFurnature(command[1]):
+                    return self.furnatureLook(command[1])
             else:
                 return "Unknown command"
         except:
@@ -24,3 +30,21 @@ class commands:
             return 0
         else:
             return iDirection
+
+    def look(self):
+        currentRoom = self.currentRoom
+        iDescription = interpreter.room(currentRoom).getDesciption()
+        if iDescription == 0:
+            return 0
+        else:
+            return iDescription
+    
+    def furnatureLook(self, furnature):
+        currentRoom = self.currentRoom
+        iDescription = interpreter.room(currentRoom).getFurnatureDescription(furnature)
+        if iDescription == 0:
+            return 0
+        elif iDescription == "":
+            return "No furnature description found"
+        else:
+            return iDescription

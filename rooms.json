@@ -1,5 +1,5 @@
 {
-    "0": {
+    "1": {
         "name":"foyer",
         "description":"Large room with a single chair in the corner",
         "furnature":{
@@ -18,17 +18,17 @@
             }
         },
         "directions":{
-            "north":"1",
-            "south":"0"
+            "north":"2",
+            "south":"1"
         }
     },
-    "1": {
+    "2": {
         "name":"kitchen",
         "description":"Smaller room smells like burnt food",
         "furnature":{},
         "directions":{
-            "north":"2",
-            "south":"0"
+            "north":"3",
+            "south":"1"
         }
     }
 }

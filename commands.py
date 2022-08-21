@@ -1,5 +1,6 @@
 import interpreter
 from debugger import debugger
+import FileRead
 
 # I just realised that there is a way easier way to do this using dicionaries but I can't be bothered to figure that out
 
@@ -19,8 +20,10 @@ class commands:
                     return self.furnatureLook(command[1])
                 else:
                     return "No description found"
-            elif command[0] == "quit":
+            elif command[0] == "quit" or command[0] ==  "exit":
                 quit()
+            elif command[0] == "load" and debugger().debuggerEnabled:
+                return FileRead.readFile(command[1])
             else:
                 return "Unknown command"
         except:

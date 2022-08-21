@@ -1,6 +1,6 @@
 import interpreter
 from debugger import debugger
-import FileRead
+from FileRead import File
 
 # I just realised that there is a way easier way to do this using dicionaries but I can't be bothered to figure that out
 
@@ -23,7 +23,14 @@ class commands:
             elif command[0] == "quit" or command[0] ==  "exit":
                 quit()
             elif command[0] == "load" and debugger().debuggerEnabled:
-                return FileRead.readFile(command[1])
+                return File().readFile(command[1])
+            elif command[0] == "save":
+                save = {}
+                save["currentRoom"] = self.currentRoom
+                File().writeFile("save.json", save)
+                return "Saved file"
+            elif command[0] == "load":
+                return int(File().readFile("save.json"))
             elif command[0] == "debug" and debugger().debuggerEnabled:
                 if command[1] == "info":
                     return debugger().info(command[2])

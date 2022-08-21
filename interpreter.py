@@ -1,4 +1,4 @@
-import FileRead
+from FileRead import File
 from debugger import debugger
 
 
@@ -6,7 +6,7 @@ class room:
     file = "rooms.json"
 
     def __init__(self, room = 1, dFile = file):
-        self.file = FileRead.readFile(dFile)
+        self.file = File().readFile(dFile)
         self.room = room
 
     def getName(self):
@@ -112,7 +112,7 @@ class object:
     file = "objects.json"
 
     def __init__(self, room = 0, dFile = file):
-        self.file = FileRead.readFile(dFile)
+        self.file = File().readFile(dFile)
 
     def getObjects(self):
         objects = []

@@ -1,8 +1,9 @@
 import interpreter
 from debugger import debugger
 
-class commands:
+# I just realised that there is a way easier way to do this using dicionaries but I can't be bothered to figure that out
 
+class commands:
     def __init__(self, currentRoom):
         self.currentRoom = currentRoom
 
@@ -14,8 +15,12 @@ class commands:
             elif command[0] == "look":
                 if command[1] == "room":
                     return self.look()
-                elif command[1] in interpreter.room(self.currentRoom).getFurnature(command[1]):
+                elif command[1] in interpreter.room(self.currentRoom).getFurnature():
                     return self.furnatureLook(command[1])
+                else:
+                    return "No description found"
+            elif command[0] == "quit":
+                quit()
             else:
                 return "Unknown command"
         except:

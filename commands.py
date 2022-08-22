@@ -31,7 +31,7 @@ class commands:
                 return items[-1]
             #------------------ DEBUG COMMANDS ------------------#
             elif command[0] == "resetinv" and debugger().debuggerEnabled:
-                inventory().resetInventory()
+                inventory().resetInventory(self.currentRoom)
                 return "Inventory reset"
             elif command[0] == "give" and debugger().debuggerEnabled:
                 inventory().addToInventory(command[1], command[2])
@@ -39,9 +39,7 @@ class commands:
             elif command[0] == "open" and debugger().debuggerEnabled:
                 return File().readFile(command[1])
             elif command[0] == "save" and debugger().debuggerEnabled:
-                save = {}
-                save["currentRoom"] = self.currentRoom
-                File().writeFile("save.json", save)
+                self.save()
                 return "Saved file"
             elif command[0] == "load" and debugger().debuggerEnabled:
                 return int(File().readFile("save.json")["currentRoom"])
@@ -88,3 +86,8 @@ class commands:
             return "No furnature description found"
         else:
             return iDescription
+
+    def save(self):
+        save = {}
+        save["currentRoom"] = self.currentRoom
+        return File().writeFile("save.json", save)

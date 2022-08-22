@@ -19,6 +19,13 @@ class inventory:
     def resetInventory(self, currentRoom):
         commands.commands(currentRoom).save()
         lInventory = File().readFile("save.json")
-        lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":""}
+        lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":"","6":""}
         File().writeFile("save.json", lInventory)
         return
+
+    def getNumSlots(self):
+        lInventory = self.inventory["inventory"]
+        slots = 0
+        for i in lInventory:
+            slots += 1
+        return slots

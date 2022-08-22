@@ -9,7 +9,7 @@ class inventory:
             self.inventory = File().readFile("save.json")
 
     def getInventory(self):
-        return self.inventory
+        return self.inventory["inventory"]
 
     def addToInventory(self, slot, object):
         lInventory = self.inventory

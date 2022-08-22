@@ -26,9 +26,7 @@ class commands:
                 quit()
             elif command[0] == "inv":
                 items = inventory().getInventory()
-                for i in items:
-                    print(items[i])
-                return items[-1]
+                return items
             #------------------ DEBUG COMMANDS ------------------#
             elif command[0] == "resetinv" and debugger().debuggerEnabled:
                 inventory().resetInventory(self.currentRoom)
@@ -88,6 +86,6 @@ class commands:
             return iDescription
 
     def save(self):
-        save = {}
+        save = File().readFile("save.json")
         save["currentRoom"] = self.currentRoom
         return File().writeFile("save.json", save)

@@ -27,6 +27,9 @@ class commands:
             elif command[0] == "inv":
                 items = inventory().getInventory()
                 return items
+            elif command[0] == "save":
+                self.save()
+                return "Saved file"
             #------------------ DEBUG COMMANDS ------------------#
             elif command[0] == "resetinv" and debugger().debuggerEnabled:
                 inventory().resetInventory(self.currentRoom)
@@ -36,9 +39,6 @@ class commands:
                 return f"Gave item {command[2]}"
             elif command[0] == "open" and debugger().debuggerEnabled:
                 return File().readFile(command[1])
-            elif command[0] == "save" and debugger().debuggerEnabled:
-                self.save()
-                return "Saved file"
             elif command[0] == "load" and debugger().debuggerEnabled:
                 return int(File().readFile("save.json")["currentRoom"])
             elif command[0] == "debug" and debugger().debuggerEnabled:

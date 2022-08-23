@@ -13,47 +13,69 @@ class commands:
         try:
             command = command.lower()
             command = command.split(" ")
+
+            # I can't find a way to make this work with the match case statement
             if command[0] in interpreter.room(self.currentRoom).getDirections():
                 return int(self.direction(command[0]))
-            elif command[0] == "look":
-                if command[1] == "room":
-                    return self.look()
-                elif command[1] in interpreter.room(self.currentRoom).getFurnature():
-                    return self.furnatureLook(command[1])
-                else:
-                    return "No description found"
-            elif command[0] == "quit" or command[0] ==  "exit":
-                quit()
-            elif command[0] == "inv":
-                items = inventory().getInventory()
-                return items
-            elif command[0] == "save":
-                self.save()
-                return "Saved file"
+
+            match command[0]:
+                case "look":
+                    if command[1] == "room":
+                        return self.look()
+                    elif command[1] in interpreter.room(self.currentRoom).getFurnature():
+                        return self.furnatureLook(command[1])
+                    else:
+                        return "No description found"
+                
+                case "quit"|"exit":
+                    quit()
+
+                case "inv":
+                    items = inventory().getInventory()
+                    return items
+
+                case "save":
+                    self.save()
+                    return "Saved file"
+
+                case "load":
+                    return int(File().readFile("save.json")["currentRoom"])
+
             #------------------ DEBUG COMMANDS ------------------#
-            elif command[0] == "resetinv" and debugger().debuggerEnabled:
-                inventory().resetInventory(self.currentRoom)
-                return "Inventory reset"
-            elif command[0] == "give" and debugger().debuggerEnabled:
-                inventory().addToInventory(command[1], command[2])
-                return f"Gave item {command[2]}"
-            elif command[0] == "open" and debugger().debuggerEnabled:
-                return File().readFile(command[1])
-            elif command[0] == "load" and debugger().debuggerEnabled:
-                return int(File().readFile("save.json")["currentRoom"])
-            elif command[0] == "debug" and debugger().debuggerEnabled:
-                if command[1] == "info":
-                    return debugger().info(command[2])
-                elif command[1] == "warning":
-                    return debugger().warning(command[2])
-                elif command[1] == "error":
-                    return debugger().error(command[2])
-                elif command[1] == "fatal":
-                    return debugger().fatal(command[2])
-                else:
+                case "resetinv":
+                    if debugger().debuggerEnabled:
+                        inventory().resetInventory(self.currentRoom)
+                        return "Inventory reset"
                     return "Unknown command"
-            else:
-                return "Unknown command"
+
+                case "give":
+                    if debugger().debuggerEnabled:
+                        inventory().addToInventory(command[1], command[2])
+                        return f"Gave item {command[2]}"
+                    return "Unknown command"
+
+                case "open":
+                    if debugger().debuggerEnabled:
+                        return File().readFile(command[1])
+                    return "Unknown command"
+
+                case "debug":
+                    if debugger().debuggerEnabled:
+                        match command[1]:
+                            case "info":
+                                return debugger().info(command[2])
+                            case "warning":
+                                return debugger().warning(command[2])
+                            case "error":
+                                return debugger().error(command[2])
+                            case "fatal":
+                                return debugger().fatal(command[2])
+                            case _:
+                                return "Unknown command"
+                    else:
+                        return "Unknown command"
+                case _:
+                    return "Unknown command"
         except:
             return 0
 

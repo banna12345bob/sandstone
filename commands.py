@@ -3,8 +3,6 @@ from debugger import debugger
 from FileRead import File
 from inventory import inventory
 
-# I just realised that there is a way easier way to do this using dicionaries but I can't be bothered to figure that out
-
 class commands:
     def __init__(self, currentRoom):
         self.currentRoom = currentRoom
@@ -13,12 +11,57 @@ class commands:
         try:
             command = command.lower()
             command = command.split(" ")
-
+            # This just is a list of all the commands
+            commands = {
+                "help":"command (optional)\nDisplays a list of commands if the parameters is left blank otherwise displays the discription of the command",
+                "look":"Gets a description of something\nSytax:\nroom, furnature item",
+                "quit":"(Also exit)\nQuits the program",
+                "inv":"Opens inventory",
+                "save":"Saves the game",
+                "load":"Loads the pervious save",
+                "debug":{
+                    "resetinv":"Resets the inventory\nDEBUG ONLY",
+                    "give":"give slot object\nGives an object\nDEBUG ONLY",
+                    "open":"Prints out the contents of a specified JSON file\nDEBUG ONLY",
+                    "debug":"(info or warning or error or fatal) msg\nLogs a debug message\nDEBUG ONLY"
+                }
+            }
             # I can't find a way to make this work with the match case statement
             if command[0] in interpreter.room(self.currentRoom).getDirections():
                 return int(self.direction(command[0]))
 
             match command[0]:
+                case "help":
+                    if len(command) > 1:
+                        if debugger().debuggerEnabled:
+                            if command[1] in commands["debug"]:
+                                return(command[1] + ":\n" + commands["debug"][command[1]])
+                            elif command[1] in commands:
+                                return(command[1] + ":\n" + commands[command[1]])
+                            else:
+                                return("Unknown command")
+                        else:
+                            if command[1] in commands and command[1] != "debug":
+                                return(command[1] + ":\n" + commands[command[1]])
+                            else:
+                                return("Unknown command")
+                    else:
+                        if debugger().debuggerEnabled:
+                            a = ""
+                            for i in commands:
+                                if i == "debug":
+                                    a += "DEBUG ONLY:\n"
+                                    for b in commands["debug"]:
+                                        a += b + "\n"
+                                else:
+                                    a += i +"\n"
+                            return a[0:-1]
+                        else:
+                            a = ""
+                            for i in commands:
+                                a += i +"\n"
+                            return a[0:-7]
+
                 case "look":
                     if command[1] == "room":
                         return self.look()

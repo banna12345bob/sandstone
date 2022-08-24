@@ -26,6 +26,7 @@ class commands:
                     "debug":"(info or warning or error or fatal) msg\nLogs a debug message\nDEBUG ONLY"
                 }
             }
+
             # I can't find a way to make this work with the match case statement
             if command[0] in interpreter.room(self.currentRoom).getDirections():
                 return int(self.direction(command[0]))
@@ -77,6 +78,9 @@ class commands:
                     items = inventory().getInventory()
                     return items
 
+                case "pickup":
+                    return
+
                 case "save":
                     self.save()
                     return "Saved file"
@@ -84,7 +88,7 @@ class commands:
                 case "load":
                     return int(File().readFile("save.json")["currentRoom"])
 
-            #------------------ DEBUG COMMANDS ------------------#
+                #------------------ DEBUG COMMANDS ------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
                         inventory().resetInventory(self.currentRoom)
@@ -106,13 +110,13 @@ class commands:
                     if debugger().debuggerEnabled:
                         match command[1]:
                             case "info":
-                                return debugger().info(command[2])
+                                return debugger().info(command[2:len(command)])
                             case "warning":
-                                return debugger().warning(command[2])
+                                return debugger().warning(command[2:len(command)])
                             case "error":
-                                return debugger().error(command[2])
+                                return debugger().error(command[2:len(command)])
                             case "fatal":
-                                return debugger().fatal(command[2])
+                                return debugger().fatal(command[2:len(command)])
                             case _:
                                 return "Unknown command"
                     else:

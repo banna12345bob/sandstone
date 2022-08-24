@@ -79,7 +79,11 @@ class commands:
                     return items
 
                 case "pickup":
-                    return
+                    for furnature in interpreter.room(self.currentRoom).getFurnature():
+                        if command[1] in interpreter.room().getFunratureObjects(furnature):
+                            return inventory().addToInventory(command[1])
+                        else:
+                            return f"No item named {command[1]} in room"
 
                 case "save":
                     self.save()
@@ -98,7 +102,7 @@ class commands:
                 case "give":
                     if debugger().debuggerEnabled:
                         inventory().addToInventory(command[1], command[2])
-                        return f"Gave item {command[2]}"
+                        return f"Gave item {command[1]}"
                     return "Unknown command"
 
                 case "open":

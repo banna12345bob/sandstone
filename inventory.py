@@ -17,10 +17,19 @@ class inventory:
                 a += self.inventory["inventory"][i] + "\n"
         return a[0:-1]
 
-    def addToInventory(self, slot, object):
+    def addToInventory(self, object, slot=""):
         lInventory = self.inventory
-        lInventory["inventory"][slot] = object
-        File().writeFile("save.json", lInventory)
+        if slot != "":
+            lInventory["inventory"][slot] = object
+            File().writeFile("save.json", lInventory)
+        else:
+            for i in lInventory["inventory"]:
+                if lInventory["inventory"][i] == "":
+                    lInventory["inventory"][i] = object
+                    File().writeFile("save.json", lInventory)
+                    return f"Picked up {object}"
+            return "Inventory full"
+        
 
     def resetInventory(self, currentRoom):
         commands.commands(currentRoom).save()

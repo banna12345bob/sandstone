@@ -13,9 +13,11 @@ class debugger:
 
     def fatal(self, msg):
         if self.debuggerEnabled == True:
-            a = ""
-            for i in msg:
-                a += i + " "
+            a = msg
+            if isinstance(msg, list):
+                a = ""
+                for i in msg:
+                    a += i + " "
             print(colorama.ansi.Back.RED + "FATAL: " + a + colorama.ansi.Style.RESET_ALL)
             sleep(5)
             quit()
@@ -24,27 +26,33 @@ class debugger:
 
     def error(self, msg):
         if self.debuggerEnabled == True:
-            a = ""
-            for i in msg:
-                a += i + " "
+            a = msg
+            if isinstance(msg, list):
+                a = ""
+                for i in msg:
+                    a += i + " "
             print(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
     def warning(self, msg):
         if self.debuggerEnabled == True:
-            a = ""
-            for i in msg:
-                a += i + " "
+            a = msg
+            if isinstance(msg, list):
+                a = ""
+                for i in msg:
+                    a += i + " "
             print(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
     def info(self, msg):
         if self.debuggerEnabled == True:
-            a = ""
-            for i in msg:
-                a += i + " "
+            a = msg
+            if isinstance(msg, list):
+                a = ""
+                for i in msg:
+                    a += i + " "
             print(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return

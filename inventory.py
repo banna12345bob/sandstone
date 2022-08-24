@@ -2,10 +2,10 @@ from FileRead import File
 import commands
 
 class inventory:
-    def __init__(self):
-        try:
-            self.inventory = File().readFile("save.json")
-        except:
+    def __init__(self, room):
+        self.inventory = File().readFile("save.json")
+        if self.inventory == 0:
+            self.resetInventory(commands.commands(room).currentRoom)
             self.inventory = File().readFile("save.json")
 
     def getInventory(self):

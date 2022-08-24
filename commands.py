@@ -75,7 +75,7 @@ class commands:
                     quit()
 
                 case "inv":
-                    items = inventory().getInventory()
+                    items = inventory(self.currentRoom).getInventory()
                     return items
 
                 case "pickup":
@@ -95,13 +95,13 @@ class commands:
                 #------------------ DEBUG COMMANDS ------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
-                        inventory().resetInventory(self.currentRoom)
+                        inventory(self.currentRoom).resetInventory(self.currentRoom)
                         return "Inventory reset"
                     return "Unknown command"
 
                 case "give":
                     if debugger().debuggerEnabled:
-                        inventory().addToInventory(command[1], command[2])
+                        inventory(self.currentRoom).addToInventory(command[1], command[2])
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 
@@ -160,5 +160,7 @@ class commands:
 
     def save(self):
         save = File().readFile("save.json")
+        if save == 0:
+            save = {}
         save["currentRoom"] = self.currentRoom
         return File().writeFile("save.json", save)

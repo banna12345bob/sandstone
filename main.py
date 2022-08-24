@@ -3,6 +3,7 @@ from commands import commands
 import interpreter
 
 room = 1
+print(interpreter.room(room).getName())
 inp = input("Command: ")
 while inp:
     try:

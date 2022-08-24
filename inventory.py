@@ -9,7 +9,13 @@ class inventory:
             self.inventory = File().readFile("save.json")
 
     def getInventory(self):
-        return self.inventory["inventory"]
+        a = ""
+        for i in self.inventory["inventory"]:
+            if self.inventory["inventory"][i] == "":
+                a += "No item" + "\n"
+            else:
+                a += self.inventory["inventory"][i] + "\n"
+        return a[0:-1]
 
     def addToInventory(self, slot, object):
         lInventory = self.inventory
@@ -19,7 +25,7 @@ class inventory:
     def resetInventory(self, currentRoom):
         commands.commands(currentRoom).save()
         lInventory = File().readFile("save.json")
-        lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":"","6":""}
+        lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":""}
         File().writeFile("save.json", lInventory)
         return
 

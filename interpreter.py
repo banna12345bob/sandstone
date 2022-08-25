@@ -7,6 +7,8 @@ class room:
 
     def __init__(self, room = 1, dFile = file):
         self.file = File().readFile(dFile)
+        if self.file == 0:
+            debugger().fatal(f"Failed to read {dFile}")
         self.room = room
 
     def getName(self):
@@ -113,6 +115,8 @@ class object:
 
     def __init__(self, room = 0, dFile = file):
         self.file = File().readFile(dFile)
+        if self.file == 0:
+            debugger().fatal(f"Failed to read {dFile}")
 
     def getObjects(self):
         objects = []

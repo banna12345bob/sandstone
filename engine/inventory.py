@@ -12,7 +12,7 @@ class inventory:
         a = ""
         for i in self.inventory["inventory"]:
             if self.inventory["inventory"][i] == "":
-                a += "No item" + "\n"
+                a = a
             else:
                 a += self.inventory["inventory"][i] + "\n"
         return a[0:-1]

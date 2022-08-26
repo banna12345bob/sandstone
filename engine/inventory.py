@@ -15,6 +15,8 @@ class inventory:
                 a = a
             else:
                 a += self.inventory["inventory"][i] + "\n"
+        if a == "":
+            return "No items in inventory"
         return a[0:-1]
 
     def addToInventory(self, object, slot=""):

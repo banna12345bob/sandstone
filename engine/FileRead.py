@@ -9,7 +9,7 @@ class File:
     def readFile(self, file):
         try:
             if file:
-                file = open(file)
+                file = open("data/"+file)
                 rFile = json.loads(file.read())
                 file.close()
                 return rFile
@@ -20,7 +20,7 @@ class File:
             return 0
 
     def writeFile(self, file, fWrite):
-        file = open(file, "w")
+        file = open("data/"+file, "w")
         fWrite = json.dumps(fWrite, indent=4)
         file.write(fWrite)
         file.close()

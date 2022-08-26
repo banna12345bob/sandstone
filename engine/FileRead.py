@@ -1,6 +1,6 @@
 #https://www.w3schools.com/python/python_dictionaries_methods.asp
 import json
-from debugger import debugger
+from engine.debugger import debugger
 
 class File:
     def __init__(self) -> None:

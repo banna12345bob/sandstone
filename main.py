@@ -1,6 +1,5 @@
-import commands
-from commands import commands
-import interpreter
+from engine.commands import commands
+from engine import interpreter
 
 room = 1
 print(interpreter.room(room).getName())

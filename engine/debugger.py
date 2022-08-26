@@ -1,6 +1,6 @@
 from time import sleep
 import colorama
-import FileRead
+from engine import FileRead
 
 # Don't look here it's really ugly but it works
 class debugger:

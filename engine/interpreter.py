@@ -1,5 +1,5 @@
-from FileRead import File
-from debugger import debugger
+from engine.FileRead import File
+from engine.debugger import debugger
 
 
 class room:

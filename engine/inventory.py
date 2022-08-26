@@ -1,5 +1,5 @@
-from FileRead import File
-import commands
+from engine.FileRead import File
+from engine import commands
 
 class inventory:
     def __init__(self, room):

@@ -1,7 +1,7 @@
-import interpreter
-from debugger import debugger
-from FileRead import File
-from inventory import inventory
+from engine import interpreter
+from engine.debugger import debugger
+from engine.FileRead import File
+from engine.inventory import inventory
 
 class commands:
     def __init__(self, currentRoom):

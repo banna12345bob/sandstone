@@ -6,14 +6,14 @@
             "chair":{
                 "description":"Old smells nice",
                 "objects" : {
-                    "spoon" : "underneath the chair room 0",
-                    "brick":"ontop of the table room 0"
+                    "spoon" : "underneath the chair",
+                    "brick":"ontop of the table"
                 }
             },
             "table":{
                 "description":"Old looks comfortable",
                 "objects" : {
-                    "brick" : "ontop of the table room 0"
+                    "brick" : "ontop of the table"
                 }
             }
         },

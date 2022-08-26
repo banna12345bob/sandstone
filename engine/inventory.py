@@ -29,7 +29,19 @@ class inventory:
                     File().writeFile("save.json", lInventory)
                     return f"Picked up {object}"
             return "Inventory full"
-        
+
+    def removeFromInventory(self, object, slot=""):
+        lInventory = self.inventory
+        if slot != "":
+            lInventory["inventory"][slot] = ""
+            File().writeFile("save.json", lInventory)
+        else:
+            for i in lInventory["inventory"]:
+                if lInventory["inventory"][i] == object:
+                    lInventory["inventory"][i] = ""
+                    File().writeFile("save.json", lInventory)
+                    return f"Dropped {object}"
+            return "Item not in inventory"
 
     def resetInventory(self, currentRoom):
         commands.commands(currentRoom).save()

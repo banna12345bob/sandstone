@@ -85,6 +85,9 @@ class commands:
                             return inventory(self.currentRoom).addToInventory(command[1])
                         else:
                             return f"No item named {command[1]} in room"
+                
+                case "drop":
+                    return inventory(self.currentRoom).removeFromInventory(command[1])
 
                 case "save":
                     self.save()

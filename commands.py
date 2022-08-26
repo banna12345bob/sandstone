@@ -82,7 +82,7 @@ class commands:
                 case "pickup":
                     for furnature in interpreter.room(self.currentRoom).getFurnature():
                         if command[1] in interpreter.room().getFunratureObjects(furnature):
-                            return inventory().addToInventory(command[1])
+                            return inventory(self.currentRoom).addToInventory(command[1])
                         else:
                             return f"No item named {command[1]} in room"
 

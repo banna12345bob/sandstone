@@ -12,17 +12,14 @@ class debugger:
         colorama.init()
 
     def fatal(self, msg):
-        if self.debuggerEnabled == True:
-            a = msg
-            if isinstance(msg, list):
-                a = ""
-                for i in msg:
-                    a += i + " "
-            print(colorama.ansi.Back.RED + "FATAL: " + a + colorama.ansi.Style.RESET_ALL)
-            sleep(5)
-            quit()
-        else:
-            return
+        a = msg
+        if isinstance(msg, list):
+            a = ""
+            for i in msg:
+                a += i + " "
+        print(colorama.ansi.Back.RED + "FATAL: " + a + colorama.ansi.Style.RESET_ALL)
+        sleep(5)
+        quit()
 
     def error(self, msg):
         if self.debuggerEnabled == True:

@@ -19,6 +19,7 @@ class commands:
                 "inv":"Opens inventory",
                 "save":"Saves the game",
                 "load":"Loads the pervious save",
+                "pickup":"Pick ups object specified",
                 "debug":{
                     "resetinv":"Resets the inventory\nDEBUG ONLY",
                     "give":"give slot object\nGives an object\nDEBUG ONLY",

@@ -1,5 +1,6 @@
 {
     "currentRoom": 1,
+    "currentArea": 1,
     "inventory": {
         "1": "",
         "2": "",

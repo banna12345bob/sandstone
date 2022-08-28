@@ -1,11 +1,14 @@
+from re import L
 from engine.FileRead import File
 from engine import commands
 
 class inventory:
-    def __init__(self, room):
+    def __init__(self, area, room):
+        self.area = area
+        self.room = room
         self.inventory = File().readFile("save.json")
         if self.inventory == 0:
-            self.resetInventory(commands.commands(room).currentRoom)
+            self.resetInventory()
             self.inventory = File().readFile("save.json")
 
     def getInventory(self):
@@ -45,12 +48,14 @@ class inventory:
                     return f"Dropped {object}"
             return "Item not in inventory"
 
-    def resetInventory(self, currentRoom):
-        commands.commands(currentRoom).save()
+    def resetInventory(self):
+        commands.commands(self.area, self.room).save()
         lInventory = File().readFile("save.json")
+        if lInventory == 0:
+            lInventory = {}
         lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":""}
         File().writeFile("save.json", lInventory)
-        return
+        return "Reset Inventory"
 
     def getNumSlots(self):
         lInventory = self.inventory["inventory"]

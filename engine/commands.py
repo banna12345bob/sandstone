@@ -4,8 +4,9 @@ from engine.FileRead import File
 from engine.inventory import inventory
 
 class commands:
-    def __init__(self, currentRoom):
+    def __init__(self, area, currentRoom):
         self.currentRoom = currentRoom
+        self.currentArea = area
 
     def giveCommand(self, command):
         try:
@@ -29,8 +30,8 @@ class commands:
             }
 
             # I can't find a way to make this work with the match case statement
-            if command[0] in interpreter.room(self.currentRoom).getDirections():
-                return int(self.direction(command[0]))
+            if command[0] in interpreter.room(self.currentArea, self.currentRoom).getDirections():
+                return self.direction(command[0])
 
             match command[0]:
                 case "help":
@@ -67,7 +68,7 @@ class commands:
                 case "look":
                     if command[1] == "room":
                         return self.look()
-                    elif command[1] in interpreter.room(self.currentRoom).getFurnature():
+                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
                         return self.furnatureLook(command[1])
                     else:
                         return "No description found"
@@ -76,36 +77,42 @@ class commands:
                     quit()
 
                 case "inv":
-                    items = inventory(self.currentRoom).getInventory()
+                    items = inventory(self.currentArea, self.currentRoom).getInventory()
                     return items
 
                 case "pickup":
-                    for furnature in interpreter.room(self.currentRoom).getFurnature():
-                        if command[1] in interpreter.room().getFunratureObjects(furnature):
-                            return inventory(self.currentRoom).addToInventory(command[1])
+                    for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
+                        if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
+                            return inventory(self.currentArea, self.currentRoom).addToInventory(command[1])
                         else:
                             return f"No item named {command[1]} in room"
                 
                 case "drop":
-                    return inventory(self.currentRoom).removeFromInventory(command[1])
+                    return inventory(self.currentArea, self.currentRoom).removeFromInventory(command[1])
 
                 case "save":
                     self.save()
                     return "Saved file"
 
                 case "load":
-                    return int(File().readFile("save.json")["currentRoom"])
+                    file = File().readFile("save.json")
+                    if file != 0:
+                        lFile = []
+                        lFile.append(file["currentArea"])
+                        lFile.append(file["currentRoom"])
+                        return lFile
+                    else:
+                        return "No save file found"
 
                 #------------------ DEBUG COMMANDS ------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
-                        inventory(self.currentRoom).resetInventory(self.currentRoom)
-                        return "Inventory reset"
+                        return inventory(self.currentArea, self.currentRoom).resetInventory()
                     return "Unknown command"
 
                 case "give":
                     if debugger().debuggerEnabled:
-                        inventory(self.currentRoom).addToInventory(command[1], command[2])
+                        inventory(self.currentArea, self.currentRoom).addToInventory(command[1], command[2])
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 
@@ -135,8 +142,7 @@ class commands:
             return 0
 
     def direction(self, direction):
-        currentRoom = self.currentRoom
-        iDirection = interpreter.room(currentRoom).getDirection(direction)
+        iDirection = interpreter.room(self.currentArea, self.currentRoom).getDirection(direction)
         if iDirection == "":
             return "Unknown command"
         elif iDirection == 0:
@@ -145,16 +151,14 @@ class commands:
             return iDirection
 
     def look(self):
-        currentRoom = self.currentRoom
-        iDescription = interpreter.room(currentRoom).getDesciption()
+        iDescription = interpreter.room(self.currentArea, self.currentRoom).getDesciption()
         if iDescription == 0:
             return 0
         else:
             return iDescription
     
     def furnatureLook(self, furnature):
-        currentRoom = self.currentRoom
-        iDescription = interpreter.room(currentRoom).getFurnatureDescription(furnature)
+        iDescription = interpreter.room(self.currentArea, self.currentRoom).getFurnatureDescription(furnature)
         if iDescription == 0:
             return 0
         elif iDescription == "":
@@ -166,5 +170,6 @@ class commands:
         save = File().readFile("save.json")
         if save == 0:
             save = {}
-        save["currentRoom"] = self.currentRoom
-        return File().writeFile("save.json", save)
+        save["currentRoom"] = int(self.currentRoom)
+        save["currentArea"] = int(self.currentArea)
+        File().writeFile("save.json", save)

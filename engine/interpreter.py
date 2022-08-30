@@ -125,6 +125,7 @@ class room:
             debugger().error(f"Room {area}:{room} not found")
             return 0
 
+# This class is not currently being used like anywhere exept for inside of itself
 class object:
     file = "objects.json"
 

@@ -2,6 +2,7 @@ from engine.commands import commands
 from engine import interpreter
 from engine.debugger import debugger
 
+# Please not this only works when one installs colorama I would recommended running via launch.bat
 room = 1
 area = 1
 print(interpreter.room(area, room).getRoomName())

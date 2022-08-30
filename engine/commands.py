@@ -29,7 +29,7 @@ class commands:
                 }
             }
 
-            # I can't find a way to make this work with the match case statement
+            # I can't find a way to make this work with the match case statement so I'm just gonna leave it here for now
             if command[0] in interpreter.room(self.currentArea, self.currentRoom).getDirections():
                 return self.direction(command[0])
 
@@ -80,6 +80,8 @@ class commands:
                     items = inventory(self.currentArea, self.currentRoom).getInventory()
                     return items
 
+                # TODO Fix up the fact that you can pickup an item multipule times
+                # Maybe add a function that reads and edits rooms.json adding a pickedup tag to objects
                 case "pickup":
                     for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
@@ -104,7 +106,7 @@ class commands:
                     else:
                         return "No save file found"
 
-                #------------------ DEBUG COMMANDS ------------------#
+                #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
                         return inventory(self.currentArea, self.currentRoom).resetInventory()
@@ -112,7 +114,11 @@ class commands:
 
                 case "give":
                     if debugger().debuggerEnabled:
-                        inventory(self.currentArea, self.currentRoom).addToInventory(command[1], command[2])
+                        try:
+                            if command[2] != "":
+                                inventory(self.currentArea, self.currentRoom).addToInventory(command[1], command[2])
+                        except:
+                            inventory(self.currentArea, self.currentRoom).addToInventory(command[1])
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 

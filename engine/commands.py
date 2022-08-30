@@ -74,20 +74,22 @@ class commands:
                         return "No description found"
                 
                 case "quit"|"exit":
+                    return "quit"
                     quit()
 
                 case "inv":
                     items = inventory(self.currentArea, self.currentRoom).getInventory()
                     return items
 
-                # TODO Fix up the fact that you can pickup an item multipule times
+                # TODO Fix up the fact that you can pickup an item multipule times (FIXED)
                 # Maybe add a function that reads and edits rooms.json adding a pickedup tag to objects
                 case "pickup":
                     for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
-                            return inventory(self.currentArea, self.currentRoom).addToInventory(command[1])
+                            return inventory(self.currentArea, self.currentRoom).addToInventory(command[1], True, furnature)
                         else:
                             return f"No item named {command[1]} in room"
+                    return f"No item named {command[1]} in room"
                 
                 case "drop":
                     return inventory(self.currentArea, self.currentRoom).removeFromInventory(command[1])
@@ -116,9 +118,9 @@ class commands:
                     if debugger().debuggerEnabled:
                         try:
                             if command[2] != "":
-                                inventory(self.currentArea, self.currentRoom).addToInventory(command[1], command[2])
+                                inventory(self.currentArea, self.currentRoom).addToInventory(command[1], False, "", command[2])
                         except:
-                            inventory(self.currentArea, self.currentRoom).addToInventory(command[1])
+                            inventory(self.currentArea, self.currentRoom).addToInventory(command[1], False)
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 

@@ -1,3 +1,4 @@
+from cmath import pi
 from engine.FileRead import File
 from engine.debugger import debugger
 
@@ -80,7 +81,7 @@ class room:
             debugger().error(f"Room {area}:{room} not found")
             return 0
 
-    def getFunratureObjectDescriptions(self, furnature, object):
+    def getFunratureObjectLocation(self, furnature, object):
         rFile = self.file
         room = self.room
         area = self.area
@@ -89,7 +90,7 @@ class room:
         object = object.lower()
         try:
             if object in self.getFunratureObjects(furnature):
-                des = rFile[str(area)][str(room)]["furnature"][furnature]["objects"][object]
+                des = rFile[str(area)][str(room)]["furnature"][furnature]["objects"][object]["location"]
             return des
         except:
             debugger().error(f"Room {area}:{room} not found")
@@ -124,12 +125,29 @@ class room:
             # NOTE: this is not a "quick" error cathcer as I build a debug interface for it
             debugger().error(f"Room {area}:{room} not found")
             return 0
+    
+    def checkItemPickedUp(self, furnature, object):
+        rFile = self.file
+        room = self.room
+        area = self.area
+        furnature = furnature.lower()
+        pickedUp = False
+        object = object.lower()
+        try:
+            if object in self.getFunratureObjects(furnature):
+                try:
+                    pickedUp = rFile[str(area)][str(room)]["furnature"][furnature]["objects"][object]["pickedup"]
+                except:
+                    return pickedUp
+            return pickedUp
+        except:
+            debugger().error(f"Room {area}:{room} not found")
+            return 0
 
-# This class is not currently being used like anywhere exept for inside of itself
 class object:
     file = "objects.json"
 
-    def __init__(self, room = 0, dFile = file):
+    def __init__(self, dFile = file):
         self.file = File().readFile(dFile)
         if self.file == 0:
             debugger().fatal(f"Failed to read {dFile}")

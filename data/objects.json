@@ -8,5 +8,10 @@
         "description":"Looks like a brick",
         "colour": "red",
         "material": "brick"
+    },
+    "stick":{
+        "description":"What's brown and sticky",
+        "colour":"brown",
+        "material":"wood"
     }
 }

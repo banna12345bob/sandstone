@@ -1,5 +1,6 @@
 from engine.FileRead import File
 from engine import commands
+from engine import interpreter
 
 # Welcome to the inventory class possibly the worst coded part of the engine
 class inventory:
@@ -24,19 +25,34 @@ class inventory:
         return a[0:-1]
 
     # Adds items to the inventory based on slot
-    # TODO Add a check to see if the object that is being added is an actual object as defined by objects.json
-    def addToInventory(self, object, slot=""):
+    def addToInventory(self, object, checkExists = True, furnature="", slot=""):
         lInventory = self.inventory
-        if slot != "":
+        if slot != "" and checkExists == False:
             lInventory["inventory"][slot] = object
             File().writeFile("save.json", lInventory)
+        elif checkExists == False:
+            if object in interpreter.object().getObjects():
+                for i in lInventory["inventory"]:
+                    if lInventory["inventory"][i] == "":
+                        lInventory["inventory"][i] = object
+                        File().writeFile("save.json", lInventory)
+                        return f"Picked up {object}"
+                return "Inventory full"
         else:
-            for i in lInventory["inventory"]:
-                if lInventory["inventory"][i] == "":
-                    lInventory["inventory"][i] = object
-                    File().writeFile("save.json", lInventory)
-                    return f"Picked up {object}"
-            return "Inventory full"
+            if object in interpreter.object().getObjects():
+                if checkExists == True:
+                    if interpreter.room(self.area, self.room).checkItemPickedUp(furnature, object) == False:
+                        for i in lInventory["inventory"]:
+                            if lInventory["inventory"][i] == "":
+                                lInventory["inventory"][i] = object
+                                File().writeFile("save.json", lInventory)
+                                rooms = File().readFile("rooms.json")
+                                rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = True
+                                File().writeFile("rooms.json", rooms)
+                                return f"Picked up {object}"
+                        return "Inventory full"
+                    else:
+                        return "You already picked up the item silly"
 
     # Just removes items from the inventory
     def removeFromInventory(self, object, slot=""):
@@ -61,6 +77,13 @@ class inventory:
             lInventory = {}
         lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":""}
         File().writeFile("save.json", lInventory)
+        furnatures = interpreter.room(self.area, self.room).getFurnature()
+        for furnature in furnatures:
+            objects = interpreter.room(self.area, self.room).getFunratureObjects(furnature)
+            for object in objects:
+                rooms = File().readFile("rooms.json")
+                rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = False
+                File().writeFile("rooms.json", rooms)
         return "Reset Inventory"
 
     # This function is never used and I don't know why it is here

@@ -73,6 +73,15 @@ class commands:
                     else:
                         return "No description found"
                 
+                case "use":
+                    if command[1] in inventory(self.currentArea, self.currentRoom).getInventory(True):
+                        if interpreter.object().getUse(command[1]) == 0:
+                            return f'No item named "{command[1]}"'
+                        else:
+                            return interpreter.object().getUse(command[1])
+                    else:
+                        return f'No item named "{command[1]}" in inventory'
+
                 case "quit"|"exit":
                     return "quit"
                     quit()
@@ -87,7 +96,7 @@ class commands:
                     for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
                             return inventory(self.currentArea, self.currentRoom).addToInventory(command[1], True, furnature)
-                    return f"No item named {command[1]} in room"
+                    return f'No item named "{command[1]}" in room'
                 
                 case "drop":
                     return inventory(self.currentArea, self.currentRoom).removeFromInventory(command[1])

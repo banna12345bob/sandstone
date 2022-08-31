@@ -13,16 +13,25 @@ class inventory:
             self.inventory = File().readFile("save.json")
 
     # This class returns the inventory with each item on a new line
-    def getInventory(self):
-        a = ""
+    def getInventory(self, list=False):
+        if list == False:
+            a = ""
+        elif list == True:
+            a = []
         for i in self.inventory["inventory"]:
             if self.inventory["inventory"][i] == "":
                 a = a
             else:
-                a += self.inventory["inventory"][i] + "\n"
+                if list == False:
+                    a += self.inventory["inventory"][i] + "\n"
+                elif list == True:
+                    a.append(self.inventory["inventory"][i])
         if a == "":
             return "No items in inventory"
-        return a[0:-1]
+        if list == True:
+            return a
+        elif list == False:
+            return a[0:-1]
 
     # Adds items to the inventory based on slot
     def addToInventory(self, object, checkExists = True, furnature="", slot=""):

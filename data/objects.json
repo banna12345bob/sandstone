@@ -1,6 +1,7 @@
 {
     "spoon": {
         "description":"Looks like a spoon",
+        "use":"You try to use the spoon but there is no soop around",
         "colour": "green",
         "material": "metal"
     },

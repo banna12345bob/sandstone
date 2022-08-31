@@ -158,6 +158,16 @@ class object:
             objects.append(i)
         return objects
     
+    def getUse(self, object):
+        object = object.lower()
+        try:
+            if object in self.getObjects():
+                return self.file[object]["use"]
+            else:
+                return 0
+        except:
+            return "This object has no uses defined"
+
     def getDescription(self, object):
         rFile = self.file
         object = object.lower()

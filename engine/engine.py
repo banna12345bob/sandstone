@@ -16,11 +16,17 @@ class application:
         if giveCommand != 0:
             if giveCommand != "Unknown command" and isinstance(giveCommand, list):
                 if interpreter.room(giveCommand[0], giveCommand[1]).getRoomName() != 0:
-                    print(interpreter.room(giveCommand[0], giveCommand[1]).getRoomName())
-                    return giveCommand
+                    self.area = giveCommand[0]
+                    self.room = giveCommand[1]
+                    # print(self.area + ":" + self.room)
+                    return interpreter.room(self.area, self.room).getRoomName()
                 else:
-                    return ["1","1"]
+                    self.area = 1
+                    self.room = 1
+                    return interpreter.room(self.area, self.room).getRoomName()
             else:
                 return giveCommand
         else:
-            return ["1","1"]
+            self.area = 1
+            self.room = 1
+            return interpreter.room(self.area, self.room).getRoomName()

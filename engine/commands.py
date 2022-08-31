@@ -87,8 +87,6 @@ class commands:
                     for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
                             return inventory(self.currentArea, self.currentRoom).addToInventory(command[1], True, furnature)
-                        else:
-                            return f"No item named {command[1]} in room"
                     return f"No item named {command[1]} in room"
                 
                 case "drop":

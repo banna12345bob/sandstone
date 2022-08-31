@@ -21,7 +21,7 @@
                 "table": {
                     "description": "Old looks comfortable",
                     "objects": {
-                        "brick": {
+                        "stick": {
                             "location": "ontop of the table",
                             "pickedup": false
                         }

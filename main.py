@@ -25,6 +25,8 @@ while inp:
         else:
             area = 1
             room = 1
+        if giveCommand == "quit":
+            break
         inp = input("Command: ")
     except:
         debugger.fatal("UNCAUGHT ERROR")

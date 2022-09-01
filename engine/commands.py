@@ -4,9 +4,11 @@ from engine.FileRead import File
 from engine.inventory import inventory
 
 class commands:
-    def __init__(self, area, currentRoom):
+    def __init__(self, area, currentRoom, roomsFile = "rooms.json", objectFile = "objects.json"):
         self.currentRoom = currentRoom
         self.currentArea = area
+        self.roomsFile = roomsFile
+        self.objectFile = objectFile
 
     def giveCommand(self, command):
         try:
@@ -30,7 +32,7 @@ class commands:
             }
 
             # I can't find a way to make this work with the match case statement so I'm just gonna leave it here for now
-            if command[0] in interpreter.room(self.currentArea, self.currentRoom).getDirections():
+            if command[0] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections():
                 return self.direction(command[0])
 
             match command[0]:
@@ -68,17 +70,17 @@ class commands:
                 case "look":
                     if command[1] == "room":
                         return self.look()
-                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
+                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
                         return self.furnatureLook(command[1])
                     else:
                         return "No description found"
                 
                 case "use":
-                    if command[1] in inventory(self.currentArea, self.currentRoom).getInventory(True):
-                        if interpreter.object().getUse(command[1]) == 0:
+                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile).getInventory(True):
+                        if interpreter.object(self.objectFile).getUse(command[1]) == 0:
                             return f'No item named "{command[1]}"'
                         else:
-                            return interpreter.object().getUse(command[1])
+                            return interpreter.object(self.objectFile).getUse(command[1])
                     else:
                         return f'No item named "{command[1]}" in inventory'
 
@@ -87,19 +89,19 @@ class commands:
                     quit()
 
                 case "inv":
-                    items = inventory(self.currentArea, self.currentRoom).getInventory()
+                    items = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory()
                     return items
 
                 # TODO Fix up the fact that you can pickup an item multipule times (FIXED)
                 # Maybe add a function that reads and edits rooms.json adding a pickedup tag to objects
                 case "pickup":
-                    for furnature in interpreter.room(self.currentArea, self.currentRoom).getFurnature():
-                        if command[1] in interpreter.room(self.currentArea, self.currentRoom).getFunratureObjects(furnature):
-                            return inventory(self.currentArea, self.currentRoom).addToInventory(command[1], True, furnature)
+                    for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
+                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFunratureObjects(furnature):
+                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], True, furnature)
                     return f'No item named "{command[1]}" in room'
                 
                 case "drop":
-                    return inventory(self.currentArea, self.currentRoom).removeFromInventory(command[1])
+                    return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).removeFromInventory(command[1])
 
                 case "save":
                     self.save()
@@ -118,16 +120,16 @@ class commands:
                 #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
-                        return inventory(self.currentArea, self.currentRoom).resetInventory()
+                        return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory()
                     return "Unknown command"
 
                 case "give":
                     if debugger().debuggerEnabled:
                         try:
                             if command[2] != "":
-                                inventory(self.currentArea, self.currentRoom).addToInventory(command[1], False, "", command[2])
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False, "", command[2])
                         except:
-                            inventory(self.currentArea, self.currentRoom).addToInventory(command[1], False)
+                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False)
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 
@@ -157,7 +159,7 @@ class commands:
             return 0
 
     def direction(self, direction):
-        iDirection = interpreter.room(self.currentArea, self.currentRoom).getDirection(direction)
+        iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirection(direction)
         if iDirection == "":
             return "Unknown command"
         elif iDirection == 0:
@@ -166,14 +168,14 @@ class commands:
             return iDirection
 
     def look(self):
-        iDescription = interpreter.room(self.currentArea, self.currentRoom).getDesciption()
+        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDesciption()
         if iDescription == 0:
             return 0
         else:
             return iDescription
     
     def furnatureLook(self, furnature):
-        iDescription = interpreter.room(self.currentArea, self.currentRoom).getFurnatureDescription(furnature)
+        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnatureDescription(furnature)
         if iDescription == 0:
             return 0
         elif iDescription == "":

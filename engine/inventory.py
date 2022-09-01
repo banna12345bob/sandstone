@@ -4,9 +4,11 @@ from engine import interpreter
 
 # Welcome to the inventory class possibly the worst coded part of the engine
 class inventory:
-    def __init__(self, area, room):
+    def __init__(self, area, room, roomsFile, objectFile):
         self.area = area
         self.room = room
+        self.roomsFile = roomsFile
+        self.objectFile = objectFile
         self.inventory = File().readFile("save.json")
         if self.inventory == 0:
             self.resetInventory()
@@ -35,26 +37,25 @@ class inventory:
 
     # Adds items to the inventory based on slot
     def addToInventory(self, object, checkExists = True, furnature="", slot=""):
-        lInventory = self.inventory
         if slot != "" and checkExists == False:
-            lInventory["inventory"][slot] = object
-            File().writeFile("save.json", lInventory)
+            self.inventory["inventory"][slot] = object
+            File().writeFile("save.json", self.inventory)
         elif checkExists == False:
-            if object in interpreter.object().getObjects():
-                for i in lInventory["inventory"]:
-                    if lInventory["inventory"][i] == "":
-                        lInventory["inventory"][i] = object
-                        File().writeFile("save.json", lInventory)
+            if object in interpreter.object(self.objectFile).getObjects():
+                for i in self.inventory["inventory"]:
+                    if self.inventory["inventory"][i] == "":
+                        self.inventory["inventory"][i] = object
+                        File().writeFile("save.json", self.inventory)
                         return f"Picked up {object}"
                 return "Inventory full"
         else:
-            if object in interpreter.object().getObjects():
+            if object in interpreter.object(self.objectFile).getObjects():
                 if checkExists == True:
-                    if interpreter.room(self.area, self.room).checkItemPickedUp(furnature, object) == False:
-                        for i in lInventory["inventory"]:
-                            if lInventory["inventory"][i] == "":
-                                lInventory["inventory"][i] = object
-                                File().writeFile("save.json", lInventory)
+                    if interpreter.room(self.area, self.room, self.roomsFile).checkItemPickedUp(furnature, object) == False:
+                        for i in self.inventory["inventory"]:
+                            if self.inventory["inventory"][i] == "":
+                                self.inventory["inventory"][i] = object
+                                File().writeFile("save.json", self.inventory)
                                 rooms = File().readFile("rooms.json")
                                 rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = True
                                 File().writeFile("rooms.json", rooms)
@@ -65,30 +66,29 @@ class inventory:
 
     # Just removes items from the inventory
     def removeFromInventory(self, object, slot=""):
-        lInventory = self.inventory
         if slot != "":
-            lInventory["inventory"][slot] = ""
-            File().writeFile("save.json", lInventory)
+            self.inventory["inventory"][slot] = ""
+            File().writeFile("save.json", self.inventory)
         else:
-            for i in lInventory["inventory"]:
-                if lInventory["inventory"][i] == object:
-                    lInventory["inventory"][i] = ""
-                    File().writeFile("save.json", lInventory)
+            for i in self.inventory["inventory"]:
+                if self.inventory["inventory"][i] == object:
+                    self.inventory["inventory"][i] = ""
+                    File().writeFile("save.json", self.inventory)
                     return f"Dropped {object}"
             return "Item not in inventory"
 
     # Sets all invnetory slots to blank effectively wipping the inventory clean
     # This was the most dificult function to get working as I did a stupid eailer on and didn't notice
     def resetInventory(self):
-        commands.commands(self.area, self.room).save()
-        lInventory = File().readFile("save.json")
+        commands.commands(self.area, self.room, self.roomsFile).save()
+        lInventory = self.inventory
         if lInventory == 0:
             lInventory = {}
         lInventory["inventory"] = {"1":"","2":"","3":"","4":"","5":""}
         File().writeFile("save.json", lInventory)
-        furnatures = interpreter.room(self.area, self.room).getFurnature()
+        furnatures = interpreter.room(self.area, self.room, self.roomsFile).getFurnature()
         for furnature in furnatures:
-            objects = interpreter.room(self.area, self.room).getFunratureObjects(furnature)
+            objects = interpreter.room(self.area, self.room, self.roomsFile).getFunratureObjects(furnature)
             for object in objects:
                 rooms = File().readFile("rooms.json")
                 rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = False

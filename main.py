@@ -5,10 +5,10 @@ from engine import engine
 # It inherents all the functions from engine.application and then sets area and room correctly
 class debugApp(engine.application):
     def __init__(self, area, room):
-        super().__init__(area, room)
+        super().__init__(area, room, "rooms.json", "objects.json")
 
 area, room = 1, 1
-print(engine.interpreter.room(area, room).getRoomName())
+print(engine.interpreter.room(area, room, "rooms.json").getRoomName())
 inp = input("Command: ")
 while inp:
     try:

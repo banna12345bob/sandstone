@@ -21,11 +21,12 @@ class commands:
                 "quit":"(Also exit)\nQuits the program",
                 "inv":"Opens inventory",
                 "save":"Saves the game",
+                "use":"object\nUses an object",
+                "pickup":"object\nPick ups object specified",
                 "load":"Loads the pervious save",
-                "pickup":"Pick ups object specified",
                 "debug":{
                     "resetinv":"Resets the inventory\nDEBUG ONLY",
-                    "give":"give slot object\nGives an object\nDEBUG ONLY",
+                    "give":"give object slot\nGives an object\nDEBUG ONLY",
                     "open":"Prints out the contents of a specified JSON file\nDEBUG ONLY",
                     "debug":"(info or warning or error or fatal) msg\nLogs a debug message\nDEBUG ONLY"
                 }

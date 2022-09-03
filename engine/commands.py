@@ -34,7 +34,7 @@ class commands:
 
             # I can't find a way to make this work with the match case statement so I'm just gonna leave it here for now
             if command[0] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections():
-                return self.direction(command[0])
+                return self.direction(command[0], inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile))
 
             match command[0]:
                 case "help":
@@ -159,8 +159,8 @@ class commands:
         except:
             return 0
 
-    def direction(self, direction):
-        iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirection(direction)
+    def direction(self, direction, inv):
+        iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirection(direction, inv)
         if iDirection == "":
             return "Unknown command"
         elif iDirection == 0:

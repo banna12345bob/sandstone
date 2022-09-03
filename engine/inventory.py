@@ -56,9 +56,9 @@ class inventory:
                             if self.inventory["inventory"][i] == "":
                                 self.inventory["inventory"][i] = object
                                 File().writeFile("save.json", self.inventory)
-                                rooms = File().readFile("rooms.json")
+                                rooms = File().readFile(self.roomsFile)
                                 rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = True
-                                File().writeFile("rooms.json", rooms)
+                                File().writeFile(self.roomsFile, rooms)
                                 return f"Picked up {object}"
                         return "Inventory full"
                     else:
@@ -90,9 +90,9 @@ class inventory:
         for furnature in furnatures:
             objects = interpreter.room(self.area, self.room, self.roomsFile).getFunratureObjects(furnature)
             for object in objects:
-                rooms = File().readFile("rooms.json")
+                rooms = File().readFile(self.roomsFile)
                 rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = False
-                File().writeFile("rooms.json", rooms)
+                File().writeFile(self.roomsFile, rooms)
         return "Reset Inventory"
 
     # This function is never used and I don't know why it is here

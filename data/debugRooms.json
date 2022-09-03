@@ -29,7 +29,16 @@
                 }
             },
             "directions": {
-                "north": "1:2"
+                "north": {
+                    "room": "1:2",
+                    "locked": true,
+                    "unlockedBy": "spoon",
+                    "unlockMsg": "You (somehow) use a spoon to unlock the door",
+                    "breaks": [
+                        true,
+                        "The spoon breaks as you use it to open the door"
+                    ]
+                }
             }
         },
         "2": {

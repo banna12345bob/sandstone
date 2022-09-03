@@ -4,6 +4,7 @@ from engine.debugger import debugger
 class room:
     def __init__(self, area, room, iFile):
         self.file = File().readFile(iFile)
+        self.roomFile = iFile
         if self.file == 0:
             debugger().fatal(f"Failed to read {iFile}")
         self.room = room
@@ -87,14 +88,33 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getDirection(self, direction):
+    def getDirection(self, direction, inv):
         rDirections = ""
         direction = direction.lower()
         try:
             if direction in self.getDirections():
-                rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]
-                rDirections = rDirections.split(":")
-            return rDirections
+                try:
+                    if self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] == True:
+                        if self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"] in inv.getInventory(True):
+                            self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] = False
+                            File().writeFile(self.roomFile, self.file)
+                            print(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockMsg"])
+                            rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
+                            rDirections = rDirections.split(":")
+                            if self.file[str(self.area)][str(self.room)]["directions"][direction]["breaks"][0] == True:
+                                inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
+                            return rDirections
+                        else:
+                            unlockedBy = self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"]
+                            return f"You need a {unlockedBy} to unlock this door"
+                    else:
+                            rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
+                            rDirections = rDirections.split(":")
+                            return rDirections
+                except:
+                    rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]
+                    rDirections = rDirections.split(":")
+                    return rDirections
         except:
             # Just a quick error catcher 
             # NOTE: this is not a "quick" error cathcer as I build a debug interface for it

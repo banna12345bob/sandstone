@@ -94,7 +94,7 @@ class room:
         try:
             if direction in self.getDirections():
                 try:
-                    if self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] == True:
+                    if self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] == True and debugger().ignoreLocks == False:
                         if self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"] in inv.getInventory(True):
                             self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] = False
                             File().writeFile(self.roomFile, self.file)
@@ -106,6 +106,10 @@ class room:
                             return rDirections
                         else:
                             return self.file[str(self.area)][str(self.room)]["directions"][direction]["lockedMsg"]
+                    elif debugger().ignoreLocks == True:
+                        rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
+                        rDirections = rDirections.split(":")
+                        return rDirections
                     else:
                             rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
                             rDirections = rDirections.split(":")

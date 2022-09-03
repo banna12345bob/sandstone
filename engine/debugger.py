@@ -5,10 +5,11 @@ from engine import FileRead
 # Don't look here it's really ugly but it works
 class debugger:
     def __init__(self):
-        if bool(FileRead.File().readFile("options.json")["debuggerEnabled"]) == True:
-            self.debuggerEnabled = True
+        self.debuggerEnabled = FileRead.File().readFile("options.json")["debuggerEnabled"]
+        if self.debuggerEnabled == True:
+            self.ignoreLocks = FileRead.File().readFile("options.json")["ignoreLocks"]
         else:
-            self.debuggerEnabled = False
+            self.ignoreLocks = False
         colorama.init()
 
     def fatal(self, msg):

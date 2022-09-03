@@ -1,3 +1,4 @@
 {
-    "debuggerEnabled" : "True"
+    "debuggerEnabled" : true,
+    "ignoreLocks" : false
 }

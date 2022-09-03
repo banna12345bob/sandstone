@@ -32,6 +32,7 @@
                 "north": {
                     "room": "1:2",
                     "locked": true,
+                    "lockedMsg" : "You need a spoon to open this door",
                     "unlockedBy": "spoon",
                     "unlockMsg": "You (somehow) use a spoon to unlock the door",
                     "breaks": [

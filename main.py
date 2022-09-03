@@ -1,11 +1,6 @@
 from engine import engine
+from debugApp.debugApp import debugApp
 # Please not this only works when one installs colorama I would recommended running via launch.bat
-
-# This interfaces with application.
-# It inherents all the functions from engine.application and then sets area and room correctly
-class debugApp(engine.application):
-    def __init__(self, area, room):
-        super().__init__(area, room, "debugRooms.json", "debugObjects.json")
 
 area, room = 1, 1
 print(engine.interpreter.room(area, room, "debugRooms.json").getRoomName())

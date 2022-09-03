@@ -105,8 +105,7 @@ class room:
                                 inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
                             return rDirections
                         else:
-                            unlockedBy = self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"]
-                            return f"You need a {unlockedBy} to unlock this door"
+                            return self.file[str(self.area)][str(self.room)]["directions"][direction]["lockedMsg"]
                     else:
                             rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
                             rDirections = rDirections.split(":")

@@ -1,0 +1,45 @@
+{
+    "1": {
+        "name": "Area 1",
+        "1": {
+            "name": "Jail cell",
+            "description": "A small room with a metal bed in one corner.\n You said 'No jail can hold me'\n You notice a key sitting on your bed",
+            "furnature": {
+                "bed": {
+                    "description": "Hard looks cold. Has a jailkey sitting on top of it",
+                    "objects": {
+                        "jailkey": {
+                            "location": "Sitting on the bed",
+                            "pickedup": false
+                        }
+                    }
+                }
+            },
+            "directions": {
+                "north": {
+                    "room": "1:2",
+                    "locked": true,
+                    "lockedMsg": "You need a key to open this door",
+                    "unlockedBy": "jailkey",
+                    "unlockMsg": "You reach around the door and use the jail key",
+                    "breaks": [
+                        true,
+                        "The key gets stuck in the door rending it useless"
+                    ]
+                }
+            }
+        },
+        "2": {
+            "name": "kitchen",
+            "description": "Smaller room smells like burnt food",
+            "furnature": {},
+            "directions": {
+                "north": "1:3",
+                "south": "1:1"
+            }
+        }
+    },
+    "2": {
+        "name": "Area 2"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "spoon": {
+        "description":"Looks like a spoon",
+        "use":"You try to use the spoon but there is no soop around",
+        "material": "metal"
+    },
+    "jailkey": {
+        "description":"A comedically large key used for unlocking a jail cell",
+        "use":"You need to find a door to use this \n Hint: Type the direction you want to go and it will automatically unlock the door",
+        "material": "metal"
+    }
+}

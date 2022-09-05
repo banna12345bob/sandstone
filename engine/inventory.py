@@ -47,7 +47,12 @@ class inventory:
                         self.inventory["inventory"][i] = object
                         File().writeFile("save.json", self.inventory)
                         return f"Picked up {object}"
-                return "Inventory full"
+                i = int(i)
+                i += 1
+                self.inventory["inventory"][str(i)] = object
+                File().writeFile("save.json", self.inventory)
+                return f"Picked up {object}"
+                # return "Inventory full"
         else:
             if object in interpreter.object(self.objectFile).getObjects():
                 if checkExists == True:

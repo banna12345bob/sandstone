@@ -3,7 +3,7 @@ from demo1.demo1 import demo1
 # Please not this only works when one installs colorama I would recommended running via launch.bat
 
 area, room = 1, 1
-print(engine.interpreter.room(area, room, "demo1Rooms.json").getRoomName() + " " + engine.interpreter.room(area, room, "demo1Rooms.json").getDesciption())
+print(engine.interpreter.room(area, room, "demo1Rooms.json").getRoomName() + ":\n" + engine.interpreter.room(area, room, "demo1Rooms.json").getDesciption())
 inp = input("Command: ")
 while inp:
     try:

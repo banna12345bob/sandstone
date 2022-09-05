@@ -20,7 +20,7 @@ class debugger:
                 a += i + " "
         print(colorama.ansi.Back.RED + "FATAL: " + a + colorama.ansi.Style.RESET_ALL)
         sleep(5)
-        quit()
+        return "quit"
 
     def error(self, msg):
         if self.debuggerEnabled == True:
@@ -29,7 +29,7 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            print(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
+            return(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
@@ -40,7 +40,7 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            print(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
+            return(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
@@ -51,6 +51,6 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            print(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
+            return(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return

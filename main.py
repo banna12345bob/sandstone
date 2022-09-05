@@ -17,3 +17,4 @@ while inp:
         inp = input("Command: ")
     except:
         engine.debugger().fatal("UNCAUGHT ERROR")
+        quit()

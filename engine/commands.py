@@ -77,7 +77,7 @@ class commands:
                         return "No description found"
                 
                 case "use":
-                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile).getInventory(True):
+                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory(True):
                         if interpreter.object(self.objectFile).getUse(command[1]) == 0:
                             return f'No item named "{command[1]}"'
                         else:

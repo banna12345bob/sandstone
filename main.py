@@ -7,12 +7,12 @@ print(demo1(area, room).printNameandDes())
 inp = input("Command: ")
 while inp:
     try:
-        debugapp = demo1(area, room)
-        cmd = debugapp.commandRun(inp)
+        app = demo1(area, room)
+        cmd = app.commandRun(inp)
         if cmd != "quit":
             if isinstance(cmd, list):
-                area, room = debugapp.area, debugapp.room
-                print(demo1(area, room).printNameandDes())
+                area, room = app.area, app.room
+                print(app.printNameandDes())
             else:
                 print(cmd)
         else:

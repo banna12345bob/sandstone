@@ -1,5 +1,5 @@
 from time import sleep
-import colorama
+from include.colorama import colorama
 from engine import FileRead
 
 # Don't look here it's really ugly but it works

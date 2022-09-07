@@ -1,0 +1,3 @@
+[submodule "include/colorama"]
+	path = include/colorama
+	url = https://github.com/tartley/colorama

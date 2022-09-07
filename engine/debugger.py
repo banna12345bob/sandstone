@@ -4,7 +4,8 @@ from engine import FileRead
 
 # Don't look here it's really ugly but it works
 class debugger:
-    def __init__(self):
+    def __init__(self, command = False):
+        self.command = command
         self.debuggerEnabled = FileRead.File().readFile("options.json")["debuggerEnabled"]
         if self.debuggerEnabled == True:
             self.ignoreLocks = FileRead.File().readFile("options.json")["ignoreLocks"]
@@ -29,7 +30,9 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            return(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
+            if self.command:
+                return(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
+            print(colorama.ansi.Fore.RED + "ERROR: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
@@ -40,7 +43,9 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            return(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
+            if self.command:
+                return(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
+            print(colorama.ansi.Fore.YELLOW + "WARNING: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return
 
@@ -51,6 +56,8 @@ class debugger:
                 a = ""
                 for i in msg:
                     a += i + " "
-            return(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
+            if self.command:
+                return(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
+            print(colorama.ansi.Fore.GREEN + "INFO: " + a + colorama.ansi.Style.RESET_ALL)
         else:
             return

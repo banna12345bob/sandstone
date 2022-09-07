@@ -13,10 +13,11 @@ while inp:
         cmd = app.commandRun(inp)
         if cmd != "quit":
             if isinstance(cmd, list):
-                area, room = app.area, app.room
                 print(app.printNameandDes())
+                area, room = app.area, app.room
             else:
                 print(cmd)
+                area, room = app.area, app.room
         else:
             break
         inp = input("Command: ")

@@ -143,13 +143,13 @@ class commands:
                     if debugger().debuggerEnabled:
                         match command[1]:
                             case "info":
-                                return debugger().info(command[2:len(command)])
+                                return debugger(True).info(command[2:len(command)])
                             case "warning":
-                                return debugger().warning(command[2:len(command)])
+                                return debugger(True).warning(command[2:len(command)])
                             case "error":
-                                return debugger().error(command[2:len(command)])
+                                return debugger(True).error(command[2:len(command)])
                             case "fatal":
-                                return debugger().fatal(command[2:len(command)])
+                                return debugger(True).fatal(command[2:len(command)])
                             case _:
                                 return "Unknown command"
                     else:

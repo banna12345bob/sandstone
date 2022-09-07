@@ -1,5 +1,6 @@
 from engine import engine
 from demo1.demo1 import demo1
+from debugApp.debugApp import debugApp
 # Please not this only works when one installs colorama I would recommended running via launch.bat
 
 area, room = 1, 1

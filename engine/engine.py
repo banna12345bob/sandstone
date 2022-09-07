@@ -26,3 +26,8 @@ class application:
         else:
             self.area, self.room = 1, 1
             return interpreter.room(self.area, self.room, self.roomsFile).getRoomName()
+        
+    def printNameandDes(self):
+        name = interpreter.room(self.area, self.room, self.roomsFile).getRoomName()
+        des = interpreter.room(self.area, self.room, self.roomsFile).getDesciption()
+        return "You are in " + name + ":\nIt is " + des

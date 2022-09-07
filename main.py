@@ -4,7 +4,8 @@ from debugApp.debugApp import debugApp
 # Please not this only works when one installs colorama I would recommended running via launch.bat
 
 area, room = 1, 1
-print(demo1(area, room).printNameandDes())
+app = demo1(area, room)
+print(app.printNameandDes())
 inp = input("Command: ")
 while inp:
     try:

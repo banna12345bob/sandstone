@@ -70,7 +70,7 @@ class commands:
 
                 case "look":
                     if command[1] == "room":
-                        return self.look()
+                        return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getRoomName() + ":\nIt is " + self.look()
                     elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
                         return self.furnatureLook(command[1])
                     else:

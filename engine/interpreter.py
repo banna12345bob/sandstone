@@ -22,8 +22,6 @@ class room:
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
-        
-
 
     def getDesciption(self):
         try:
@@ -74,6 +72,41 @@ class room:
             if object in self.getFunratureObjects(furnature):
                 des = self.file[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["location"]
             return des
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
+    def getNpcs(self):
+        npcs = []
+        try:
+            for npc in self.file[str(self.area)][str(self.room)]["npcs"]:
+                npcs.append(npc)
+            return npcs
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+    
+    def getNpcSays(self, npc):
+        says = ""
+        npc = npc.lower()
+        try:
+            if npc in self.getNpcs():
+                says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]
+            return says
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
+    def getNpcGives(self, npc):
+        gives = ""
+        npc = npc.lower()
+        try:
+            if npc in self.getNpcs():
+                try:
+                    gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["gives"]
+                except:
+                    gives = ""
+            return gives
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0

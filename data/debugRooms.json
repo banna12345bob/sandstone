@@ -18,17 +18,27 @@
                         }
                     }
                 },
-                "table": {
-                    "description": "Old looks comfortable",
-                    "objects": {
-                        "stick": {
-                            "location": "ontop of the table",
-                            "pickedup": false
-                        }
+            "table": {
+                "description": "Old looks comfortable",
+                "objects": {
+                    "stick": {
+                        "location": "ontop of the table",
+                        "pickedup": false
                     }
                 }
+            }
+        },
+        "npcs":{
+            "bobrick":{
+                "says":"Hello child",
+                "gives":"spoon"
             },
-            "directions": {
+            "rickbob":{
+                "says":"Hello I am Rickbob and I will devour your soul",
+                "gives":"stick"
+            }
+        },
+        "directions": {
                 "north": {
                     "room": "1:2",
                     "locked": true,

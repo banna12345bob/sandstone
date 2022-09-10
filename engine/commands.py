@@ -118,6 +118,9 @@ class commands:
                     else:
                         return "No save file found"
 
+                case "dir":
+                    return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections(False)
+
                 #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:

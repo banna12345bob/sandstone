@@ -30,7 +30,6 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-
     def getFurnature(self):
         furnatures = []
         try:
@@ -111,17 +110,23 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getDirections(self):
-        rDirections = []
+    def getDirections(self, list = True):
         try:
-            for direction in self.file[str(self.area)][str(self.room)]["directions"]:
-                rDirections.append(direction)
-            return rDirections
+            if list:
+                rDirections = []
+                for direction in self.file[str(self.area)][str(self.room)]["directions"]:
+                    rDirections.append(direction)
+                return rDirections
+            else:
+                rDirections = ""
+                for direction in self.file[str(self.area)][str(self.room)]["directions"]:
+                    rDirections += direction + ", "
+                return rDirections[0:-2]
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getDirection(self, direction, inv):
+    def getDirection(self, direction, inv = ""):
         rDirections = ""
         direction = direction.lower()
         try:

@@ -82,8 +82,7 @@ class room:
                 npcs.append(npc)
             return npcs
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
-            return 0
+            return npcs
     
     def getNpcSays(self, npc):
         says = ""
@@ -212,17 +211,3 @@ class object:
                 return 0
         except:
             return "This object has no uses defined"
-
-    def getDescription(self, object):
-        object = object.lower()
-        if object in self.getObjects():
-            return self.file[object]["description"]
-        else:
-            return "Object not found"
-
-    def getColour(self, object):
-        object = object.lower()
-        if object in self.getObjects():
-            return self.file[object]["colour"]
-        else:
-            return "Object not found"

@@ -98,9 +98,9 @@ class commands:
                 case "pickup":
                     for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFunratureObjects(furnature):
-                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], True, furnature)
+                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], True, "", furnature)
                     return f'No item named "{command[1]}" in room'
-                
+
                 case "drop":
                     return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).removeFromInventory(command[1])
 
@@ -121,6 +121,17 @@ class commands:
                 case "dir":
                     return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections(False)
 
+                case "talk":
+                    if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
+                        if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]) != "":
+                            if inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]), True, command[1]) != 0:
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]), True, command[1])
+                                return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}\nHe gives you a {interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1])}"
+                            else:
+                                return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}"
+                        else:
+                            return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}"
+
                 #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
@@ -131,7 +142,7 @@ class commands:
                     if debugger().debuggerEnabled:
                         try:
                             if command[2] != "":
-                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False, "", command[2])
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False, False, "", command[2])
                         except:
                             inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False)
                         return f"Gave item {command[1]}"

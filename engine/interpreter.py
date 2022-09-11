@@ -110,6 +110,20 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
+    def checkItemGiven(self, npc):
+        npc = npc.lower()
+        given = False
+        try:
+            if npc in self.getNpcs():
+                try:
+                    given = self.file[str(self.area)][str(self.room)]["npcs"][npc]["given"]
+                except:
+                    return given
+            return given
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
     def getDirections(self, list = True):
         try:
             if list:

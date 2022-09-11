@@ -36,7 +36,7 @@ class inventory:
             return a[0:-1]
 
     # Adds items to the inventory based on slot
-    def addToInventory(self, object, checkExists = True, furnature="", slot=""):
+    def addToInventory(self, object, checkExists = True, npc = "", furnature="", slot=""):
         if slot != "" and checkExists == False:
             self.inventory["inventory"][slot] = object
             File().writeFile("save.json", self.inventory)
@@ -57,15 +57,23 @@ class inventory:
             if object in interpreter.object(self.objectFile).getObjects():
                 if checkExists == True:
                     if interpreter.room(self.area, self.room, self.roomsFile).checkItemPickedUp(furnature, object) == False:
-                        for i in self.inventory["inventory"]:
-                            if self.inventory["inventory"][i] == "":
-                                self.inventory["inventory"][i] = object
-                                File().writeFile("save.json", self.inventory)
-                                rooms = File().readFile(self.roomsFile)
-                                rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = True
-                                File().writeFile(self.roomsFile, rooms)
-                                return f"Picked up {object}"
-                        return "Inventory full"
+                        if interpreter.room(self.area, self.room, self.roomsFile).checkItemGiven(npc) == False:
+                            for i in self.inventory["inventory"]:
+                                if self.inventory["inventory"][i] == "":
+                                    self.inventory["inventory"][i] = object
+                                    File().writeFile("save.json", self.inventory)
+                                    if npc == "":
+                                        rooms = File().readFile(self.roomsFile)
+                                        rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = True
+                                        File().writeFile(self.roomsFile, rooms)
+                                    else:
+                                        rooms = File().readFile(self.roomsFile)
+                                        rooms[str(self.area)][str(self.room)]["npcs"][npc]["given"] = True
+                                        File().writeFile(self.roomsFile, rooms)
+                                    return f"Picked up {object}"
+                            return "Inventory full"
+                        else:
+                            return 0
                     else:
                         return "You already picked up the item silly"
 
@@ -98,6 +106,11 @@ class inventory:
                 rooms = File().readFile(self.roomsFile)
                 rooms[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["pickedup"] = False
                 File().writeFile(self.roomsFile, rooms)
+        npcs = interpreter.room(self.area, self.room, self.roomsFile).getNpcs()
+        for npc in npcs:
+            rooms = File().readFile(self.roomsFile)
+            rooms[str(self.area)][str(self.room)]["npcs"][npc]["given"] = False
+            File().writeFile(self.roomsFile, rooms)
         return "Reset Inventory"
 
     # This function is never used and I don't know why it is here

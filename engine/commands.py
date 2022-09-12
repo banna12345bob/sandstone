@@ -125,20 +125,26 @@ class commands:
                     return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections(False)
 
                 case "talk":
-                    gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1])
-                    addToInv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(gives, True, command[1])
                     if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
-                        if gives != "":
                             if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) != True:
-                                if addToInv != 0:
-                                    addToInv
-                                    return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}\nHe gives you a {gives}"
+                                if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
+                                    print(f"{command[1]}:")
+                                    diag = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
+                                    diag = diag.split(":")
+                                    try:
+                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0], diag[1])
+                                    except:
+                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0])
+                                    if gives != "":
+                                        if gives != "quit":
+                                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(gives, True, command[1])
+                                            return f"He gives you a {gives}"
+                                        else:
+                                            return "quit"
                                 else:
-                                    return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}"
+                                    interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
                             else:
                                 return "Their dead stop trying to talk to them"
-                        else:
-                            return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}"
 
                 case "kill":
                     if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory(True):

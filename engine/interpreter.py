@@ -83,27 +83,79 @@ class room:
             return npcs
         except:
             return npcs
-    
-    def getNpcSays(self, npc):
-        says = ""
-        npc = npc.lower()
+
+    # Jank out of 10 is 11
+    def getNpcDialouge(self, npc):
+    # Welcome to the worst function out of all the functions on the planet
+    # This is over engineered on a level that would supprise so many people and it only supports conversations where the user interacts twice.
+    # I could probably make it better with some sleep and a greater knowledge of python but I can't be bothered.
+    # By making it better I could scale it so that it takes many inputs from the user not just two
         try:
+            says = ""
+            npc = npc.lower()
+            inps = ""
+            inpsArray = []
             if npc in self.getNpcs():
-                says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]
-            return says
+                try:
+                    opt = "placeholder"
+                    while opt:
+                        says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]["start"]
+                        for opts in self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]:
+                            if opts != "start":
+                                inps += opts + ", "
+                                inpsArray.append(opts)
+                        opt = input(f"{says}\nYou can respond with {inps[0:-2]}: ")
+                        if opt in inpsArray:
+                            print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt]["start"])
+                            opt1 = opt
+                            break
+                    try:
+                        inps = ""
+                        inpsArray = []
+                        while opt:
+                            for opts in self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1]:
+                                if opts != "start":
+                                    if opts != "gives":
+                                        inps += opts + ", "
+                                        inpsArray.append(opts)
+                                    else:
+                                        raise
+                            if inps == None:
+                                break
+                            else:
+                                opt = input(f"You can respond with {inps[0:-2]}: ")
+                            if opt in inpsArray:
+                                try:
+                                    print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt]["start"])
+                                except:
+                                    print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt])
+                                opt2 = opt
+                                break
+                        return opt1+":"+opt2
+                    except:
+                        return opt1
+                except:
+                    says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]
+                    return says
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getNpcGives(self, npc):
+    def getNpcGives(self, npc, opt1 = "", opt2 = ""):
         gives = ""
         npc = npc.lower()
         try:
             if npc in self.getNpcs():
                 try:
-                    gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["gives"]
+                    gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt2]["gives"]
                 except:
-                    gives = ""
+                    try:
+                        gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1]["gives"]
+                    except:
+                        try:
+                            gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]["gives"]
+                        except:
+                            gives = ""
             return gives
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")

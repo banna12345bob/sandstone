@@ -100,15 +100,31 @@
             "furnature": {},
             "npcs": {
                 "goon": {
-                    "says": "Do you want me to move?",
-                    "gives": "key",
+                    "says": {
+                        "start": "Do you want me to move?",
+                        "yes": {
+                            "start": "Ok I'll move. Oh and take this.",
+                            "gives": "key"
+                        },
+                        "no": {
+                            "start": "You stare at each other for a prolonged period of time. Longer than any two people should stare at each other. But you feel a sense of uprising as you stare at him. He stares at you back. Unblinking.\n'You sure you don't want me to move?' he says",
+                            "yes": {
+                                "start": "Ok I'll move. Oh and take this.",
+                                "gives": "key"
+                            },
+                            "no": {
+                                "start": "You continue to stare at each other untill the end of time. The game ends.",
+                                "gives": "quit"
+                            }
+                        }
+                    },
                     "given": false
                 }
             },
             "directions": {
                 "north": {
                     "room": "2:1",
-                    "locked": true,
+                    "locked": false,
                     "lockedMsg": "You need a key to open this door",
                     "unlockedBy": "key",
                     "unlockMsg": "You use the key to open the door",

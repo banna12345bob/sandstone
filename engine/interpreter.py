@@ -123,6 +123,32 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
+    def checkNpcKilled(self, npc):
+        npc = npc.lower()
+        killed = False
+        try:
+            if npc in self.getNpcs():
+                try:
+                    killed = self.file[str(self.area)][str(self.room)]["npcs"][npc]["killed"]
+                except:
+                    return killed
+            return killed
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
+    def killNpc(self, npc):
+        npc = npc.lower()
+        file = self.file
+        try:
+            if npc in self.getNpcs():
+                file[str(self.area)][str(self.room)]["npcs"][npc]["killed"] = True
+                File().writeFile(self.roomFile, self.file)
+                return f"Killed {npc}"
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
     def getDirections(self, list = True):
         try:
             if list:

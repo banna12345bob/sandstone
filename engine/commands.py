@@ -125,12 +125,14 @@ class commands:
                     return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections(False)
 
                 case "talk":
+                    gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1])
+                    addToInv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(gives, True, command[1])
                     if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
-                        if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]) != "":
+                        if gives != "":
                             if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) != True:
-                                if inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]), True, command[1]) != 0:
-                                    inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1]), True, command[1])
-                                    return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}\nHe gives you a {interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1])}"
+                                if addToInv != 0:
+                                    addToInv
+                                    return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}\nHe gives you a {gives}"
                                 else:
                                     return f"{command[1]}:\n{interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcSays(command[1])}"
                             else:

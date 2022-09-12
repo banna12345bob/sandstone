@@ -10,5 +10,8 @@
     },
     "bones":{
         "use":"You wonder why you picked up bones."
+    },
+    "key":{
+        "use": "You need to find a door to use this."
     }
 }

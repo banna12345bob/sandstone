@@ -3,7 +3,7 @@
         "name": "Jail",
         "1": {
             "name": "a jail cell",
-            "description": "a small room with a metal bed in one corner.\nYou said 'No jail can hold me'\nYou notice a key sitting on your bed",
+            "description": "a small room with a metal bed in one corner.\nYou said 'No jail can hold me'\nYou notice a jailkey sitting on your bed",
             "furnature": {
                 "bed": {
                     "description": "Hard looks cold. Has a jailkey sitting on top of it",
@@ -34,7 +34,7 @@
             "description": "a big long room with a sword on a table in the corner",
             "furnature": {
                 "table": {
-                    "description": "A small wooden table in the corner of the hallway",
+                    "description": "A small wooden table in the corner of the hallway. Has a sword on top of it.",
                     "objects": {
                         "sword": {
                             "location": "On top of the bed",
@@ -96,15 +96,26 @@
         },
         "6": {
             "name": "a hallway",
-            "description": "a smaller room with a goonish looking person blocking the exit",
+            "description": "a smaller room with a goon blocking the exit",
             "furnature": {},
             "npcs": {
                 "goon": {
-                    "says": "Do you want me to move?"
+                    "says": "Do you want me to move?",
+                    "gives": "key",
+                    "given": false
                 }
             },
             "directions": {
-                "north": "2:1"
+                "north": {
+                    "room": "2:1",
+                    "locked": true,
+                    "lockedMsg": "You need a key to open this door",
+                    "unlockedBy": "key",
+                    "unlockMsg": "You use the key to open the door",
+                    "breaks": [
+                        false
+                    ]
+                }
             }
         }
     },

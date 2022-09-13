@@ -150,7 +150,8 @@
             },
             "directions": {
                 "east": "2:2",
-                "west": "2:3"
+                "west": "2:3",
+                "south": "1:6"
             }
         },
         "2": {
@@ -186,6 +187,75 @@
             "directions": {
                 "west": "2:2",
                 "east": "3:2"
+            }
+        },
+        "2": {
+            "name": "main road",
+            "description": "a road leading to the town center is surrounded in houses.",
+            "furnature": {},
+            "directions": {
+                "east": "3:3",
+                "west": "3:1",
+                "north": "3:4",
+                "south": "3:5"
+            }
+        },
+        "3": {
+            "name": "town center",
+            "description": "a large fountain surrounded with shops. You see an old man sitting on the fountain.",
+            "furnature": {},
+            "npcs": {
+                "oldman": {
+                    "says": {
+                        "start": "Hello adventure. What do you need?",
+                        "nothing": {
+                            "start": "Ok then take this",
+                            "gives": "spoon"
+                        },
+                        "quests": {
+                            "start": "Oh then. We have no need for quests the king is not currupt and nobody needs saving.",
+                            "sure": {
+                                "start": "Now that I think about it we have lost our village pet. A rat named David.\nHe was soo nice have you seen him? I sent my son to go looking for him but he hasn't returned.\nThis will assist you on your quest.",
+                                "gives": "spoon"
+                            },
+                            "ok": {
+                                "start": "Good luck adventureer. Take this",
+                                "gives": "spoon"
+                            }
+                        }
+                    },
+                    "drops": "spoon"
+                }
+            },
+            "directions": {
+                "north": "3:6",
+                "west": "3:2"
+            }
+        },
+        "4":{
+            "name":"suburbs",
+            "description":"has moderately sized houses and people walking around.",
+            "furnature":{},
+            "directions":{
+                "south":"3:2",
+                "east":"3:6"
+            }
+        },
+        "5":{
+            "name":"large house",
+            "description":"a large house. You stand in front of it looking up at it's vastness. You feel a sense of fear. You decide to leave",
+            "furnature":{},
+            "directions":{
+                "north":"3:2"
+            }
+        },
+        "6":{
+            "name":"shops",
+            "description":"an area with shops you see many people go about their daily busness and nobody paies attention to you.",
+            "furnature":{},
+            "directions":{
+                "south":"3:3",
+                "west":"3:4"
             }
         }
     }

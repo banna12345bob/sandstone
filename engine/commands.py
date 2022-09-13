@@ -130,8 +130,8 @@ class commands:
                                 if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
                                     print(f"{command[1]}:")
                                     diag = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
-                                    diag = diag.split(":")
                                     try:
+                                        diag = diag.split(":")
                                         gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0], diag[1])
                                     except:
                                         gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0])
@@ -141,8 +141,8 @@ class commands:
                                             return f"He gives you a {gives}"
                                         else:
                                             return "quit"
-                                else:
-                                    interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
+                                    else:
+                                        return interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
                             else:
                                 return "Their dead stop trying to talk to them"
 

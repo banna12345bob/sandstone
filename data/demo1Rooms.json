@@ -125,7 +125,7 @@
             "directions": {
                 "north": {
                     "room": "2:1",
-                    "locked": false,
+                    "locked": true,
                     "lockedMsg": "You need a key to open this door",
                     "unlockedBy": "key",
                     "unlockMsg": "You use the key to open the door",
@@ -138,6 +138,55 @@
         }
     },
     "2": {
-        "name": "Area 2"
+        "name": "Field",
+        "1": {
+            "name": "a feild",
+            "description": "a large open feild with a parthway that runs through it.\nIn front of you there is a sign which states that to the east there is the town of Townington and to the west there is the castle.",
+            "furnature": {
+                "sign": {
+                    "description": "Says to the east there is the town of Townington and to the west there is the castle.",
+                    "objects": {}
+                }
+            },
+            "directions": {
+                "east": "2:2",
+                "west": "2:3"
+            }
+        },
+        "2": {
+            "name": "path to Townington",
+            "description": "a path you see a town in the distance.",
+            "furnature": {},
+            "directions": {
+                "west": "2:1",
+                "east": "3:1"
+            }
+        },
+        "3": {
+            "name": "path to the castle",
+            "description": "A path you see a castle in the distance.",
+            "furnature": {},
+            "directions": {
+                "west": "4:1",
+                "east": "2:1"
+            }
+        }
+    },
+    "3": {
+        "name": "Townington",
+        "1": {
+            "name": "Townington gates",
+            "description": "the large wooden gates stand in front of you.\n'Who goes there?' a voice says from above.'I am but a weary traveler looking for adventure' you respond\nThe gates open in front of you 'Welcome to Townington' the voice says.",
+            "furnature": {
+                "gates": {
+                    "description": "Large wooden gates (open)",
+                    "objects": {}
+                }
+            },
+            "directions": {
+                "west": "2:2",
+                "east": "3:2"
+            }
+        }
     }
 }

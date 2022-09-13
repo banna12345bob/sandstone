@@ -17,6 +17,7 @@ class application:
             if giveCommand != "Unknown command" and isinstance(giveCommand, list):
                 if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile).getRoomName() != 0:
                     self.area, self.room = giveCommand[0], giveCommand[1]
+                    commands(self.area, self.room, self.roomsFile, self.objectFile).save()
                     return giveCommand
                 else:
                     self.area, self.room = 1, 1

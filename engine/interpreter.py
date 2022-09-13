@@ -161,6 +161,20 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
+    def getNpcDrops(self, npc):
+        drops = ""
+        npc = npc.lower()
+        try:
+            if npc in self.getNpcs():
+                try:
+                    drops = self.file[str(self.area)][str(self.room)]["npcs"][npc]["drops"]
+                except:
+                    drops = ""
+                return drops
+        except:
+            debugger().error(f"Room {self.area}:{self.room} not found")
+            return 0
+
     def checkItemGiven(self, npc):
         npc = npc.lower()
         given = False

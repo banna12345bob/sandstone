@@ -91,7 +91,8 @@
                 }
             },
             "directions": {
-                "north": "1:6"
+                "north": "1:6",
+                "south": "1:4"
             }
         },
         "6": {
@@ -118,7 +119,7 @@
                             }
                         }
                     },
-                    "given": false
+                    "drops": "key"
                 }
             },
             "directions": {
@@ -131,7 +132,8 @@
                     "breaks": [
                         false
                     ]
-                }
+                },
+                "south": "1:5"
             }
         }
     },

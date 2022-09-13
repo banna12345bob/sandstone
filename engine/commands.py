@@ -147,10 +147,18 @@ class commands:
                                 return "Their dead stop trying to talk to them"
 
                 case "kill":
+                    drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDrops(command[1])
                     if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory(True):
                         if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
-                            interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).killNpc(command[1])
-                            return f"You killed {command[1]}"
+                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) == False:
+                                interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).killNpc(command[1])
+                                if drops != "":
+                                    inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(drops, True, command[1])
+                                    if inv != 0:
+                                        return f"You killed {command[1]}. It drops {drops}"
+                                return f"You killed {command[1]}"
+                            else:
+                                return "Their already dead"
                     else:
                         return "You try to kill them with your hand but can't"
 

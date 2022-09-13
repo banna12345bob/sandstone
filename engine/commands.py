@@ -235,7 +235,13 @@ class commands:
         save["currentRoom"] = int(self.currentRoom)
         save["currentArea"] = int(self.currentArea)
         File().writeFile("save.json", save)
+        empty = False
         try:
-            save["inventory"]["1"]
+            for i in save["inventory"]:
+                if save["inventory"][i] == "":
+                    empty = True
+                else:
+                    empty = False
         except:
-            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory(True)
+            if empty == False:
+                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory(True)

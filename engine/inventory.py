@@ -92,8 +92,9 @@ class inventory:
 
     # Sets all invnetory slots to blank effectively wipping the inventory clean
     # This was the most dificult function to get working as I did a stupid eailer on and didn't notice
-    def resetInventory(self):
-        commands.commands(self.area, self.room, self.roomsFile).save()
+    def resetInventory(self, fromSave = False):
+        if fromSave == False:
+            commands.commands(self.area, self.room, self.roomsFile).save()
         lInventory = self.inventory
         if lInventory == 0:
             lInventory = {}

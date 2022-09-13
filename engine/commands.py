@@ -235,3 +235,7 @@ class commands:
         save["currentRoom"] = int(self.currentRoom)
         save["currentArea"] = int(self.currentArea)
         File().writeFile("save.json", save)
+        try:
+            save["inventory"]["1"]
+        except:
+            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory(True)

@@ -1,5 +1,8 @@
 from time import sleep
-from include.colorama import colorama
+try:
+    from include.colorama import colorama
+except:
+    next
 from engine import FileRead
 
 # Don't look here it's really ugly but it works
@@ -11,7 +14,10 @@ class debugger:
             self.ignoreLocks = FileRead.File().readFile("options.json")["ignoreLocks"]
         else:
             self.ignoreLocks = False
-        colorama.init()
+        try:
+            colorama.init()
+        except:
+            self.debuggerEnabled = False
 
     def fatal(self, msg):
         a = msg

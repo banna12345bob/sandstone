@@ -232,102 +232,105 @@
                 "west": "3:2"
             }
         },
-        "4":{
-            "name":"suburbs",
-            "description":"has moderately sized houses and people walking around.",
-            "furnature":{},
-            "directions":{
-                "south":"3:2",
-                "east":"3:6"
+        "4": {
+            "name": "suburbs",
+            "description": "has moderately sized houses and people walking around.",
+            "furnature": {},
+            "directions": {
+                "south": "3:2",
+                "east": "3:6"
             }
         },
-        "5":{
-            "name":"large house",
-            "description":"a large house. You stand in front of it looking up at it's vastness. You feel a sense of fear. You decide to leave",
-            "furnature":{},
-            "directions":{
-                "north":"3:2"
+        "5": {
+            "name": "large house",
+            "description": "a large house. You stand in front of it looking up at it's vastness. You feel a sense of fear. You decide to leave",
+            "furnature": {},
+            "directions": {
+                "north": "3:2"
             }
         },
-        "6":{
-            "name":"shops",
-            "description":"an area with shops you see many people go about their daily busness and nobody paies attention to you.",
-            "furnature":{},
-            "directions":{
-                "south":"3:3",
-                "west":"3:4"
+        "6": {
+            "name": "shops",
+            "description": "an area with shops you see many people go about their daily busness and nobody paies attention to you.",
+            "furnature": {},
+            "directions": {
+                "south": "3:3",
+                "west": "3:4"
             }
         }
     },
-    "4":{
-        "1":{
-            "name":"castle gates",
-            "description":"before you stand large stone gates. Looking at them fills you with a sense of detemination. A voice from above says 'Hello man do you wanna come in?'. 'Sure' you yell back and the gates open.",
-            "furnature":{},
-            "directions":{
-                "east":"2:3",
-                "west":"4:2"
+    "4": {
+        "1": {
+            "name": "castle gates",
+            "description": "before you stand large stone gates. Looking at them fills you with a sense of detemination. A voice from above says 'Hello man do you wanna come in?'. 'Sure' you yell back and the gates open.",
+            "furnature": {},
+            "directions": {
+                "east": "2:3",
+                "west": "4:2"
             }
         },
-        "2":{
-            "name":"court yard",
-            "description":"an open concreted area with a marble fountain.",
-            "furnature":{
-                "fountain":{
-                    "description":"large made of marble.",
-                    "objects":{}
+        "2": {
+            "name": "court yard",
+            "description": "an open concreted area with a marble fountain.",
+            "furnature": {
+                "fountain": {
+                    "description": "large made of marble.",
+                    "objects": {}
                 }
             },
-            "directions":{
-                "west":"4:3",
-                "north":"4:5"
+            "directions": {
+                "west": "4:3",
+                "east": "4:1",
+                "north": "4:5"
             }
         },
-        "3":{
-            "name":"main lobby",
-            "description":"a large marble room with a high cealing and sained glass windows",
-            "furnature":{},
-            "directions":{
-                "west":"4:4"
+        "3": {
+            "name": "main lobby",
+            "description": "a large marble room with a high cealing and sained glass windows",
+            "furnature": {},
+            "directions": {
+                "west": "4:4",
+                "east": "4:2"
             }
         },
-        "4":{
-            "name":"throne room",
-            "description":"a large room with a throne in it. There is a guy on the throne he looks like a king.",
-            "furnature":{
-                "throne":{
-                    "description":"a marble chair build into the ground.",
-                    "objects":{}
+        "4": {
+            "name": "throne room",
+            "description": "a large room with a throne in it. There is a guy on the throne he looks like a king.",
+            "furnature": {
+                "throne": {
+                    "description": "a marble chair build into the ground.",
+                    "objects": {}
                 }
             },
-            "npcs":{
-                "king":{
+            "npcs": {
+                "king": {
                     "says": "Weep mortal"
                 }
             },
-            "directions":{
-                "east":"3:3"
+            "directions": {
+                "east": "4:3"
             }
         },
-        "5":{
-            "name":"tower",
-            "description":"a tower that has a small door build into the side. You open the door and enter the tower. There are stairs that go down into what looks like a dungeon.",
-            "furnature":{},
-            "directions":{
-                "down":"4:6"
+        "5": {
+            "name": "tower",
+            "description": "a tower that has a small door build into the side. You open the door and enter the tower. There are stairs that go down into what looks like a dungeon.",
+            "furnature": {},
+            "directions": {
+                "down": "4:6",
+                "south": "4:2"
             }
         },
-        "6":{
-            "name":"dungeon",
-            "description":"a dark room. You hear cries come echo throughout the room. Somebody calls out to you 'help me' they cry.",
-            "furnature":{},
-            "npcs":{
-                "dungeon":{
-                    "says":"Hey what are you doing in here leave."
+        "6": {
+            "name": "dungeon",
+            "description": "a dark room. You hear cries come echo throughout the room. Somebody calls out to you 'help me' they cry.",
+            "furnature": {},
+            "npcs": {
+                "dungeon": {
+                    "says": "Hey what are you doing in here leave."
                 }
             },
-            "directions":{
-                "up":"4:5"
+            "directions": {
+                "up": "4:5"
             }
         }
     }

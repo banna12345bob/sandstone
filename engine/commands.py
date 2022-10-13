@@ -127,7 +127,7 @@ class commands:
                 case "talk":
                     if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
                             if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) != True:
-                                if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
+                                # if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
                                     print(f"{command[1]}:")
                                     diag = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
                                     try:

@@ -2,8 +2,11 @@ from engine.FileRead import File
 from engine.debugger import debugger
 
 class room:
-    def __init__(self, area, room, iFile):
-        self.file = File().readFile(iFile)
+    def __init__(self, area, room, iFile, player):
+        try:
+            self.file = File().readFile(iFile[0:-5]+str(player)+iFile[-5:len(iFile)])
+        except:
+            self.file = File().readFile(iFile)
         self.roomFile = iFile
         if self.file == 0:
             debugger().fatal(f"Failed to read {iFile}")
@@ -203,13 +206,14 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def killNpc(self, npc):
+    def killNpc(self, npc, player):
         npc = npc.lower()
         file = self.file
         try:
             if npc in self.getNpcs():
                 file[str(self.area)][str(self.room)]["npcs"][npc]["killed"] = True
-                File().writeFile(self.roomFile, self.file)
+                roomFile = self.roomFile[0:-5]+str(player)+self.roomFile[-5:len(self.roomFile)]
+                File().writeFile(roomFile, self.file)
                 return f"Killed {npc}"
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
@@ -231,16 +235,21 @@ class room:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getDirection(self, direction, inv = ""):
+    def getDirection(self, direction, player, inv = ""):
         rDirections = ""
         direction = direction.lower()
         try:
+            roomFile = self.roomFile[0:-5]+str(player)+self.roomFile[-5:len(self.roomFile)]
+            file = File().readFile(roomFile)
+        except:
+            file = File().readFile(self.roomFile)
+        try:
             if direction in self.getDirections():
                 try:
-                    if self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] == True and debugger().ignoreLocks == False:
+                    if file[str(self.area)][str(self.room)]["directions"][direction]["locked"] == True and debugger().ignoreLocks == False:
                         if self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"] in inv.getInventory(True):
-                            self.file[str(self.area)][str(self.room)]["directions"][direction]["locked"] = False
-                            File().writeFile(self.roomFile, self.file)
+                            file[str(self.area)][str(self.room)]["directions"][direction]["locked"] = False
+                            File().writeFile(roomFile, file)
                             print(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockMsg"])
                             rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
                             rDirections = rDirections.split(":")
@@ -248,7 +257,7 @@ class room:
                                 inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
                             return rDirections
                         else:
-                            return self.file[str(self.area)][str(self.room)]["directions"][direction]["lockedMsg"]
+                            return file[str(self.area)][str(self.room)]["directions"][direction]["lockedMsg"]
                     elif debugger().ignoreLocks == True:
                         rDirections = self.file[str(self.area)][str(self.room)]["directions"][direction]["room"]
                         rDirections = rDirections.split(":")

@@ -16,8 +16,7 @@ class File:
             else:
                 return "File not defined"
         except:
-            debugger().error(f"Failed to load file data/{file}")
-            return 0
+            raise
 
     def writeFile(self, file, fWrite):
         file = open("data/"+file, "w")

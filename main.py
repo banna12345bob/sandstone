@@ -4,8 +4,7 @@ from debugApp.debugApp import debugApp
 # Please not this only works when one installs colorama I would recommended running via launch.bat
 
 # TODO:
-# Saving system that makes a copy of the rooms file and chnages it to help with the new game process
-# Fix up application entery point
+# Fix up application entry point
 # Fix up NPCs
 
 area, room = 1, 1

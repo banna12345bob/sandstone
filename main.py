@@ -1,19 +1,20 @@
 from engine import engine
 from demo1.demo1 import demo1
-from debugApp.debugApp import debugApp
+from sandbox.sandbox import sandbox
 # Please not this only works when one installs colorama I would recommended running via launch.bat
 
 # TODO:
 # Fix up application entry point
 # Fix up NPCs
 
+application = demo1
 area, room = 1, 1
-app = demo1(area, room)
+app = application(area, room)
 print(app.printNameandDes())
 inp = input("Command: ")
 while inp:
     try:
-        app = demo1(area, room)
+        app = application(area, room)
         cmd = app.commandRun(inp)
         if cmd != "quit":
             if isinstance(cmd, list):

@@ -6,19 +6,20 @@ from engine.FileRead import File
 
 # This class is for all applications that will be run with the engine
 class application:
-    def __init__(self, area, room, roomsFile, objectFile, player=1):
+    def __init__(self, area, room, roomsFile, objectFile, player=1, saveFile = "data/save.json"):
         self.area, self.room = area, room
         self.roomsFile, self.objectFile = roomsFile, objectFile
         self.player = player
+        self.saveFile = saveFile
 
     def commandRun(self, inp):
-        giveCommand = commands(self.area, self.room, self.roomsFile, self.objectFile, player=self.player).giveCommand(inp)
+        giveCommand = commands(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).giveCommand(inp)
         # For this design if a function returns 0 it means that it didn't work
         if giveCommand != 0:
             if giveCommand != "Unknown command" and isinstance(giveCommand, list):
                 if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
                     self.area, self.room = giveCommand[0], giveCommand[1]
-                    commands(self.area, self.room, self.roomsFile, self.objectFile).save()
+                    commands(self.area, self.room, self.roomsFile, self.objectFile, saveFile=self.saveFile).save()
                     return giveCommand
                 else:
                     self.area, self.room = 1, 1

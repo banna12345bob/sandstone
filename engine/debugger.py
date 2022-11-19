@@ -9,9 +9,9 @@ from engine import FileRead
 class debugger:
     def __init__(self, command = False):
         self.command = command
-        self.debuggerEnabled = FileRead.File().readFile("options.json")["debuggerEnabled"]
+        self.debuggerEnabled = FileRead.File().readFile("data/options.json")["debuggerEnabled"]
         if self.debuggerEnabled == True:
-            self.ignoreLocks = FileRead.File().readFile("options.json")["ignoreLocks"]
+            self.ignoreLocks = FileRead.File().readFile("data/options.json")["ignoreLocks"]
         else:
             self.ignoreLocks = False
         try:

@@ -23,4 +23,4 @@ class File:
         fWrite = json.dumps(fWrite, indent=4)
         file.write(fWrite)
         file.close()
-        return file
+        return

@@ -231,8 +231,9 @@ class commands:
             return iDescription
 
     def save(self):
-        save = File().readFile(self.saveFile)
-        if save == 0:
+        try:
+            save = File().readFile(self.saveFile)
+        except:
             save = {}
         save["currentRoom"] = int(self.currentRoom)
         save["currentArea"] = int(self.currentArea)

@@ -304,7 +304,7 @@
             },
             "npcs": {
                 "king": {
-                    "says": "Weep mortal"
+                    "says":{"start": "Weep mortal"}
                 }
             },
             "directions": {

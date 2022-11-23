@@ -132,14 +132,17 @@ class commands:
                         if x != False:
                             if x == "quit":
                                 return "quit"
-                            print(x["start"])
+                            try:
+                                print(x["start"])
+                            except:
+                                print(x)
                             if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(command[1]) == False:
                                 inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=command[1])
                                 return f"{command[1]} gave you {x['gives']}"
                             else:
                                 return f"{command[1]} has already given you an item"
                         else:
-                            return "Conversation ended"
+                            return ""
                     else:
                         return "Their dead stop trying to talk to them"
 

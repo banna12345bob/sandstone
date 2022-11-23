@@ -123,7 +123,7 @@ class room:
                     inps += opts + ", "
                     inpsArray.append(opts)
         if inpsArray == []:
-                return says
+                return value
         playerinp = input(f"{says}\nYou can respond with {inps[0:-2]}: ")
         if playerinp != "":
             for i in id_generator(value, playerinp):

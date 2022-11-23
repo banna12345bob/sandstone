@@ -87,79 +87,65 @@ class room:
         except:
             return npcs
 
-    # Jank out of 10 is 11
     def getNpcDialouge(self, npc):
-    # Welcome to the worst function out of all the functions on the planet
-    # This is over engineered on a level that would supprise so many people and it only supports conversations where the user interacts twice.
-    # I could probably make it better with some sleep and a greater knowledge of python but I can't be bothered.
-    # By making it better I could scale it so that it takes many inputs from the user not just two
         try:
-            says = ""
             npc = npc.lower()
-            inps = ""
-            inpsArray = []
-            if npc in self.getNpcs():
+            opt = "placeholder"
+            while opt:
                 try:
-                    opt = "placeholder"
-                    while opt:
-                        says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]["start"]
-                        for opts in self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]:
-                            if opts != "start":
-                                inps += opts + ", "
-                                inpsArray.append(opts)
-                        opt = input(f"{says}\nYou can respond with {inps[0:-2]}: ")
-                        if opt in inpsArray:
-                            print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt]["start"])
-                            opt1 = opt
-                            break
-                    try:
-                        inps = ""
-                        inpsArray = []
-                        while opt:
-                            for opts in self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1]:
-                                if opts != "start":
-                                    if opts != "gives":
-                                        inps += opts + ", "
-                                        inpsArray.append(opts)
-                                    else:
-                                        raise
-                            if inps == None:
-                                break
-                            else:
-                                opt = input(f"You can respond with {inps[0:-2]}: ")
-                            if opt in inpsArray:
-                                try:
-                                    print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt]["start"])
-                                except:
-                                    print(self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt])
-                                opt2 = opt
-                                break
-                        return opt1+":"+opt2
-                    except:
-                        return opt1
+                    if npc in self.getNpcs():
+                        opt = self.getNpcDialougeExtension(npc, self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"])
+                    else:
+                        return f"No NPC named {npc} in room"
                 except:
-                    says = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]
-                    return says
+                    debugger().error("Error raised")
+                try:
+                    if opt["gives"] == "quit":
+                        print(opt["start"])
+                        return "quit"
+                except:
+                    ""
+                return opt
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
 
-    def getNpcGives(self, npc, opt1 = "", opt2 = ""):
+    def getNpcDialougeExtension(self, npc, value):
+        try:
+            says = value["start"]
+        except:
+            debugger().error(f"NPC branch {value} missing start function")
+            raise
+        inps = ""
+        inpsArray = []
+        for opts in value:
+                if opts != "start" and opts != "gives":
+                    inps += opts + ", "
+                    inpsArray.append(opts)
+        if inpsArray == []:
+                return says
+        playerinp = input(f"{says}\nYou can respond with {inps[0:-2]}: ")
+        if playerinp != "":
+            for i in id_generator(value, playerinp):
+                inpsArray = []
+                for opts in i:
+                    if opts != "start" and opts != "gives":
+                        inps += opts + ", "
+                        inpsArray.append(opts)
+                    elif opts == "gives":
+                        self.getNpcGives(npc, i["gives"])
+                if inpsArray == []:
+                    return i
+                else:
+                    return self.getNpcDialougeExtension(npc, i)
+        else:
+            return False
+
+    def getNpcGives(self, npc, opt = []):
         gives = ""
         npc = npc.lower()
         try:
-            if npc in self.getNpcs():
-                try:
-                    gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1][opt2]["gives"]
-                except:
-                    try:
-                        gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"][opt1]["gives"]
-                    except:
-                        try:
-                            gives = self.file[str(self.area)][str(self.room)]["npcs"][npc]["says"]["gives"]
-                        except:
-                            gives = ""
-            return gives
+            return opt
         except:
             debugger().error(f"Room {self.area}:{self.room} not found")
             return 0
@@ -312,3 +298,12 @@ class object:
                 return 0
         except:
             return "This object has no uses defined"
+
+
+def id_generator(dict_var, value):
+    for k, v in dict_var.items():
+        if k == value:
+            yield v
+        elif isinstance(v, dict):
+            for id_val in id_generator(v, value):
+                yield id_val

@@ -127,26 +127,21 @@ class commands:
                     return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirections(False)
 
                 case "talk":
-                    if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcs():
-                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) != True:
-                                # if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
-                                    print(f"{command[1]}:")
-                                    diag = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1])
-                                    try:
-                                        diag = diag.split(":")
-                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcGives(command[1], diag[0], diag[1])
-                                    except:
-                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcGives(command[1], diag[0])
-                                    if gives != "":
-                                        if gives != "quit":
-                                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(gives, True, command[1])
-                                            return f"He gives you a {gives}"
-                                        else:
-                                            return "quit"
-                                    else:
-                                        return interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1])
+                    if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) != True:
+                        x = (interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1]))
+                        if x != False:
+                            if x == "quit":
+                                return "quit"
+                            print(x["start"])
+                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(command[1]) == False:
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=command[1])
+                                return f"{command[1]} gave you {x['gives']}"
                             else:
-                                return "Their dead stop trying to talk to them"
+                                return f"{command[1]} has already given you an item"
+                        else:
+                            return "Conversation ended"
+                    else:
+                        return "Their dead stop trying to talk to them"
 
                 case "kill":
                     drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDrops(command[1])

@@ -5,7 +5,6 @@ from sandbox.sandbox import sandbox
 
 # TODO:
 # Fix up application entry point
-# Fix up NPCs
 
 application = demo1
 area, room = 1, 1

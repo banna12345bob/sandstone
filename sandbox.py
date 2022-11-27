@@ -7,3 +7,5 @@ class sandbox(engine.application):
         self.roomFile = "sandbox/sandboxRooms.json"
         self.objectFile = "sandbox/sandboxObjects.json"
         super().__init__(area, room, self.roomFile, self.objectFile)
+
+sandbox(1, 1).entryPoint()

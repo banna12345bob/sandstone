@@ -34,3 +34,25 @@ class application:
         name = interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName()
         des = interpreter.room(self.area, self.room, self.roomsFile, self.player).getDesciption()
         return "You are in " + name + ":\nIt is " + des
+
+    def entryPoint(self):
+        app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
+        print(app.printNameandDes())
+        inp = input("Command: ")
+        while inp:
+            try:
+                app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
+                cmd = app.commandRun(inp)
+                if cmd != "quit":
+                    if isinstance(cmd, list):
+                        print(app.printNameandDes())
+                        self.area, self.room = app.area, app.room
+                    else:
+                        print(cmd)
+                        self.area, self.room = app.area, app.room
+                else:
+                    break
+                inp = input("Command: ")
+            except:
+                debugger().fatal("UNCAUGHT ERROR")
+                quit()

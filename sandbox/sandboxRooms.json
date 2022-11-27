@@ -30,14 +30,29 @@
             },
             "npcs": {
                 "bobrick": {
-                    "says": "Hello child",
-                    "gives": "spoon",
-                    "given": false
+                    "says":{
+                        "start": "Hello child",
+                        "gives": "spoon"
+                    }
                 },
                 "rickbob": {
-                    "says": "Hello I am Rickbob and I will devour your soul",
-                    "gives": "stick",
-                    "given": false
+                    "says":{
+                        "start": "Hello I am Rickbob and I will devour your soul",
+                        "okay":{
+                            "start":"I will do it.",
+                            "no":{
+                                "start":"Just you watch",
+                                "i think not":{
+                                    "start":"I will",
+                                    "don't believe you":{
+                                        "start":"Oh well then looks like I'll have to end the game",
+                                        "gives":"quit"
+                                    }
+                                }
+                            }
+                        },
+                        "gives": "stick"
+                    }
                 }
             },
             "directions": {

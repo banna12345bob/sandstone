@@ -14,5 +14,8 @@
         "description":"What's brown and sticky",
         "colour":"brown",
         "material":"wood"
+    },
+    "sword":{
+        "use":"You swing the sword around like a maniac hitting nothing"
     }
 }

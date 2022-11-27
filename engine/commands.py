@@ -4,11 +4,13 @@ from engine.FileRead import File
 from engine.inventory import inventory
 
 class commands:
-    def __init__(self, area, currentRoom, roomsFile = "rooms.json", objectFile = "objects.json"):
+    def __init__(self, area, currentRoom, roomsFile = "rooms.json", objectFile = "objects.json", saveFile = None, player=1):
         self.currentRoom = currentRoom
         self.currentArea = area
         self.roomsFile = roomsFile
         self.objectFile = objectFile
+        self.player = player
+        self.saveFile = saveFile
 
     def giveCommand(self, command):
         try:
@@ -36,8 +38,8 @@ class commands:
             }
 
             # I can't find a way to make this work with the match case statement so I'm just gonna leave it here for now
-            if command[0] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections():
-                return self.direction(command[0], inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile))
+            if command[0] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirections():
+                return self.direction(command[0], inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile))
 
             match command[0]:
                 case "help":
@@ -73,14 +75,14 @@ class commands:
 
                 case "look":
                     if command[1] == "room":
-                        return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getRoomName() + ":\nIt is " + self.look()
-                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
+                        return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
+                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFurnature():
                         return self.furnatureLook(command[1])
                     else:
                         return "No description found"
                 
                 case "use":
-                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory(True):
+                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
                         if interpreter.object(self.objectFile).getUse(command[1]) == 0:
                             return f'No item named "{command[1]}"'
                         else:
@@ -93,26 +95,26 @@ class commands:
                     quit()
 
                 case "inv":
-                    items = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory()
+                    items = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory()
                     return items
 
                 # TODO Fix up the fact that you can pickup an item multipule times (FIXED)
                 # Maybe add a function that reads and edits rooms.json adding a pickedup tag to objects
                 case "pickup":
-                    for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnature():
-                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFunratureObjects(furnature):
-                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], True, "", furnature)
+                    for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, player=self.player).getFurnature():
+                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFunratureObjects(furnature):
+                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], True, "", furnature)
                     return f'No item named "{command[1]}" in room'
 
                 case "drop":
-                    return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).removeFromInventory(command[1])
+                    return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).removeFromInventory(command[1])
 
                 case "save":
                     self.save()
                     return "Saved file"
 
                 case "load":
-                    file = File().readFile("save.json")
+                    file = File().readFile(self.saveFile)
                     if file != 0:
                         lFile = []
                         lFile.append(file["currentArea"])
@@ -122,38 +124,36 @@ class commands:
                         return "No save file found"
 
                 case "dir":
-                    return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirections(False)
+                    return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirections(False)
 
                 case "talk":
-                    if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
-                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) != True:
-                                if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkItemGiven(command[1]) != True:
-                                    print(f"{command[1]}:")
-                                    diag = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
-                                    try:
-                                        diag = diag.split(":")
-                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0], diag[1])
-                                    except:
-                                        gives = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcGives(command[1], diag[0])
-                                    if gives != "":
-                                        if gives != "quit":
-                                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(gives, True, command[1])
-                                            return f"He gives you a {gives}"
-                                        else:
-                                            return "quit"
-                                    else:
-                                        return interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDialouge(command[1])
+                    if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) != True:
+                        x = (interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1]))
+                        if x != False:
+                            if x == "quit":
+                                return "quit"
+                            try:
+                                print(x["start"])
+                            except:
+                                print(x)
+                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(command[1]) == False:
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=command[1])
+                                return f"{command[1]} gave you {x['gives']}"
                             else:
-                                return "Their dead stop trying to talk to them"
+                                return f"{command[1]} has already given you an item"
+                        else:
+                            return ""
+                    else:
+                        return "Their dead stop trying to talk to them"
 
                 case "kill":
-                    drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcDrops(command[1])
-                    if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).getInventory(True):
-                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getNpcs():
-                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).checkNpcKilled(command[1]) == False:
-                                interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).killNpc(command[1])
+                    drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDrops(command[1])
+                    if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
+                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcs():
+                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) == False:
+                                interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).killNpc(command[1], player=self.player)
                                 if drops != "":
-                                    inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(drops, True, command[1])
+                                    inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(drops, True, command[1])
                                     if inv != 0:
                                         return f"You killed {command[1]}. It drops {drops}"
                                 return f"You killed {command[1]}"
@@ -165,16 +165,16 @@ class commands:
                 #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
                     if debugger().debuggerEnabled:
-                        return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory()
+                        return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).resetInventory()
                     return "Unknown command"
 
                 case "give":
                     if debugger().debuggerEnabled:
                         try:
                             if command[2] != "":
-                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False, False, "", command[2])
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False, False, "", command[2])
                         except:
-                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).addToInventory(command[1], False)
+                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False)
                         return f"Gave item {command[1]}"
                     return "Unknown command"
 
@@ -204,7 +204,7 @@ class commands:
             return 0
 
     def direction(self, direction, inv):
-        iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDirection(direction, inv)
+        iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirection(direction, player=self.player , inv=inv)
         if iDirection == "":
             return "Unknown command"
         elif iDirection == 0:
@@ -213,14 +213,14 @@ class commands:
             return iDirection
 
     def look(self):
-        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getDesciption()
+        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDesciption()
         if iDescription == 0:
             return 0
         else:
             return iDescription
     
     def furnatureLook(self, furnature):
-        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile).getFurnatureDescription(furnature)
+        iDescription = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFurnatureDescription(furnature)
         if iDescription == 0:
             return 0
         elif iDescription == "":
@@ -229,12 +229,13 @@ class commands:
             return iDescription
 
     def save(self):
-        save = File().readFile("save.json")
-        if save == 0:
+        try:
+            save = File().readFile(self.saveFile)
+        except:
             save = {}
         save["currentRoom"] = int(self.currentRoom)
         save["currentArea"] = int(self.currentArea)
-        File().writeFile("save.json", save)
+        File().writeFile(self.saveFile, save)
         empty = False
         try:
             for i in save["inventory"]:
@@ -244,4 +245,4 @@ class commands:
                     empty = False
         except:
             if empty == False:
-                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile).resetInventory(True)
+                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).resetInventory(True)

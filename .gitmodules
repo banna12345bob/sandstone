@@ -1,3 +1,6 @@
 [submodule "include/colorama"]
 	path = include/colorama
 	url = https://github.com/tartley/colorama
+[submodule "include/auto-py-to-exe"]
+	path = include/auto-py-to-exe
+	url = https://github.com/brentvollebregt/auto-py-to-exe

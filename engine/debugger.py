@@ -1,17 +1,22 @@
 from time import sleep
 try:
     from include.colorama import colorama
+    debug = True
 except:
-    next
+    debug = False
 from engine import FileRead
 
 # Don't look here it's really ugly but it works
 class debugger:
     def __init__(self, command = False):
         self.command = command
-        self.debuggerEnabled = FileRead.File().readFile("options.json")["debuggerEnabled"]
+        if debug:
+            try:
+                self.debuggerEnabled = FileRead.File().readFile("data/options.json")["debuggerEnabled"]
+            except:
+                self.debuggerEnabled = False
         if self.debuggerEnabled == True:
-            self.ignoreLocks = FileRead.File().readFile("options.json")["ignoreLocks"]
+            self.ignoreLocks = FileRead.File().readFile("data/options.json")["ignoreLocks"]
         else:
             self.ignoreLocks = False
         try:

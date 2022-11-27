@@ -8,7 +8,7 @@
             "name": "Python: Main File",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "demo1.py",
             "console": "integratedTerminal"
         }
     ]

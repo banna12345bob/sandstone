@@ -74,21 +74,27 @@ class commands:
                             return a[0:-7]
 
                 case "look":
-                    if command[1] == "room":
-                        return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
-                    elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFurnature():
-                        return self.furnatureLook(command[1])
+                    if len(command) > 1:
+                        if command[1] == "room":
+                            return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
+                        elif command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFurnature():
+                            return self.furnatureLook(command[1])
+                        else:
+                            return "No description found"
                     else:
-                        return "No description found"
+                        return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
                 
                 case "use":
-                    if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
-                        if interpreter.object(self.objectFile).getUse(command[1]) == 0:
-                            return f'No item named "{command[1]}"'
+                    if len(command) > 1:
+                        if command[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
+                            if interpreter.object(self.objectFile).getUse(command[1]) == 0:
+                                return f'No item named "{command[1]}"'
+                            else:
+                                return interpreter.object(self.objectFile).getUse(command[1])
                         else:
-                            return interpreter.object(self.objectFile).getUse(command[1])
+                            return f'No item named "{command[1]}" in inventory'
                     else:
-                        return f'No item named "{command[1]}" in inventory'
+                        return "You can't use nothing"
 
                 case "quit"|"exit":
                     return "quit"
@@ -101,13 +107,19 @@ class commands:
                 # TODO Fix up the fact that you can pickup an item multipule times (FIXED)
                 # Maybe add a function that reads and edits rooms.json adding a pickedup tag to objects
                 case "pickup":
-                    for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, player=self.player).getFurnature():
-                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFunratureObjects(furnature):
-                            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], True, "", furnature)
-                    return f'No item named "{command[1]}" in room'
+                    if len(command) > 1:
+                        for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, player=self.player).getFurnature():
+                            if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFunratureObjects(furnature):
+                                return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], True, "", furnature)
+                        return f'No item named "{command[1]}" in room'
+                    else:
+                        return "You picked up nothing (hint: try a second command argument eg. pickup jailkey)"
 
                 case "drop":
-                    return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).removeFromInventory(command[1])
+                    if len(command) > 1:
+                        return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).removeFromInventory(command[1])
+                    else:
+                        return "You dropped nothing"
 
                 case "save":
                     self.save()
@@ -127,40 +139,46 @@ class commands:
                     return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirections(False)
 
                 case "talk":
-                    if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) != True:
-                        x = (interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1]))
-                        if x != False:
-                            if x == "quit":
-                                return "quit"
-                            try:
-                                print(x["start"])
-                            except:
-                                print(x)
-                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(command[1]) == False:
-                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=command[1])
-                                return f"{command[1]} gave you {x['gives']}"
+                    if len(command) > 1:
+                        if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) != True:
+                            x = (interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(command[1]))
+                            if x != False:
+                                if x == "quit":
+                                    return "quit"
+                                try:
+                                    print(x["start"])
+                                except:
+                                    print(x)
+                                if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(command[1]) == False:
+                                    inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=command[1])
+                                    return f"{command[1]} gave you {x['gives']}"
+                                else:
+                                    return f"{command[1]} has already given you an item"
                             else:
-                                return f"{command[1]} has already given you an item"
+                                return ""
                         else:
-                            return ""
+                            return "Their dead stop trying to talk to them"
                     else:
-                        return "Their dead stop trying to talk to them"
+                        return "You talk to thin air but then you relise you're going crazy"
 
                 case "kill":
-                    drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDrops(command[1])
-                    if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
-                        if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcs():
-                            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) == False:
-                                interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).killNpc(command[1], player=self.player)
-                                if drops != "":
-                                    inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(drops, True, command[1])
-                                    if inv != 0:
-                                        return f"You killed {command[1]}. It drops {drops}"
-                                return f"You killed {command[1]}"
-                            else:
-                                return "Their already dead"
+                    if len(command) > 1:
+                        drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDrops(command[1])
+                        if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
+                            if command[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcs():
+                                if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(command[1]) == False:
+                                    interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).killNpc(command[1], player=self.player)
+                                    if drops != "":
+                                        inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(drops, True, command[1])
+                                        if inv != 0:
+                                            return f"You killed {command[1]}. It drops {drops}"
+                                    return f"You killed {command[1]}"
+                                else:
+                                    return "Their already dead"
+                        else:
+                            return "You try to kill them with your hand but can't"
                     else:
-                        return "You try to kill them with your hand but can't"
+                        return "You try to kill the air but you can't get a hold of them"
 
                 #-------------------------------------- DEBUG COMMANDS --------------------------------------#
                 case "resetinv":
@@ -169,35 +187,44 @@ class commands:
                     return "Unknown command"
 
                 case "give":
-                    if debugger().debuggerEnabled:
-                        try:
-                            if command[2] != "":
-                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False, False, "", command[2])
-                        except:
-                            inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False)
-                        return f"Gave item {command[1]}"
-                    return "Unknown command"
+                    if len(command) > 1:
+                        if debugger().debuggerEnabled:
+                            try:
+                                if command[2] != "":
+                                    inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False, False, "", command[2])
+                            except:
+                                inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(command[1], False)
+                            return f"Gave item {command[1]}"
+                        return "Unknown command"
+                    else:
+                        return "Two arguments required"
 
                 case "open":
-                    if debugger().debuggerEnabled:
-                        return File().readFile(command[1])
-                    return "Unknown command"
+                    if len(command) > 1:
+                        if debugger().debuggerEnabled:
+                            return File().readFile(command[1])
+                        return "Unknown command"
+                    else:
+                        return "Two arguments required"
 
                 case "debug":
-                    if debugger().debuggerEnabled:
-                        match command[1]:
-                            case "info":
-                                return debugger(True).info(command[2:len(command)])
-                            case "warning":
-                                return debugger(True).warning(command[2:len(command)])
-                            case "error":
-                                return debugger(True).error(command[2:len(command)])
-                            case "fatal":
-                                return debugger(True).fatal(command[2:len(command)])
-                            case _:
-                                return "Unknown command"
+                    if len(command) > 1:
+                        if debugger().debuggerEnabled:
+                            match command[1]:
+                                case "info":
+                                    return debugger(True).info(command[2:len(command)])
+                                case "warning":
+                                    return debugger(True).warning(command[2:len(command)])
+                                case "error":
+                                    return debugger(True).error(command[2:len(command)])
+                                case "fatal":
+                                    return debugger(True).fatal(command[2:len(command)])
+                                case _:
+                                    return "Unknown command"
+                        else:
+                            return "Unknown command"
                     else:
-                        return "Unknown command"
+                        return "Two arguments required"
                 case _:
                     return "Unknown command"
         except:

@@ -313,7 +313,7 @@ class commandManager:
 
 
     def giveCommand(self, lCommand):
-        # try:
+        try:
             lCommand = lCommand.lower()
             lCommand = lCommand.split(" ")
 
@@ -330,14 +330,17 @@ class commandManager:
                     return (["cmd", lCommand])
             elif lCommand[0] in self.commands["debug"]:
                 if debugger().debuggerEnabled:
-                    a = globals()[lCommand[0]]
-                    return a(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
+                    try:
+                        a = globals()[lCommand[0]]
+                        return a(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
+                    except:
+                        return (["cmd", lCommand])
                 else:
                     return "Unknown command"
             else:
                 return "Unknown command"
-        # except:
-        #     return 0
+        except:
+            return 0
 
     def direction(self, direction, inv):
         iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirection(direction, player=self.player , inv=inv)
@@ -404,6 +407,10 @@ class commandManager:
                         self.commands["debug"][cmd.__name__] = cmd(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                     File().writeFile("commands.json", self.commands)
             elif issubclass(lCommand, command):
-                self.commands["debug"][lCommand.__name__] = lCommand(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
+                try:
+                    self.commands["debug"][lCommand.__name__] = lCommand(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
+                except:
+                    self.commands["debug"] = {}
+                    self.commands["debug"][lCommand.__name__] = lCommand(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                 File().writeFile("commands.json", self.commands)
                 return self.commands

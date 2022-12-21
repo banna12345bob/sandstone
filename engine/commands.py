@@ -4,7 +4,13 @@ from engine.FileRead import File
 from engine.inventory import inventory
 
 class command:
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        self.area = area
+        self.room = room
+        self.roomsFile = roomsFile
+        self.objectFile = objectFile
+        self.saveFile = saveFile
+        self.player = player
         self.description = ""
 
     def run(self, lCommand):
@@ -13,9 +19,10 @@ class command:
 # ------------- Engine Inbuilt Commands -------------
 
 class help(command):
-    def __init__(self):
-        self.description = "command (optional)\nDisplays a list of commands if the parameters is left blank otherwise displays the discription of the command"
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
         self.commands = File().readFile("commands.json")
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
+        self.description = "command (optional)\nDisplays a list of commands if the parameters is left blank otherwise displays the discription of the command"
     
     def run(self, lCommand):
         if len(lCommand) > 1:
@@ -50,27 +57,29 @@ class help(command):
                 return a[0:-1]
 
 class look(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Gets a description of something\nSytax:\nroom, furnature item"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
             if lCommand[1] == "room":
-                return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
-            elif lCommand[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFurnature():
-                return self.furnatureLook(lCommand[1])
+                return "You are in " + interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName() + ":\nIt is " + commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).look()
+            elif lCommand[1] in interpreter.room(self.area, self.room, self.roomsFile, self.player).getFurnature():
+                return commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).furnatureLook(lCommand[1])
             else:
                 return "No description found"
         else:
-            return "You are in " + interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getRoomName() + ":\nIt is " + self.look()
+            return "You are in " + interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName() + ":\nIt is " + commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).look()
 
 class use(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "object\nUses an object"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
-            if lCommand[1] in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
+            if lCommand[1] in inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
                 if interpreter.object(self.objectFile).getUse(lCommand[1]) == 0:
                     return f'No item named "{lCommand[1]}"'
                 else:
@@ -81,58 +90,58 @@ class use(command):
             return "You can't use nothing"
 
 class quit(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "(Also exit)\nQuits the program"
 
     def run(self, lCommand):
         return "quit"
 
 class exit(quit):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "(Also quit)\nQuits the program"
 
     def run(self, lCommand):
-        return quit().run(lCommand)
+        return quit(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
 
 class inv(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Opens inventory"
 
     def run(self, lCommand):
-        items = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory()
+        items = inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory()
         return items
 
 class pickup(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "object\nPick ups object specified"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
-            for furnature in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, player=self.player).getFurnature():
-                if lCommand[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getFunratureObjects(furnature):
-                    return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], True, "", furnature)
+            for furnature in interpreter.room(self.area, self.room, self.roomsFile, player=self.player).getFurnature():
+                if lCommand[1] in interpreter.room(self.area, self.room, self.roomsFile, self.player).getFunratureObjects(furnature):
+                    return inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], True, "", furnature)
             return f'No item named "{lCommand[1]}" in room'
         else:
             return "You picked up nothing (hint: try a second command argument eg. pickup jailkey)"
 
 class drop(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Drops the item specified"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
-            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).removeFromInventory(lCommand[1])
+            return inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).removeFromInventory(lCommand[1])
         else:
             return "You dropped nothing"
 
 class save(command):
-    def __init__(self, area, room, roomsFile = "rooms.json", objectFile = "objects.json", saveFile = None, player=1):
-        self.area = area
-        self.room = room
-        self.roomsFile = roomsFile
-        self.objectFile = objectFile
-        self.player = player
-        self.saveFile = saveFile
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Saves the game"
     
     def run(self, lCommand):
@@ -140,7 +149,8 @@ class save(command):
         return "Saved file"
 
 class load(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Loads the pervious save"
 
     def run(self, lCommand):
@@ -154,32 +164,43 @@ class load(command):
             return "No save file found"
 
 class dir(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Tells you which directions you can go"
 
     def run(self, lCommand):
-        return "The directions you can go are "+interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirections(False)
+        return "The directions you can go are "+interpreter.room(self.area, self.room, self.roomsFile, self.player).getDirections(False)
 
 class talk(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Talk to an NPC specified"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
-            if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(lCommand[1]) != True:
-                x = (interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDialouge(lCommand[1]))
+            if interpreter.room(self.area, self.room, self.roomsFile, self.player).checkNpcKilled(lCommand[1]) != True:
+                x = (interpreter.room(self.area, self.room, self.roomsFile, self.player).getNpcDialouge(lCommand[1]))
                 if x != False:
                     if x == "quit":
                         return "quit"
                     try:
-                        print(x["start"])
+                        givesitem = x["gives"]
+                        givesitem = True
                     except:
-                        print(x)
-                    if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkItemGiven(lCommand[1]) == False:
-                        inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=lCommand[1])
-                        return f"{lCommand[1]} gave you {x['gives']}"
+                        givesitem = False
+                    if givesitem:
+                        if interpreter.room(self.area, self.room, self.roomsFile, self.player).checkItemGiven(lCommand[1]) == False:
+                            inventory(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile).addToInventory(x["gives"], npc=lCommand[1])
+                            print(x["start"])
+                            return f"{lCommand[1]} gave you {x['gives']}"
+                        else:
+                            print(x["start"])
+                            return f"{lCommand[1]} has already given you an item"
                     else:
-                        return f"{lCommand[1]} has already given you an item"
+                        try:
+                            return(x["start"])
+                        except:
+                            return f"No NPC named {lCommand[1]} in room."
                 else:
                     return ""
             else:
@@ -188,18 +209,19 @@ class talk(command):
             return "You talk to thin air but then you relise you're going crazy"
 
 class kill(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Kills an NPC specified"
 
     def run(self, lCommand):
         if len(lCommand) > 1:
-            drops = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcDrops(lCommand[1])
-            if "sword" in inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
-                if lCommand[1] in interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getNpcs():
-                    if interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).checkNpcKilled(lCommand[1]) == False:
-                        interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).killNpc(lCommand[1], player=self.player)
+            drops = interpreter.room(self.area, self.room, self.roomsFile, self.player).getNpcDrops(lCommand[1])
+            if "sword" in inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).getInventory(True):
+                if lCommand[1] in interpreter.room(self.area, self.room, self.roomsFile, self.player).getNpcs():
+                    if interpreter.room(self.area, self.room, self.roomsFile, self.player).checkNpcKilled(lCommand[1]) == False:
+                        interpreter.room(self.area, self.room, self.roomsFile, self.player).killNpc(lCommand[1], player=self.player)
                         if drops != "":
-                            inv = inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(drops, True, lCommand[1])
+                            inv = inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(drops, True, lCommand[1])
                             if inv != 0:
                                 return f"You killed {lCommand[1]}. It drops {drops}"
                         return f"You killed {lCommand[1]}"
@@ -211,16 +233,18 @@ class kill(command):
             return "You try to kill the air but you can't get a hold of them"
 
 class resetinv(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Resets the inventory\nDEBUG ONLY"
 
     def run(self, lCommand):
         if debugger().debuggerEnabled:
-            return inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).resetInventory()
+            return inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).resetInventory()
         return "Unknown command"
 
 class give(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "give object slot\nGives an object\nDEBUG ONLY"
     
     def run(self, lCommand):
@@ -228,16 +252,17 @@ class give(command):
             if debugger().debuggerEnabled:
                 try:
                     if lCommand[2] != "":
-                        inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], False, False, "", lCommand[2])
+                        inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], False, False, "", lCommand[2])
                 except:
-                    inventory(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], False)
+                    inventory(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).addToInventory(lCommand[1], False)
                 return f"Gave item {lCommand[1]}"
             return "Unknown command"
         else:
             return "Two arguments required"
 
 class open(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "Prints out the contents of a specified JSON file\nDEBUG ONLY"
     
     def run(self, lCommand):
@@ -249,9 +274,10 @@ class open(command):
             return "Two arguments required"
 
 class debug(command):
-    def __init__(self):
+    def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
+        super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "(info or warning or error or fatal) msg\nLogs a debug message\nDEBUG ONLY"
-    
+
     def run(self, lCommand):
         if len(lCommand) > 1:
             if debugger().debuggerEnabled:
@@ -287,7 +313,7 @@ class commandManager:
 
 
     def giveCommand(self, lCommand):
-        try:
+        # try:
             lCommand = lCommand.lower()
             lCommand = lCommand.split(" ")
 
@@ -297,46 +323,21 @@ class commandManager:
 
             # could probably find a smarter way to do this
             if lCommand[0] in self.commands:
-                if lCommand[0] == "help":
-                    return(help().run(lCommand))
-                elif lCommand[0] == "look":
-                    return(look().run(lCommand))
-                elif lCommand[0] == "use":
-                    return(use().run(lCommand))
-                elif lCommand[0] == "quit":
-                    return quit().run(lCommand)
-                elif lCommand[0] == "exit":
-                    return exit().run(lCommand)
-                elif lCommand[0] == "inv":
-                    return inv().run(lCommand)
-                elif lCommand[0] == "pickup":
-                    return pickup().run(lCommand)
-                elif lCommand[0] == "drop":
-                    return drop().run(lCommand)
-                elif lCommand[0] == "save":
-                    return save(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
-                elif lCommand[0] == "load":
-                    return load().run(lCommand)
-                elif lCommand[0] == "dir":
-                    return dir().run(lCommand)
-                elif lCommand[0] == "talk":
-                    return talk().run(lCommand)
-                elif lCommand[0] == "kill":
-                    return kill().run(lCommand)
-                elif lCommand[0] == "resetinv":
-                    return resetinv().run(lCommand)
-                elif lCommand[0] == "give":
-                    return give().run(lCommand)
-                elif lCommand[0] == "open":
-                    return open().run(lCommand)
-                elif lCommand[0] == "debug":
-                    return debug().run(lCommand)
+                try:
+                    a = globals()[lCommand[0]]
+                    return a(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
+                except:
+                    return (["cmd", lCommand])
+            elif lCommand[0] in self.commands["debug"]:
+                if debugger().debuggerEnabled:
+                    a = globals()[lCommand[0]]
+                    return a(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).run(lCommand)
                 else:
-                    return "Client commands currently not supported"
+                    return "Unknown command"
             else:
                 return "Unknown command"
-        except:
-            return 0
+        # except:
+        #     return 0
 
     def direction(self, direction, inv):
         iDirection = interpreter.room(self.currentArea, self.currentRoom, self.roomsFile, self.player).getDirection(direction, player=self.player , inv=inv)
@@ -387,25 +388,22 @@ class commandManager:
         if not isDebug:
             if isinstance(lCommand, list):
                 for cmd in lCommand:
-                    if cmd.__name__ != "save":
-                        self.commands[cmd.__name__] = cmd().description
-                    else:
-                        self.commands[cmd.__name__] = cmd(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
+                    self.commands[cmd.__name__] = cmd(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                     File().writeFile("commands.json", self.commands)
             elif issubclass(lCommand, command):
-                self.commands[lCommand.__name__] = lCommand().description
+                self.commands[lCommand.__name__] = lCommand(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                 File().writeFile("commands.json", self.commands)
                 return self.commands
         elif isDebug:
             if isinstance(lCommand, list):
                 for cmd in lCommand:
                     try:
-                        self.commands["debug"][cmd.__name__] = cmd().description
+                        self.commands["debug"][cmd.__name__] = cmd(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                     except:
                         self.commands["debug"] = {}
-                        self.commands["debug"][cmd.__name__] = cmd().description
+                        self.commands["debug"][cmd.__name__] = cmd(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                     File().writeFile("commands.json", self.commands)
             elif issubclass(lCommand, command):
-                self.commands["debug"][lCommand.__name__] = lCommand().description
+                self.commands["debug"][lCommand.__name__] = lCommand(self.currentArea, self.currentRoom, self.roomsFile, self.objectFile, self.saveFile, self.player).description
                 File().writeFile("commands.json", self.commands)
                 return self.commands

@@ -20,13 +20,16 @@ class application:
         # For this design if a function returns 0 it means that it didn't work
         if giveCommand != 0:
             if giveCommand != "Unknown command" and isinstance(giveCommand, list):
-                if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
-                    self.area, self.room = giveCommand[0], giveCommand[1]
-                    commandManager(self.area, self.room, self.roomsFile, self.objectFile, saveFile=self.saveFile).save()
-                    return giveCommand
+                if giveCommand[0] != "cmd":
+                    if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
+                        self.area, self.room = giveCommand[0], giveCommand[1]
+                        commandManager(self.area, self.room, self.roomsFile, self.objectFile, saveFile=self.saveFile).save()
+                        return giveCommand
+                    else:
+                        self.area, self.room = 1, 1
+                        return interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName()
                 else:
-                    self.area, self.room = 1, 1
-                    return interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName()
+                    return giveCommand
             else:
                 return giveCommand
         else:
@@ -39,25 +42,33 @@ class application:
         return "You are in " + name + ":\nIt is " + des
 
     def entryPoint(self):
-        app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
-        print(app.printNameandDes())
-        commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.help, commands.look, commands.use, commands.quit, commands.exit, commands.inv, commands.pickup, commands.drop, commands.save, commands.load, commands.dir, commands.talk, commands.kill])
-        commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.resetinv, commands.give, commands.open, commands.debug], True)
         inp = input("Command: ")
         while inp:
-            # try:
+            try:
                 app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
                 cmd = app.commandRun(inp)
                 if cmd != "quit":
                     if isinstance(cmd, list):
-                        print(app.printNameandDes())
-                        self.area, self.room = app.area, app.room
+                        if cmd[0] != "cmd":
+                            print(app.printNameandDes())
+                            self.area, self.room = app.area, app.room
+                        else:
+                            return cmd
                     else:
                         print(cmd)
                         self.area, self.room = app.area, app.room
                 else:
                     break
                 inp = input("Command: ")
-            # except:
-            #     debugger().fatal("UNCAUGHT ERROR")
-            #     quit()
+            except:
+                debugger().fatal("UNCAUGHT ERROR")
+                quit()
+        
+    def run(self):
+        app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
+        print(app.printNameandDes())
+        a = self.entryPoint()
+        while a:
+            commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.help, commands.look, commands.use, commands.quit, commands.exit, commands.inv, commands.pickup, commands.drop, commands.save, commands.load, commands.dir, commands.talk, commands.kill])
+            commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.resetinv, commands.give, commands.open, commands.debug], True)
+            a = self.entryPoint()

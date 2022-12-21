@@ -8,4 +8,14 @@ class sandbox(engine.application):
         self.objectFile = "sandbox/sandboxObjects.json"
         super().__init__(area, room, self.roomFile, self.objectFile)
 
-sandbox(1, 1).entryPoint()
+class testcmd(engine.command):
+    def __init__(self):
+        self.description = "Testing command"
+    
+    def run(self):
+        return "Ran application command"
+
+sand = sandbox(1,1)
+sand.commandManager.mountCommand(testcmd)
+
+sand.entryPoint()

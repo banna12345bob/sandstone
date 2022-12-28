@@ -12,9 +12,8 @@ class inventory:
         self.player = player
         self.objectFile = objectFile
         self.saveFile = saveFile
-        try:
-            self.inventory = File().readFile(self.saveFile)
-        except:
+        self.inventory = File().readFile(self.saveFile)
+        if self.inventory == 0:
             self.inventory = 0
             self.resetInventory()
             self.inventory = File().readFile(self.saveFile)
@@ -105,7 +104,7 @@ class inventory:
     # This was the most dificult function to get working as I did a stupid eailer on and didn't notice
     def resetInventory(self, fromSave = False):
         if fromSave == False:
-            commands.commands(self.area, self.room, self.roomsFile, saveFile=self.saveFile).save()
+            commands.commandManager(self.area, self.room, self.roomsFile, saveFile=self.saveFile).save()
         lInventory = self.inventory
         if lInventory == 0:
             lInventory = {}

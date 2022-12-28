@@ -87,7 +87,9 @@
             "furnature": {},
             "npcs": {
                 "rat": {
-                    "says": "squeek"
+                    "says": {
+                        "start":"squeek"
+                    }
                 }
             },
             "directions": {
@@ -326,7 +328,9 @@
             "furnature": {},
             "npcs": {
                 "dungeon": {
-                    "says": "Hey what are you doing in here leave."
+                    "says": {
+                        "start":"Hey what are you doing in here leave."
+                    }
                 }
             },
             "directions": {

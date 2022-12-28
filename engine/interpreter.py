@@ -3,13 +3,11 @@ from engine.debugger import debugger
 
 class room:
     def __init__(self, area, room, iFile, player):
-        try:
-            self.file = File().readFile(iFile[0:-5]+str(player)+iFile[-5:len(iFile)])
-        except:
-            self.file = File().readFile(iFile)
-        self.roomFile = iFile
+        self.file = File().readFile(iFile[0:-5]+str(player)+iFile[-5:len(iFile)])
         if self.file == 0:
-            debugger().fatal(f"Failed to read {iFile}")
+            self.file = File().readFile(iFile)
+            File().writeFile(iFile[0:-5]+str(player)+iFile[-5:len(iFile)], self.file)
+        self.roomFile = iFile
         self.room = room
         self.area = area
 
@@ -17,20 +15,20 @@ class room:
         try:
             return self.file[str(self.area)]["name"]
         except:
-            debugger().error(f"Area {self.area} not found")
+            debugger().error(f"getAreaName: Area {self.area} not found")
 
     def getRoomName(self):
         try:
             return self.file[str(self.area)][str(self.room)]["name"]
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getRoomName: Room {self.area}:{self.room} not found")
             return 0
 
     def getDesciption(self):
         try:
             return self.file[str(self.area)][str(self.room)]["description"]
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getDesciption: Room {self.area}:{self.room} not found")
             return 0
 
     def getFurnature(self):
@@ -40,7 +38,7 @@ class room:
                 furnatures.append(furnature)
             return furnatures
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getFurnature: Room {self.area}:{self.room} not found")
             return 0
 
     def getFurnatureDescription(self, furnature):
@@ -51,7 +49,7 @@ class room:
                 description = self.file[str(self.area)][str(self.room)]["furnature"][furnature]["description"]
             return description
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getFurnatureDescription: Room {self.area}:{self.room} not found")
             return 0
 
     def getFunratureObjects(self, furnature):
@@ -63,7 +61,7 @@ class room:
                     objects.append(i)
             return objects
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getFunratureObjects: Room {self.area}:{self.room} not found")
             return 0
 
     def getFunratureObjectLocation(self, furnature, object):
@@ -75,7 +73,7 @@ class room:
                 des = self.file[str(self.area)][str(self.room)]["furnature"][furnature]["objects"][object]["location"]
             return des
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getFunratureObjectLocation: Room {self.area}:{self.room} not found")
             return 0
 
     def getNpcs(self):
@@ -107,7 +105,7 @@ class room:
                     ""
                 return opt
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getNpcDialouge: Room {self.area}:{self.room} not found")
             return 0
 
     def getNpcDialougeExtension(self, npc, value):
@@ -147,7 +145,7 @@ class room:
         try:
             return opt
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getNpcGives: Room {self.area}:{self.room} not found")
             return 0
 
     def getNpcDrops(self, npc):
@@ -161,7 +159,7 @@ class room:
                     drops = ""
                 return drops
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getNpcDrops: Room {self.area}:{self.room} not found")
             return 0
 
     def checkItemGiven(self, npc):
@@ -175,7 +173,7 @@ class room:
                     return given
             return given
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"checkItemGiven: Room {self.area}:{self.room} not found")
             return 0
 
     def checkNpcKilled(self, npc):
@@ -189,7 +187,7 @@ class room:
                     return killed
             return killed
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"checkNpcKilled: Room {self.area}:{self.room} not found")
             return 0
 
     def killNpc(self, npc, player):
@@ -202,7 +200,7 @@ class room:
                 File().writeFile(roomFile, self.file)
                 return f"Killed {npc}"
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"killNpc: Room {self.area}:{self.room} not found")
             return 0
 
     def getDirections(self, list = True):
@@ -218,7 +216,7 @@ class room:
                     rDirections += direction + ", "
                 return rDirections[0:-2]
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getDirections: Room {self.area}:{self.room} not found")
             return 0
 
     def getDirection(self, direction, player, inv = ""):
@@ -259,7 +257,7 @@ class room:
         except:
             # Just a quick error catcher 
             # NOTE: this is not a "quick" error cathcer as I build a debug interface for it
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"getDirection: Room {self.area}:{self.room} not found")
             return 0
     
     def checkItemPickedUp(self, furnature, object):
@@ -274,14 +272,12 @@ class room:
                     return pickedUp
             return pickedUp
         except:
-            debugger().error(f"Room {self.area}:{self.room} not found")
+            debugger().error(f"checkItemPickedUp: Room {self.area}:{self.room} not found")
             return 0
 
 class object:
     def __init__(self, iFile):
         self.file = File().readFile(iFile)
-        if self.file == 0:
-            debugger().fatal(f"Failed to read {iFile}")
 
     def getObjects(self):
         objects = []

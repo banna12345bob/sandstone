@@ -1,6 +1,8 @@
 from engine import interpreter
 from engine.debugger import debugger
-from engine.commands import commands
+from engine.commands import commandManager
+from engine.commands import command
+from engine import commands
 from engine.inventory import inventory
 from engine.FileRead import File
 
@@ -11,19 +13,23 @@ class application:
         self.roomsFile, self.objectFile = roomsFile, objectFile
         self.player = player
         self.saveFile = saveFile
+        self.commandManager = commandManager(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile)
 
     def commandRun(self, inp):
-        giveCommand = commands(self.area, self.room, self.roomsFile, self.objectFile, player=self.player, saveFile=self.saveFile).giveCommand(inp)
+        giveCommand = self.commandManager.giveCommand(inp)
         # For this design if a function returns 0 it means that it didn't work
         if giveCommand != 0:
             if giveCommand != "Unknown command" and isinstance(giveCommand, list):
-                if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
-                    self.area, self.room = giveCommand[0], giveCommand[1]
-                    commands(self.area, self.room, self.roomsFile, self.objectFile, saveFile=self.saveFile).save()
-                    return giveCommand
+                if giveCommand[0] != "cmd":
+                    if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
+                        self.area, self.room = giveCommand[0], giveCommand[1]
+                        commandManager(self.area, self.room, self.roomsFile, self.objectFile, saveFile=self.saveFile).save()
+                        return giveCommand
+                    else:
+                        self.area, self.room = 1, 1
+                        return interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName()
                 else:
-                    self.area, self.room = 1, 1
-                    return interpreter.room(self.area, self.room, self.roomsFile, self.player).getRoomName()
+                    return giveCommand
             else:
                 return giveCommand
         else:
@@ -36,8 +42,6 @@ class application:
         return "You are in " + name + ":\nIt is " + des
 
     def entryPoint(self):
-        app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
-        print(app.printNameandDes())
         inp = input("Command: ")
         while inp:
             try:
@@ -45,8 +49,11 @@ class application:
                 cmd = app.commandRun(inp)
                 if cmd != "quit":
                     if isinstance(cmd, list):
-                        print(app.printNameandDes())
-                        self.area, self.room = app.area, app.room
+                        if cmd[0] != "cmd":
+                            print(app.printNameandDes())
+                            self.area, self.room = app.area, app.room
+                        else:
+                            return cmd
                     else:
                         print(cmd)
                         self.area, self.room = app.area, app.room
@@ -56,3 +63,12 @@ class application:
             except:
                 debugger().fatal("UNCAUGHT ERROR")
                 quit()
+        
+    def run(self):
+        commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.help, commands.look, commands.use, commands.quit, commands.exit, commands.inv, commands.pickup, commands.drop, commands.save, commands.load, commands.dir, commands.talk, commands.kill])
+        commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.resetinv, commands.give, commands.open, commands.debug], True)
+        app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
+        print(app.printNameandDes())
+        a = self.entryPoint()
+        while a:
+            a = self.entryPoint()

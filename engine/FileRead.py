@@ -10,14 +10,17 @@ class File:
 
     def readFile(self, file):
         exists = os.path.exists(f"{self.directory}/{file}")
-        if exists:
-            file = open(f"{self.directory}/{file}")
-            fRead = file.read().replace("\n", "")
-            rFile = json.loads(fRead)
-            file.close()
-            return rFile
+        if file != "data/options.json":
+                if exists:
+                    file = open(f"{self.directory}/{file}")
+                    fRead = file.read().replace("\n", "")
+                    rFile = json.loads(fRead)
+                    file.close()
+                    return rFile
+                else:
+                    debugger().warning(f"File {self.directory}/{file} not found")
+                    return 0
         else:
-            debugger().warning(f"File {self.directory}/{file} not found")
             return 0
 
     def writeFile(self, file, fWrite):

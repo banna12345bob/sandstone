@@ -36,6 +36,7 @@ class sand(engine.command):
     def run(self):
         return "I hate sand. It's rough, course and it gets everywhere"
 
+engine.File().deleteFile("commands.json")
 sandbox(1, 1).commandManager.mountCommand(testcmd)
 sandbox(1, 1).commandManager.mountCommand(sand, True)
 sandbox(1, 1).run()

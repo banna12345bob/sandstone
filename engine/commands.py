@@ -20,7 +20,11 @@ class command:
 
 class help(command):
     def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
-        self.commands = File().readFile("commands.json")
+        file = File().readFile("commands.json")
+        if file != 0:
+            self.commands = file
+        else:
+            File().writeFile("commands.json", {})
         super().__init__(area, room, roomsFile, objectFile, saveFile, player)
         self.description = "command (optional)\nDisplays a list of commands if the parameters is left blank otherwise displays the discription of the command"
     
@@ -268,7 +272,10 @@ class open(command):
     def run(self, lCommand):
         if len(lCommand) > 1:
             if debugger().debuggerEnabled:
-                return File().readFile(lCommand[1])
+                if File().readFile(lCommand[1]) != 0:
+                    return File().readFile(lCommand[1])
+                else:
+                    return "File not found"
             return "Unknown command"
         else:
             return "Two arguments required"
@@ -306,10 +313,13 @@ class commandManager:
         self.player = player
         self.saveFile = saveFile
         # This just is a list of all the commands
-        try:
-            self.commands = File().readFile("commands.json")
-        except:
-            self.commands = ""
+        file = File().readFile("commands.json")
+        if file != 0:
+            self.commands = file
+        else:
+            file = File().writeFile("commands.json", {})
+            file = File().readFile("commands.json")
+            self.commands = file
 
 
     def giveCommand(self, lCommand):
@@ -368,9 +378,8 @@ class commandManager:
             return iDescription
 
     def save(self):
-        try:
-            save = File().readFile(self.saveFile)
-        except:
+        save = File().readFile(self.saveFile)
+        if save == 0:
             save = {}
         save["currentRoom"] = int(self.currentRoom)
         save["currentArea"] = int(self.currentArea)

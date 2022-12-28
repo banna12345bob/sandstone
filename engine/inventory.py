@@ -12,9 +12,8 @@ class inventory:
         self.player = player
         self.objectFile = objectFile
         self.saveFile = saveFile
-        try:
-            self.inventory = File().readFile(self.saveFile)
-        except:
+        self.inventory = File().readFile(self.saveFile)
+        if self.inventory == 0:
             self.inventory = 0
             self.resetInventory()
             self.inventory = File().readFile(self.saveFile)

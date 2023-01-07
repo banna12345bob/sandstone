@@ -16,8 +16,11 @@ class sandbox(engine.application):
         a = self.entryPoint()
         while a:
             lCommand = a[1]
-            a = globals()[lCommand[0]]
-            print(a(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).run())
+            try:
+                a = globals()[lCommand[0]]
+                print(a(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).run())
+            except:
+                engine.debugger().error(f"There seems to be a command named {lCommand[0]} in commands.json but no command with that name has been mounted\nDid you add it in while the game was running?")
             a = self.entryPoint()
 
 class testcmd(engine.command):

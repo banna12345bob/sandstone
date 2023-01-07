@@ -3,3 +3,6 @@
 /sandbox/__pycache__
 /demo1/__pycache__
 output/builds
+commands.json
+demo1/demo1Rooms1.json
+sandbox/sandboxRooms1.json

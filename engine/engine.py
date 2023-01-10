@@ -19,7 +19,7 @@ class application:
         giveCommand = self.commandManager.giveCommand(inp)
         # For this design if a function returns 0 it means that it didn't work
         if giveCommand != 0:
-            if giveCommand != "Unknown command" and isinstance(giveCommand, list):
+            if giveCommand != "Unknown command" and isinstance(giveCommand, list) and giveCommand.__len__() > 1:
                 if giveCommand[0] != "cmd":
                     if interpreter.room(giveCommand[0], giveCommand[1], self.roomsFile, self.player).getRoomName() != 0:
                         self.area, self.room = giveCommand[0], giveCommand[1]
@@ -48,7 +48,7 @@ class application:
                 app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)
                 cmd = app.commandRun(inp)
                 if cmd != "quit":
-                    if isinstance(cmd, list):
+                    if isinstance(cmd, list) and cmd.__len__() > 1:
                         if cmd[0] != "cmd":
                             print(app.printNameandDes())
                             self.area, self.room = app.area, app.room
@@ -71,4 +71,5 @@ class application:
         print(app.printNameandDes())
         a = self.entryPoint()
         while a:
+            debugger().error("There are no application commands defined in this app.\nDid you add some in while the program was running?")
             a = self.entryPoint()

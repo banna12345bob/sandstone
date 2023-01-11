@@ -65,6 +65,7 @@ class application:
                 quit()
         
     def run(self):
+        File().deleteFile("commands.json")
         commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.help, commands.look, commands.use, commands.quit, commands.exit, commands.inv, commands.pickup, commands.drop, commands.save, commands.load, commands.dir, commands.talk, commands.kill])
         commandManager(self.area, self.room, self.roomsFile, self.objectFile, self.saveFile, self.player).mountCommand([commands.resetinv, commands.give, commands.open, commands.debug], True)
         app = application(self.area, self.room, self.roomsFile, self.objectFile, self.player, self.saveFile)

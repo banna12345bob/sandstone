@@ -8,7 +8,7 @@ from engine.FileRead import File
 
 # This class is for all applications that will be run with the engine
 class application:
-    def __init__(self, area, room, roomsFile, objectFile, player=1, saveFile = "data/save.json"):
+    def __init__(self, area, room, roomsFile, objectFile, player=1, saveFile = "save.json"):
         self.area, self.room = area, room
         self.roomsFile, self.objectFile = roomsFile, objectFile
         self.player = player

@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Main File",
+            "name": "Python: demo1",
             "type": "python",
             "request": "launch",
             "program": "demo1.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Sandbox",
+            "type": "python",
+            "request": "launch",
+            "program": "sandbox.py",
             "console": "integratedTerminal"
         }
     ]

@@ -1,6 +1,6 @@
-from engine.FileRead import File
-from engine import commands
-from engine import interpreter
+from sandstone.FileRead import File
+from sandstone import commands
+from sandstone import interpreter
 
 # Welcome to the inventory class possibly the worst coded part of the engine
 class inventory:

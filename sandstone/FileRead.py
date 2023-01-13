@@ -1,7 +1,7 @@
 #https://www.w3schools.com/python/python_dictionaries_methods.asp
 import json
 import os
-from engine.debugger import debugger
+from sandstone.debugger import debugger
 
 class File:
     def __init__(self) -> None:

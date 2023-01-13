@@ -1,5 +1,5 @@
-from engine.FileRead import File
-from engine.debugger import debugger
+from sandstone.FileRead import File
+from sandstone.debugger import debugger
 
 class room:
     def __init__(self, area, room, iFile, player):

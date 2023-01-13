@@ -1,6 +1,6 @@
-from engine import engine
+from sandstone import sandstone
 
-class demo1(engine.application):
+class demo1(sandstone.application):
     def __init__(self, area, room):
         self.roomFile = "demo1/demo1Rooms.json"
         self.objectFile = "demo1/demo1Objects.json"

@@ -1,10 +1,10 @@
-from engine import interpreter
-from engine.debugger import debugger
-from engine.commands import commandManager
-from engine.commands import command
-from engine import commands
-from engine.inventory import inventory
-from engine.FileRead import File
+from sandstone import interpreter
+from sandstone.debugger import debugger
+from sandstone.commands import commandManager
+from sandstone.commands import command
+from sandstone import commands
+from sandstone.inventory import inventory
+from sandstone.FileRead import File
 
 # This class is for all applications that will be run with the engine
 class application:

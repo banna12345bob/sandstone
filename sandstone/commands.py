@@ -1,7 +1,7 @@
-from engine import interpreter
-from engine.debugger import debugger
-from engine.FileRead import File
-from engine.inventory import inventory
+from sandstone import interpreter
+from sandstone.debugger import debugger
+from sandstone.FileRead import File
+from sandstone.inventory import inventory
 
 class command:
     def __init__(self, area, room, roomsFile, objectFile, saveFile, player):
@@ -161,8 +161,11 @@ class load(command):
         file = File().readFile(self.saveFile)
         if file != 0:
             lFile = []
-            lFile.append(file["currentArea"])
-            lFile.append(file["currentRoom"])
+            try:
+                lFile.append(file["currentArea"])
+                lFile.append(file["currentRoom"])
+            except:
+                return "No save data found"
             return lFile
         else:
             return "No save file found"

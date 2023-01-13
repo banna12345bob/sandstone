@@ -1,5 +1,5 @@
 # Sandstone
-Sandstone is a very simple game engine I'm working on in python. It is used for text based adventure games but I may extend it's funcionality later on.\
+Sandstone is a very simple game engine I'm working on in python. It is used for text based adventure games but I may extend it's funcionality later on.
 ## Documentation
 Coming soon for the time being just refer to demo1 and sandbox
 ### Creating an application

@@ -32,7 +32,9 @@ class debugger:
                 a += i + " "
         print(colorama.ansi.Back.RED + "FATAL: " + a + colorama.ansi.Style.RESET_ALL)
         sleep(5)
-        return "quit"
+        if (self.command):
+            return "quit"
+        quit()
 
     def error(self, msg):
         if self.debuggerEnabled == True:

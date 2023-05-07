@@ -42,6 +42,26 @@ class application:
         return "You are in " + name + ":\nIt is " + des
 
     def entryPoint(self):
+        version = File().readFile("version.json")["version"]
+        version = [int(x) for x in version.split(".")]
+
+        roomVersion = str(File().readFile(self.roomsFile)["version"])
+        roomVersion = [int(x) for x in roomVersion.split(".")]
+
+        objectVersion = str(File().readFile(self.objectFile)["version"])
+        objectVersion = [int(x) for x in objectVersion.split(".")]
+
+        if (objectVersion == roomVersion):
+            if (roomVersion[0] == version[0] and roomVersion[1] == version[1] and roomVersion[2] == version[2]):
+                debugger().info("This application is running the right version of Sandstone")
+            elif (roomVersion[0] == version[0] and roomVersion[1] <= version[1] and roomVersion[2] <= version[2]):
+                debugger().warning("This application is running on a older version of Sandstone")
+            else:
+                debugger().fatal("This application is running on a newer version of Sandstone")
+        else:
+            debugger().fatal("Object file and room file version missmatch")
+
+
         inp = input("Command: ")
         while inp:
             try:

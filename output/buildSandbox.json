@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/Github/text-based-game-engine-python/sandbox.py"
+   "value": "D:/Github/sandstone/sandbox.py"
   },
   {
    "optionDest": "onefile",
@@ -67,11 +67,15 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/Github/text-based-game-engine-python/sandbox/sandboxObjects.json;sandbox/"
+   "value": "D:/Github/sandstone/sandbox/sandboxObjects.json;sandbox/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/Github/text-based-game-engine-python/sandbox/sandboxRooms.json;sandbox/"
+   "value": "D:/Github/sandstone/sandbox/sandboxRooms.json;sandbox/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/Github/sandstone/version.json;."
   }
  ],
  "nonPyinstallerOptions": {

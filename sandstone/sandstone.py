@@ -52,6 +52,8 @@ class application:
         objectVersion = [int(x) for x in objectVersion.split(".")]
 
         if (objectVersion == roomVersion):
+            if (roomVersion[0] < version[0]):
+                debugger().fatal("This application is too old!")
             if (roomVersion[0] == version[0] and roomVersion[1] == version[1] and roomVersion[2] == version[2]):
                 debugger().info("This application is running the right version of Sandstone")
             elif (roomVersion[0] == version[0] and roomVersion[1] <= version[1] and roomVersion[2] <= version[2]):

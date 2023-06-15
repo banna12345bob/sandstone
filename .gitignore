@@ -8,3 +8,10 @@ demo1/demo1Rooms1.json
 sandbox/sandboxRooms1.json
 save.json
 data/save.json
+**.vcxproj
+**.sln
+**.vcxproj
+**.user
+**.filters
+/.vs/
+/compile/

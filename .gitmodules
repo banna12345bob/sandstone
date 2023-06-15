@@ -4,3 +4,6 @@
 [submodule "include/auto-py-to-exe"]
 	path = include/auto-py-to-exe
 	url = https://github.com/brentvollebregt/auto-py-to-exe
+[submodule "sandstone/vendor/spdlog"]
+	path = sandstone/vendor/spdlog
+	url = https://github.com/gabime/spdlog

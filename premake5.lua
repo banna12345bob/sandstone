@@ -48,18 +48,18 @@ project "sandstone"
         xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 
 	filter "configurations:Debug"
-		defines "SU_DEBUG"
+		defines "SS_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
-		defines "SU_RELEASE"
+		defines "SS_RELEASE"
 		runtime "Release"
 		symbols "off"
 		optimize "on"
 
 	filter "configurations:Dist"
-		defines "SU_DIST"
+		defines "SS_DIST"
 		runtime "Release"
 		symbols "off"
 		optimize "on"
@@ -104,18 +104,18 @@ project "sandbox"
         xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 
 	filter "configurations:Debug"
-		defines "SU_DEBUG"
+		defines "SS_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
-		defines "SU_RELEASE"
+		defines "SS_RELEASE"
 		runtime "Release"
 		symbols "off"
 		optimize "on"
 
 	filter "configurations:Dist"
-		defines "SU_DIST"
+		defines "SS_DIST"
 		runtime "Release"
 		optimize "on"
 		symbols "off"

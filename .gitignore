@@ -8,10 +8,20 @@ demo1/demo1Rooms1.json
 sandbox/sandboxRooms1.json
 save.json
 data/save.json
+/compile/
+
+# Windows specific
 **.vcxproj
 **.sln
 **.vcxproj
 **.user
 **.filters
 /.vs/
-/compile/
+
+
+# macOS specific
+.DS_Store
+*.pbxproj
+*.plist
+*.xcworkspacedata
+*.xcuserstate

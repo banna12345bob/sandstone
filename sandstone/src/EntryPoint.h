@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef SS_PLATFORM_WINDOWS
+#if defined(SS_PLATFORM_WINDOWS) || defined(SS_PLATFORM_MACOS)
 
 	extern Sandstone::Application* Sandstone::CreateApplication();
 
@@ -15,5 +15,6 @@
 		app->Run();
 		delete app;
 	}
-
+#else
+    #error "Entry point not built for current OS!"
 #endif

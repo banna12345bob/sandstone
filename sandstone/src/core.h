@@ -17,7 +17,6 @@
 		#error "Sandstone doesn't support IOS"
 	#elif TARGET_OS_MAC == 1
 		#define SS_PLATFORM_MACOS
-		#error "Sandstone doesn't support MacOS"
 	#else
 		#error "Unknown Apple platform!"
 	#endif

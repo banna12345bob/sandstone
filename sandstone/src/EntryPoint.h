@@ -9,7 +9,7 @@
 		Sandstone::Log::Init();
 
 		SS_CORE_INFO("Sandstone Initialised");
-		SS_TRACE("Build successful");
+		SS_INFO("Build successful");
 
 		auto app = Sandstone::CreateApplication();
 		app->Run();

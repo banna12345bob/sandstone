@@ -25,3 +25,4 @@ data/save.json
 *.plist
 *.xcworkspacedata
 *.xcuserstate
+*.log

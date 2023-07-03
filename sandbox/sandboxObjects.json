@@ -9,12 +9,14 @@
     "brick": {
         "description":"Looks like a brick",
         "colour": "red",
-        "material": "brick"
+        "material": "brick",
+        "use":"Brick"
     },
     "stick":{
         "description":"What's brown and sticky",
         "colour":"brown",
-        "material":"wood"
+        "material":"wood",
+        "use":"stick"
     },
     "sword":{
         "use":"You swing the sword around like a maniac hitting nothing"

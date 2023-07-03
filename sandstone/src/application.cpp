@@ -12,9 +12,4 @@ namespace Sandstone {
 
 	}
 
-	void Application::Run()
-	{
-		while (true);
-	}
-
 }

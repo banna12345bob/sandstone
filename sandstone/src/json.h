@@ -1,7 +1,9 @@
 #pragma once
-#include <fstream>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
+
+#include <fstream>
+#include <iostream>
 
 #include "Log.h"
 
@@ -15,6 +17,14 @@ namespace Sandstone {
 			SS_CORE_ASSERT(f, "File doesn't exist");
 			json data = json::parse(f);
 			return data;
+		}
+
+		static bool Write(std::string file, json data) {
+			std::string dataStr = data.dump();
+			std::ofstream out(file);
+			out << dataStr;
+			out.close();
+			return true;
 		}
 	};
 }

@@ -4,8 +4,9 @@ class Sandbox : public Sandstone::Application
 {
 public:
 	Sandbox()
+		: Sandstone::Application("sandboxRooms.json", "sandboxObjects.json")
 	{
-		Sandstone::run("sandboxRooms.json", "sandboxObjects.json");
+
 	}
 	~Sandbox()
 	{

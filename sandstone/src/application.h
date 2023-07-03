@@ -1,16 +1,23 @@
 #pragma once
 
 #include"Core.h"
+#include <string>
+#include <sstream>
 
 namespace Sandstone {
 
 	class Application
 	{
 	public:
-		Application();
+		Application(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "1");
 		virtual ~Application();
 
-		void Run() {};
+		void Run();
+	private:
+		std::string m_RoomFile;
+		std::string m_ObjectFile;
+		std::string m_SaveFile;
+		std::string m_Player;
 	};
 
 	//	To be defined in client

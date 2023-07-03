@@ -16,8 +16,10 @@ namespace Sandstone {
 
 	void Application::Run()
 	{
+		int m_Area = 1;
+		int m_Room = 1;
 		std::string inp;
-		while (inp != "quit" && inp != "exit") {
+		while (true) {
 			std::string arr[100];
 			int arr_length = 0;
 			std::cout << "Command: ";
@@ -32,7 +34,21 @@ namespace Sandstone {
 			}
 			arr[arr_length] = inp;
 			if (arr[0] == "look") {
-				std::cout << look(1, 1, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player).run(arr) << std::endl;
+				std::cout << look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player).run(arr) << std::endl;
+			}
+			else if (room(m_Area, m_Room, m_RoomFile, m_Player).getDirections().contains(arr[0])) {
+				auto a = room(m_Area, m_Room, m_RoomFile, m_Player).getDirection(arr[0]);
+				if (a[0] != 0 || a[0] != 0) {
+					m_Area = a[0];
+					m_Room = a[1];
+				}
+				std::cout << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << std::endl;
+			}
+			else if (inp == "quit" || inp == "exit") {
+				break;
+			}
+			else {
+				std::cout << "Unknown command" << std::endl;
 			}
 		}
 	}

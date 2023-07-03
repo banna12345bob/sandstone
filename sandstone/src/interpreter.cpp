@@ -12,6 +12,54 @@ namespace Sandstone {
 			JSON::Write(nFile, JSON::Read(iFile));
 			m_File = JSON::Read(nFile);
 		}
+		m_FileName = nFile;
+	}
+
+	std::vector<int> room::getDirection(std::string direction)
+	{
+		std::string rDirections;
+		if (getDirections().contains(direction)) 
+		{
+			if (getDirections()[direction].contains("locked")) {
+				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
+					if (getDirections()[direction].contains("unlockedBy")/* in inv.getInventory(True)*/) {
+
+						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
+						JSON().Write(m_FileName, m_File);
+						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
+						std::cout << unlockMsg << std::endl;
+						rDirections = getDirections()[direction]["room"];
+						//if self.file[str(self.area)][str(self.room)]["directions"][direction]["breaks"][0] == True:
+							//inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
+					}
+					else {
+						std::string a = getDirections()[direction]["lockedMsg"];
+						std::cout << a << std::endl;
+						std::vector<int> error;
+						error.push_back(0);
+						error.push_back(0);
+						return error;
+					}
+				}
+			}
+			if (getDirections()[direction].contains("room")) {
+				rDirections = getDirections()[direction]["room"];
+			}
+			else {
+				rDirections = getDirections()[direction];
+			}
+			std::vector<int> vec;
+			size_t pos = 0;
+			std::string word;
+			while ((pos = rDirections.find(":")) != std::string::npos) {
+				word = rDirections.substr(0, pos);
+				vec.push_back(std::stoi(word));
+				rDirections.erase(0, pos + 1);
+			}
+			vec.push_back(std::stoi(rDirections));
+			SS_CORE_ASSERT(m_File[std::to_string(vec[0])].contains(std::to_string(vec[1])), "Room doesn't exist");
+			return vec;
+		}
 	}
 
 	object::object(std::string name, std::string use)

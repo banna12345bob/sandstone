@@ -2,7 +2,7 @@
 #include "Log.h"
 
 namespace Sandstone {
-	
+
 	class room {
 	public:
 		room(int area, int room, std::string iFile, std::string player);
@@ -30,12 +30,13 @@ namespace Sandstone {
 
 		// ----------- Direction functions ----------- //
 		json getDirections() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"]; }
-		//getDirection(std::string direction);
+		std::vector<int> getDirection(std::string direction);
 
 	private:
 		int m_Area;
 		int m_Room;
 		std::string m_Player;
+		std::string m_FileName;
 
 		json m_File;
 	};

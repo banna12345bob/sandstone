@@ -31,4 +31,11 @@ namespace Sandstone {
 		}
 	};
 
+	class debugger {
+	public:
+		debugger() { m_Enable = JSON().Read("../data/options.json")["debuggerEnabled"]; if (m_Enable) { ignoreLocks = JSON().Read("../data/options.json")["ignoreLocks"]; } }
+		bool m_Enable = false;
+		bool ignoreLocks = false;
+	};
+
 }

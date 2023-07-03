@@ -7,3 +7,6 @@
 [submodule "sandstone/vendor/spdlog"]
 	path = sandstone/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "sandstone/vendor/json"]
+	path = sandstone/vendor/json
+	url = https://github.com/nlohmann/json

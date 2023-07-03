@@ -34,7 +34,8 @@ project "sandstone"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/json/include"
 	}
 
 	filter "system:windows"
@@ -84,6 +85,7 @@ project "sandbox"
 	includedirs
 	{
 		"sandstone/vendor/spdlog/include",
+		"sandstone/vendor/json/include",
 		"sandstone/src",
 		"sandstone/vendor"
 	}

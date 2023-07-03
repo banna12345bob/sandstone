@@ -1,4 +1,5 @@
 #pragma once
+#include "json.h"
 
 #if defined(SS_PLATFORM_WINDOWS) || defined(SS_PLATFORM_MACOS)
 
@@ -9,6 +10,7 @@
 		Sandstone::Log::Init();
 
 		SS_CORE_INFO("Sandstone Initialised");
+		SS_CORE_INFO("Version: {0}", Sandstone::JSON::Read("../version.json")["version"]);
 		SS_INFO("Build successful");
 
 		auto app = Sandstone::CreateApplication();

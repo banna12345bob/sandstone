@@ -65,6 +65,7 @@ namespace Sandstone {
 					std::cout << commands[arr[0]]->run(arr) << std::endl;
 				}
 				else {
+					SS_CORE_WARN("Debugger disabled");
 					std::cout << "Unknown command" << std::endl;
 				}
 			}

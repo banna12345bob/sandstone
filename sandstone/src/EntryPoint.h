@@ -10,7 +10,7 @@
 		Sandstone::Log::Init();
 
 		SS_CORE_INFO("Sandstone Initialised");
-		SS_CORE_INFO("Version: {0}", Sandstone::JSON::Read("../version.json")["version"]);
+		SS_CORE_INFO("Version: {0}", Sandstone::JSON::Read("../sandstone/version.json")["version"]);
 		SS_INFO("Build successful");
 
 		auto app = Sandstone::CreateApplication();

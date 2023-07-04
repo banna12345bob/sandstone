@@ -42,19 +42,27 @@ namespace Sandstone {
 	std::string save::run(std::string lCommand[]) {
 		auto save = JSON().Read(m_saveFile);
 		if(save == false || lCommand[1] == "reset") {
-			json save;
-			save["currentRoom"] = 1;
-			save["currentArea"] = 1;
-			for (int i = 0; i < 10; i++) {
-				save["inventory"][i] = "";
-			}
-			JSON().Write(m_saveFile, save);
+			resetSave(m_saveFile).init();
 		} else {
 			save["currentRoom"] = m_Room;
 			save["currentArea"] = m_Area;
 			JSON().Write(m_saveFile, save);
 		}
 		return "File saved";
+	}
+
+	inv::inv(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+	}
+
+	std::string inv::run(std::string lCommand[]) {
+		return inventory(m_saveFile).getInvnetory();
 	}
 
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
@@ -77,6 +85,28 @@ namespace Sandstone {
 			else {
 				return read.dump();
 			}
+		}
+		else {
+			return "Expected second argument";
+		}
+	}
+
+	give::give(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_DebugOnly = true;
+	}
+
+	std::string give::run(std::string lCommand[]) {
+		if (lCommand[1] != "") {
+			object* lObject = objects(m_objectFile).getObject(lCommand[1]);
+			inventory(m_saveFile).addToInventory(lObject);
+			return "Added " + lCommand[1] + " to inventory";
 		}
 		else {
 			return "Expected second argument";

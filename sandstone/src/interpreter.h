@@ -45,6 +45,7 @@ namespace Sandstone {
 	public:
 		object(std::string name, std::string use);
 		std::string getUse() { return m_Use; }
+		std::string getName() { return m_Name; }
 	private:
 		std::string m_Name;
 		std::string m_Use;

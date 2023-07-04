@@ -1,21 +1,12 @@
 {
     "version":"1.3.0",
     "spoon": {
-        "description":"Looks like a spoon",
-        "use":"You try to use the spoon but there is no soop around",
-        "colour": "green",
-        "material": "metal"
+        "use":"You try to use the spoon but there is no soop around"
     },
     "brick": {
-        "description":"Looks like a brick",
-        "colour": "red",
-        "material": "brick",
         "use":"Brick"
     },
     "stick":{
-        "description":"What's brown and sticky",
-        "colour":"brown",
-        "material":"wood",
         "use":"stick"
     },
     "sword":{

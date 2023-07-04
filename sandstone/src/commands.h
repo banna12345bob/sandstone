@@ -1,5 +1,5 @@
 #pragma once
-#include "interpreter.h"
+#include "inventory.h"
 
 namespace Sandstone {
 	class command {
@@ -27,9 +27,21 @@ namespace Sandstone {
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
+	class inv : public command {
+	public:
+		inv(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
 	class open : public command {
 	public:
 		open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
+	class give : public command {
+	public:
+		give(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 }

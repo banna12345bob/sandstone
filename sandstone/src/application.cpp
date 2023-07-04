@@ -15,9 +15,10 @@ namespace Sandstone {
 		std::string m_SaveDir = appData + "\\sandstone\\";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
-			m_SaveDir = appData + "\\sandstone\\" + player + "\\";
+			m_SaveDir = m_SaveDir + player + "\\";
 			std::filesystem::create_directory(m_SaveDir);
 		}
+		m_SaveDir = appData + "\\sandstone\\" + player + "\\";
 		m_SaveFile = m_SaveDir + saveFile;
 	}
 
@@ -49,9 +50,11 @@ namespace Sandstone {
 			std::map<std::string, command*> commands;
 			commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 
 			// ----------- Debug Commands ----------- //
 			commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			commands["give"] = new give(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			
 			if (commands.count(arr[0]))
 			{

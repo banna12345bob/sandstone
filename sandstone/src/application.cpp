@@ -49,10 +49,21 @@ namespace Sandstone {
 			std::map<std::string, command*> commands;
 			commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			//myMap["sub"] = sub;
+
+			// ----------- Debug Commands ----------- //
+			commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			
 			if (commands.count(arr[0]))
 			{
-				std::cout << commands[arr[0]]->run(arr) << std::endl;
+				if (!commands[arr[0]]->m_DebugOnly) {
+					std::cout << commands[arr[0]]->run(arr) << std::endl;
+				}
+				else if (debugger().m_Enable) {
+					std::cout << commands[arr[0]]->run(arr) << std::endl;
+				}
+				else {
+					std::cout << "Unknown command" << std::endl;
+				}
 			}
 			else if (room(m_Area, m_Room, m_RoomFile, m_Player).getDirections().contains(arr[0])) {
 				auto a = room(m_Area, m_Room, m_RoomFile, m_Player).getDirection(arr[0]);

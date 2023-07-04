@@ -12,6 +12,7 @@ namespace Sandstone {
 		std::string m_objectFile;
 		std::string m_saveFile;
 		std::string m_player;
+		bool m_DebugOnly = false;
 	};
 
 	class look : public command {
@@ -23,6 +24,12 @@ namespace Sandstone {
 	class save : public command {
 	public:
 		save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
+	class open : public command {
+	public:
+		open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 }

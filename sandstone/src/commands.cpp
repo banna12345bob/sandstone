@@ -56,4 +56,30 @@ namespace Sandstone {
 		}
 		return "File saved";
 	}
+
+	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_DebugOnly = true;
+	}
+
+	std::string open::run(std::string lCommand[]) {
+		if (lCommand[1] != "") {
+			auto read = JSON().Read(lCommand[1]);
+			if (read == false) {
+				return "File not found";
+			}
+			else {
+				return read.dump();
+			}
+		}
+		else {
+			return "Expected second argument";
+		}
+	}
 }

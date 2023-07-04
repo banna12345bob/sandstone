@@ -5,7 +5,15 @@ namespace Sandstone {
 	room::room(int area, int room, std::string iFile, std::string player)
 		: m_Area(area), m_Room(room), m_Player(player)
 	{
-		std::string nFile = iFile.substr(0, iFile.find_last_of(".")) + m_Player + iFile.substr(iFile.find_last_of("."));
+		char* pValue;
+		size_t len;
+		_dupenv_s(&pValue, &len, "APPDATA");
+		std::string appData(pValue);
+		std::string m_SaveDir = appData + "\\sandstone\\" + player + "\\";
+		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
+			std::filesystem::create_directory(m_SaveDir);
+		}
+		std::string nFile = m_SaveDir + iFile.substr(0, iFile.find_last_of(".")) + "Save" + iFile.substr(iFile.find_last_of("."));
 		if (JSON::Read(nFile) != false) {
 			m_File = JSON::Read(nFile);
 		} else {

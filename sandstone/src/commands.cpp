@@ -29,4 +29,31 @@ namespace Sandstone {
 		return "No description found";
 	}
 
+	save::save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+	}
+
+	std::string save::run(std::string lCommand[]) {
+		auto save = JSON().Read(m_saveFile);
+		if(save == false || lCommand[1] == "reset") {
+			json save;
+			save["currentRoom"] = 1;
+			save["currentArea"] = 1;
+			for (int i = 0; i < 10; i++) {
+				save["inventory"][i] = "";
+			}
+			JSON().Write(m_saveFile, save);
+		} else {
+			save["currentRoom"] = m_Room;
+			save["currentArea"] = m_Area;
+			JSON().Write(m_saveFile, save);
+		}
+		return "File saved";
+	}
 }

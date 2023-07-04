@@ -9,7 +9,7 @@ namespace Sandstone {
 	class Application
 	{
 	public:
-		Application(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "1");
+		Application(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "Player1");
 		virtual ~Application();
 
 		void Run();

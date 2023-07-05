@@ -23,6 +23,10 @@ namespace Sandstone {
 		}
 
 		static bool Write(std::string file, json data) {
+			std::string fileDir = file.substr(0, file.find_last_of("\\"));
+			if (!std::filesystem::is_directory(fileDir) || !std::filesystem::exists(fileDir)) {
+				std::filesystem::create_directory(fileDir);
+			}
 			std::string dataStr = data.dump();
 			std::ofstream out(file);
 			out << dataStr;

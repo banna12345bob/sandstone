@@ -16,10 +16,11 @@ namespace Sandstone {
 		std::string m_SaveDir = appData + "\\sandstone\\";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
-			m_SaveDir = m_SaveDir + player + "\\";
+		}
+		m_SaveDir = m_SaveDir + player + "\\";
+		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}
-		m_SaveDir = appData + "\\sandstone\\" + player + "\\";
 		m_SaveFile = m_SaveDir + saveFile;
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);

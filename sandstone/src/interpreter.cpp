@@ -9,7 +9,11 @@ namespace Sandstone {
 		size_t len;
 		_dupenv_s(&pValue, &len, "APPDATA");
 		std::string appData(pValue);
-		std::string m_SaveDir = appData + "\\sandstone\\" + player + "\\";
+		std::string m_SaveDir = appData + "\\sandstone\\";
+		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
+			std::filesystem::create_directory(m_SaveDir);
+		}
+		m_SaveDir = m_SaveDir + player + "\\";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}

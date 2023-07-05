@@ -1,5 +1,11 @@
 {
-    "version":"1.3.0",
+  "version": {
+    "major": 2,
+    "minor": 0,
+    "patch": 0
+  },
+  "1": {
+    "name": "Jail",
     "1": {
         "name": "Jail",
         "1": {

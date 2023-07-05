@@ -8,7 +8,7 @@
     "use": "null object. How did you get this item?"
   },
   "spoon": {
-    "use": "You try to use the spoon but there is no soop around"
+    "use": "You try to use the spoon but there is no soup around"
   },
   "brick": {
     "use": "Brick"

@@ -2,6 +2,7 @@
 #include "commands.h"
 #include <Windows.h>
 #include <filesystem>
+#include "version.h"
 
 namespace Sandstone {
 
@@ -20,6 +21,8 @@ namespace Sandstone {
 		}
 		m_SaveDir = appData + "\\sandstone\\" + player + "\\";
 		m_SaveFile = m_SaveDir + saveFile;
+		version().checkVersion(m_RoomFile);
+		version().checkVersion(m_ObjectFile);
 	}
 
 	Application::~Application()

@@ -92,7 +92,9 @@ namespace Sandstone {
 
 	object* objects::getObject(std::string name)
 	{
-		SS_CORE_ASSERT(m_Objects.count(name), "Object doesn't exist");
+		if (m_Objects.count(name) == false) {
+			return m_Objects["null"];
+		}
 		return m_Objects[name];
 	}
 

@@ -28,16 +28,9 @@ namespace Sandstone {
 		}
 	}
 
-	std::string inventory::getInvnetory()
+	std::vector<std::string> inventory::getInvnetory()
 	{
-		for (int i = 0; i < m_Inventory.size() - 1; i++)
-		{
-			std::cout << m_Inventory[i] << std::endl;
-		}
-		if (m_Inventory[m_Inventory.size() - 1] == "") {
-			return "No items in inventory";
-		}
-		return m_Inventory[m_Inventory.size() - 1];
+		return m_Inventory;
 	}
 
 	void inventory::addToInventory(object* lObject)

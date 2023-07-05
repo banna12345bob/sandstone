@@ -1,19 +1,22 @@
 {
-    "version":{
-        "major": 2,
-        "minor": 0,
-        "patch": 0
-    },
-    "spoon": {
-        "use":"You try to use the spoon but there is no soop around"
-    },
-    "brick": {
-        "use":"Brick"
-    },
-    "stick":{
-        "use":"stick"
-    },
-    "sword":{
-        "use":"You swing the sword around like a maniac hitting nothing"
-    }
+  "version": {
+    "major": 2,
+    "minor": 0,
+    "patch": 0
+  },
+  "null": {
+    "use": "null object. How did you get this item?"
+  },
+  "spoon": {
+    "use": "You try to use the spoon but there is no soop around"
+  },
+  "brick": {
+    "use": "Brick"
+  },
+  "stick": {
+    "use": "stick"
+  },
+  "sword": {
+    "use": "You swing the sword around like a maniac hitting nothing"
+  }
 }

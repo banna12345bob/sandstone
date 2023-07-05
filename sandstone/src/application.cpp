@@ -36,6 +36,14 @@ namespace Sandstone {
 		int m_Area = 1;
 		int m_Room = 1;
 		std::string inp;
+		auto file = JSON().Read(m_SaveFile);
+		if (file != false) {
+			m_Area = file["currentArea"];
+			m_Room = file["currentRoom"];
+			SS_CORE_INFO("Autoloaded save");
+		} else {
+			SS_CORE_WARN("Failed to find save file");
+		}
 		while (true) {
 			std::string arr[100];
 			int arr_length = 0;
@@ -55,6 +63,7 @@ namespace Sandstone {
 			commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			commands["use"] = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 
 			// ----------- Debug Commands ----------- //
 			commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);

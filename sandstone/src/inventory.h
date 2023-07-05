@@ -15,7 +15,7 @@ namespace Sandstone {
 	class inventory {
 	public:
 		inventory(std::string saveFilePath);
-		std::string getInvnetory();
+		std::vector<std::string> getInvnetory();
 		void addToInventory(object* lObject);
 	private:
 		json m_SaveFile;

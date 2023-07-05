@@ -43,12 +43,13 @@ namespace Sandstone {
 		auto save = JSON().Read(m_saveFile);
 		if(save == false || lCommand[1] == "reset") {
 			resetSave(m_saveFile).init();
+			return "Save reset";
 		} else {
 			save["currentRoom"] = m_Room;
 			save["currentArea"] = m_Area;
 			JSON().Write(m_saveFile, save);
+			return "File saved";
 		}
-		return "File saved";
 	}
 
 	inv::inv(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
@@ -62,7 +63,43 @@ namespace Sandstone {
 	}
 
 	std::string inv::run(std::string lCommand[]) {
-		return inventory(m_saveFile).getInvnetory();
+		std::vector<std::string> u_Inventory = inventory(m_saveFile).getInvnetory();
+		for (int i = 0; i < u_Inventory.size() - 1; i++)
+		{
+			std::cout << u_Inventory[i] << std::endl;
+		}
+		if (u_Inventory[u_Inventory.size() - 1] == "") {
+			return "No items in inventory";
+		}
+		return u_Inventory[u_Inventory.size() - 1];
+	}
+
+	use::use(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+	}
+
+	std::string use::run(std::string lCommand[]) {
+		if (lCommand[1] != "") {
+			object* lObject = objects(m_objectFile).getObject(lCommand[1]);
+			std::vector<std::string> u_Inventory = inventory(m_saveFile).getInvnetory();
+			for (int i = 0; i < u_Inventory.size(); i++)
+			{
+				if (u_Inventory[i] == lObject->getName())
+				{
+					return lObject->getUse();
+				}
+			}
+			return lCommand[1] + " not found in inventory";
+		}
+		else {
+			return "Expected second argument";
+		}
 	}
 
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
@@ -105,6 +142,9 @@ namespace Sandstone {
 	std::string give::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
 			object* lObject = objects(m_objectFile).getObject(lCommand[1]);
+			if (lObject->getName() == "null") {
+				return "Item named " + lCommand[1] + " doesn't exist";
+			}
 			inventory(m_saveFile).addToInventory(lObject);
 			return "Added " + lCommand[1] + " to inventory";
 		}

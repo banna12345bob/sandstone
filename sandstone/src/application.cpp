@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "commands.h"
 #include <Windows.h>
 #include <filesystem>
 #include "version.h"
@@ -59,23 +58,22 @@ namespace Sandstone {
 			}
 			arr[arr_length] = inp;
 
-			std::map<std::string, command*> commands;
-			commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			commands["use"] = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["use"] = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 
 			// ----------- Debug Commands ----------- //
-			commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			commands["give"] = new give(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["give"] = new give(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			
-			if (commands.count(arr[0]))
+			if (m_Commands.count(arr[0]))
 			{
-				if (!commands[arr[0]]->m_DebugOnly) {
-					std::cout << commands[arr[0]]->run(arr) << std::endl;
+				if (!m_Commands[arr[0]]->m_DebugOnly) {
+					std::cout << m_Commands[arr[0]]->run(arr) << std::endl;
 				}
 				else if (debugger().m_Enable) {
-					std::cout << commands[arr[0]]->run(arr) << std::endl;
+					std::cout << m_Commands[arr[0]]->run(arr) << std::endl;
 				}
 				else {
 					SS_CORE_WARN("Debugger disabled");

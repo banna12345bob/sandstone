@@ -3,6 +3,8 @@
 #include"Core.h"
 #include <string>
 #include <sstream>
+#include <map>
+#include "commands.h"
 
 namespace Sandstone {
 
@@ -13,6 +15,7 @@ namespace Sandstone {
 		virtual ~Application();
 
 		void Run();
+		std::map<std::string, command*> m_Commands;
 	private:
 		std::string m_RoomFile;
 		std::string m_ObjectFile;

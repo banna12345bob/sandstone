@@ -110,7 +110,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
-		m_DebugOnly = true;
+		command::m_DebugOnly = true;
 	}
 
 	std::string open::run(std::string lCommand[]) {
@@ -136,7 +136,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
-		m_DebugOnly = true;
+		command::m_DebugOnly = true;
 	}
 
 	std::string give::run(std::string lCommand[]) {

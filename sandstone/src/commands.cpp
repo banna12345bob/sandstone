@@ -102,6 +102,25 @@ namespace Sandstone {
 		}
 	}
 
+	dir::dir(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+	}
+
+	std::string dir::run(std::string lCommand[]) {
+		std::vector<std::string> directions = room(m_Area, m_Room, m_roomFile, m_player).getDirection();
+		for (int i = 0; i < directions.size() - 1; i++)
+		{
+			std::cout << directions[i] << std::endl;
+		}
+		return directions[directions.size() - 1];
+	}
+
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 	{
 		command::m_Area = area;

@@ -27,7 +27,18 @@ namespace Sandstone {
 		m_FileName = nFile;
 	}
 
-	std::vector<int> room::getDirection(std::string direction)
+	std::vector<std::string> room::getDirection()
+	{
+		std::vector<std::string> directions;
+		json file = getDirections();
+		for (json::iterator it = file.begin(); it != file.end(); ++it)
+		{
+			directions.push_back(it.key());
+		}
+		return directions;
+	}
+
+	std::vector<int> room::goDirection(std::string direction)
 	{
 		std::string rDirections;
 		if (getDirections().contains(direction)) 

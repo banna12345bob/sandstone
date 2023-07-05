@@ -30,7 +30,8 @@ namespace Sandstone {
 
 		// ----------- Direction functions ----------- //
 		json getDirections() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"]; }
-		std::vector<int> getDirection(std::string direction);
+		std::vector<std::string> getDirection();
+		std::vector<int> goDirection(std::string direction);
 
 	private:
 		int m_Area;

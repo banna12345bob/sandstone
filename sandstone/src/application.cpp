@@ -62,6 +62,7 @@ namespace Sandstone {
 			m_Commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			m_Commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			m_Commands["use"] = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["dir"] = new dir(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 
 			// ----------- Debug Commands ----------- //
 			m_Commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
@@ -80,16 +81,16 @@ namespace Sandstone {
 					std::cout << "Unknown command" << std::endl;
 				}
 			}
+			else if (inp == "quit" || inp == "exit") {
+				break;
+			}
 			else if (room(m_Area, m_Room, m_RoomFile, m_Player).getDirections().contains(arr[0])) {
-				auto a = room(m_Area, m_Room, m_RoomFile, m_Player).getDirection(arr[0]);
+				auto a = room(m_Area, m_Room, m_RoomFile, m_Player).goDirection(arr[0]);
 				if (a[0] != 0 || a[0] != 0) {
 					m_Area = a[0];
 					m_Room = a[1];
 				}
 				std::cout << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << std::endl;
-			}
-			else if (inp == "quit" || inp == "exit") {
-				break;
 			}
 			else {
 				std::cout << "Unknown command" << std::endl;

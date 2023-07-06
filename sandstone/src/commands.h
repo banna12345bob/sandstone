@@ -13,6 +13,7 @@ namespace Sandstone {
 		std::string m_saveFile;
 		std::string m_player;
 		bool m_DebugOnly = false;
+		std::string m_Description;
 	};
 
 	class look : public command {

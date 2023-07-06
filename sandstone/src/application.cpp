@@ -81,7 +81,30 @@ namespace Sandstone {
 					std::cout << "Unknown command" << std::endl;
 				}
 			}
-			else if (inp == "quit" || inp == "exit") {
+			else if (arr[0] == "help") {
+				std::map<std::string, command*>::iterator it = m_Commands.begin();
+
+				if (arr[1] == "") {
+					while (it != m_Commands.end())
+					{
+						std::cout << it->first << std::endl;
+						it++;
+					}
+				} else {
+					if (m_Commands.count(arr[1])) {
+						std::string description = m_Commands[arr[1]]->m_Description;
+						if (description == "") {
+							description = "Description not found";
+						}
+							std::cout << arr[1] << ": " << description << std::endl;
+					} else {
+						SS_ERROR("{0}: command nonexistent", arr[1]);
+						std::cout << arr[1] << ": Command not found" << std::endl;
+					}
+				}
+
+			}
+			else if (arr[0] == "quit" || arr[0] == "exit") {
 				break;
 			}
 			else if (room(m_Area, m_Room, m_RoomFile, m_Player).getDirections().contains(arr[0])) {

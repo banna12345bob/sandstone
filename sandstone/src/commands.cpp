@@ -10,6 +10,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_Description = "Gets a description of the current room";
 	}
 
 	std::string look::run(std::string lCommand[])
@@ -37,6 +38,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_Description = "Saves the game";
 	}
 
 	std::string save::run(std::string lCommand[]) {
@@ -60,6 +62,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_Description = "Displays your inventory";
 	}
 
 	std::string inv::run(std::string lCommand[]) {
@@ -82,6 +85,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_Description = "Uses an item";
 	}
 
 	std::string use::run(std::string lCommand[]) {
@@ -110,6 +114,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_Description = "Displays the directions you can go";
 	}
 
 	std::string dir::run(std::string lCommand[]) {
@@ -129,7 +134,8 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
-		command::m_DebugOnly = true;
+		m_DebugOnly = true;
+		m_Description = "Prints out the contents of a JSON file\nDEBUG ONLY";
 	}
 
 	std::string open::run(std::string lCommand[]) {
@@ -155,7 +161,8 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
-		command::m_DebugOnly = true;
+		m_DebugOnly = true;
+		m_Description = "Give specified item\nDEBUG ONLY";
 	}
 
 	std::string give::run(std::string lCommand[]) {

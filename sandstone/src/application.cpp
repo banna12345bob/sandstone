@@ -21,6 +21,11 @@ namespace Sandstone {
 			std::filesystem::create_directory(m_SaveDir);
 		}
 		m_SaveFile = m_SaveDir + saveFile;
+		m_RoomFile = m_SaveDir + roomFile.substr(0, roomFile.find_last_of(".")) + "Save" + roomFile.substr(roomFile.find_last_of("."));
+		JSON().Write(m_RoomFile, JSON().Read(roomFile));
+
+		m_baseRoomFile = roomFile;
+
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
 	}
@@ -59,10 +64,11 @@ namespace Sandstone {
 			arr[arr_length] = inp;
 
 			m_Commands["look"] = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["save"] = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player, m_baseRoomFile);
 			m_Commands["inv"] = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			m_Commands["use"] = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			m_Commands["dir"] = new dir(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["pickup"] = new pickup(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 
 			// ----------- Debug Commands ----------- //
 			m_Commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);

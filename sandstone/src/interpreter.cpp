@@ -3,28 +3,38 @@
 namespace Sandstone {
 
 	room::room(int area, int room, std::string iFile, std::string player)
-		: m_Area(area), m_Room(room), m_Player(player)
+		: m_Area(area), m_Room(room), m_Player(player), m_FileName(iFile)
 	{
-		char* pValue;
-		size_t len;
-		_dupenv_s(&pValue, &len, "APPDATA");
-		std::string appData(pValue);
-		std::string m_SaveDir = appData + "\\sandstone\\";
-		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
-			std::filesystem::create_directory(m_SaveDir);
+		m_File = JSON::Read(iFile);
+	}
+
+	std::vector<std::string> room::getItemsInRoom()
+	{
+		std::vector<std::string> items;
+		json item = m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"];
+		for (int i = 0; i < item.size(); i++)
+		{
+			items.push_back(item[i]);
 		}
-		m_SaveDir = m_SaveDir + player + "\\";
-		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
-			std::filesystem::create_directory(m_SaveDir);
+		return items;
+	}
+
+	bool room::removeItemFromRoom(std::string item)
+	{
+		std::vector<std::string> items = getItemsInRoom();
+		if (std::find(items.begin(), items.end(), item) != items.end()) {
+			items.erase(std::find(items.begin(), items.end(), item));
+			m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
+			JSON().Write(m_FileName, m_File);
+			return true;
 		}
-		std::string nFile = m_SaveDir + iFile.substr(0, iFile.find_last_of(".")) + "Save" + iFile.substr(iFile.find_last_of("."));
-		if (JSON::Read(nFile) != false) {
-			m_File = JSON::Read(nFile);
-		} else {
-			JSON::Write(nFile, JSON::Read(iFile));
-			m_File = JSON::Read(nFile);
-		}
-		m_FileName = nFile;
+		return false;
+
+	}
+
+	bool room::addItemToRoom(std::string item)
+	{
+		return false;
 	}
 
 	std::vector<std::string> room::getDirection()

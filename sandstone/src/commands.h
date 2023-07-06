@@ -24,8 +24,10 @@ namespace Sandstone {
 
 	class save : public command {
 	public:
-		save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player, std::string baseRoomFile);
 		virtual std::string run(std::string lCommand[]) override;
+	private:
+		std::string m_BaseRoomFile;
 	};
 
 	class inv : public command {
@@ -43,6 +45,12 @@ namespace Sandstone {
 	class dir : public command {
 	public:
 		dir(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
+	class pickup : public command {
+	public:
+		pickup(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 

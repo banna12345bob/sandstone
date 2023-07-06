@@ -18,6 +18,7 @@ namespace Sandstone {
 		std::map<std::string, command*> m_Commands;
 	private:
 		std::string m_RoomFile;
+		std::string m_baseRoomFile;
 		std::string m_ObjectFile;
 		std::string m_SaveFile;
 		std::string m_Player;

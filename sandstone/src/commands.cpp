@@ -15,22 +15,10 @@ namespace Sandstone {
 
 	std::string look::run(std::string lCommand[])
 	{
-		if (lCommand[1] != "") {
-			if (lCommand[1] == "room") {
-				return "You are in " + room(m_Area, m_Room, m_roomFile, m_player).getRoomName() + ":\nIt is " + room(m_Area, m_Room, m_roomFile, m_player).getDesciption();
-			}
-			else if (room(m_Area, m_Room, m_roomFile, m_player).getFurnature().contains(lCommand[1]))
-			{
-				return room(m_Area, m_Room, m_roomFile, m_player).getFurnatureDescription(lCommand[1]);
-			}
-		}
-		else if (lCommand[1] == "") {
-			return "You are in " + room(m_Area, m_Room, m_roomFile, m_player).getRoomName() + ":\nIt is " + room(m_Area, m_Room, m_roomFile, m_player).getDesciption();
-		}
-		return "No description found";
+		return "You are in " + room(m_Area, m_Room, m_roomFile, m_player).getRoomName() + ":\nIt is " + room(m_Area, m_Room, m_roomFile, m_player).getDesciption();
 	}
 
-	save::save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	save::save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player, std::string baseRoomFile)
 	{
 		command::m_Area = area;
 		command::m_Room = room;
@@ -38,6 +26,7 @@ namespace Sandstone {
 		command::m_objectFile = objectFile;
 		command::m_saveFile = saveFile;
 		command::m_player = player;
+		m_BaseRoomFile = baseRoomFile;
 		m_Description = "Saves the game";
 	}
 
@@ -45,6 +34,7 @@ namespace Sandstone {
 		auto save = JSON().Read(m_saveFile);
 		if(save == false || lCommand[1] == "reset") {
 			resetSave(m_saveFile).init();
+			JSON().Write(m_roomFile, JSON().Read(m_BaseRoomFile));
 			return "Save reset";
 		} else {
 			save["currentRoom"] = m_Room;
@@ -124,6 +114,29 @@ namespace Sandstone {
 			std::cout << directions[i] << std::endl;
 		}
 		return directions[directions.size() - 1];
+	}
+
+	pickup::pickup(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_Description = "Picks item up";
+	}
+
+	std::string pickup::run(std::string lCommand[]) {
+		std::vector<std::string> items = room(m_Area, m_Room, m_roomFile, m_player).getItemsInRoom();
+		if(std::find(items.begin(), items.end(), lCommand[1]) != items.end())
+		{
+			object* item = objects(m_objectFile).getObject(lCommand[1]);
+			inventory(m_saveFile).addToInventory(item);
+			room(m_Area, m_Room, m_roomFile, m_player).removeItemFromRoom(item->getName());
+			return "Item added to inventory";
+		}
+		return "Item not found";
 	}
 
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)

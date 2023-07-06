@@ -57,6 +57,8 @@ namespace Sandstone {
 
 	std::string inv::run(std::string lCommand[]) {
 		std::vector<std::string> u_Inventory = inventory(m_saveFile).getInvnetory();
+		if (u_Inventory.size() <= 0)
+			return "No items in inventory";
 		for (int i = 0; i < u_Inventory.size() - 1; i++)
 		{
 			std::cout << u_Inventory[i] << std::endl;
@@ -109,6 +111,11 @@ namespace Sandstone {
 
 	std::string dir::run(std::string lCommand[]) {
 		std::vector<std::string> directions = room(m_Area, m_Room, m_roomFile, m_player).getDirection();
+		if (directions.size() == 0)
+		{
+			SS_CORE_FATAL("No directions detected");
+			return "You are stuck";
+		}
 		for (int i = 0; i < directions.size() - 1; i++)
 		{
 			std::cout << directions[i] << std::endl;
@@ -137,6 +144,30 @@ namespace Sandstone {
 			return "Item added to inventory";
 		}
 		return "Item not found";
+	}
+
+	drop::drop(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_Description = "Drops item from inventory";
+	}
+
+	std::string drop::run(std::string lCommand[]) {
+		std::vector<std::string> inven = inventory(m_saveFile).getInvnetory();
+		if (std::find(inven.begin(), inven.end(), lCommand[1]) != inven.end())
+		{
+			object* item = objects(m_objectFile).getObject(lCommand[1]);
+			if (inventory(m_saveFile).removeFromInventory(item)) {
+				room(m_Area, m_Room, m_roomFile, m_player).addItemToRoom(item->getName());
+				return "Removed item from inventory";
+			}
+		}
+		return  lCommand[1] + " not found";
 	}
 
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)

@@ -49,4 +49,16 @@ namespace Sandstone {
 		JSON().Write(m_SaveFilePath, m_SaveFile);
 	}
 
+	bool inventory::removeFromInventory(object* lObject)
+	{
+		if (std::find(m_Inventory.begin(), m_Inventory.end(), lObject->getName()) != m_Inventory.end())
+		{
+			m_Inventory.erase(std::find(m_Inventory.begin(), m_Inventory.end(), lObject->getName()));
+			m_SaveFile["inventory"] = m_Inventory;
+			JSON().Write(m_SaveFilePath, m_SaveFile);
+			return true;
+		}
+		return false;
+	}
+
 }

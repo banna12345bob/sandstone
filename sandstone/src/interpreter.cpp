@@ -34,7 +34,11 @@ namespace Sandstone {
 
 	bool room::addItemToRoom(std::string item)
 	{
-		return false;
+		std::vector<std::string> items = getItemsInRoom();
+		items.push_back(item);
+		m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
+		JSON().Write(m_FileName, m_File);
+		return true;
 	}
 
 	std::vector<std::string> room::getDirection()

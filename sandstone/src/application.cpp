@@ -74,6 +74,7 @@ namespace Sandstone {
 			// ----------- Debug Commands ----------- //
 			m_Commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			m_Commands["give"] = new give(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["log"] = new log(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
 			
 			if (m_Commands.count(arr[0]))
 			{
@@ -94,7 +95,7 @@ namespace Sandstone {
 				if (arr[1] == "") {
 					while (it != m_Commands.end())
 					{
-						std::cout << it->first << std::endl;
+						std::cout << it->first << ": " << it->second->m_Description << std::endl;
 						it++;
 					}
 				} else {

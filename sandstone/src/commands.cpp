@@ -179,7 +179,7 @@ namespace Sandstone {
 		command::m_saveFile = saveFile;
 		command::m_player = player;
 		m_DebugOnly = true;
-		m_Description = "Prints out the contents of a JSON file\nDEBUG ONLY";
+		m_Description = "Prints out the contents of a JSON file      DEBUG ONLY";
 	}
 
 	std::string open::run(std::string lCommand[]) {
@@ -206,7 +206,7 @@ namespace Sandstone {
 		command::m_saveFile = saveFile;
 		command::m_player = player;
 		m_DebugOnly = true;
-		m_Description = "Give specified item\nDEBUG ONLY";
+		m_Description = "Give specified item                         DEBUG ONLY";
 	}
 
 	std::string give::run(std::string lCommand[]) {
@@ -220,6 +220,44 @@ namespace Sandstone {
 		}
 		else {
 			return "Expected second argument";
+		}
+	}
+
+	log::log(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_DebugOnly = true;
+		m_Description = "Print message to log                         DEBUG ONLY";
+	}
+
+	std::string log::run(std::string lCommand[]) {
+		if (lCommand[1] != "" && lCommand[2] != "") {
+			if (lCommand[1] == "trace") {
+				SS_CORE_TRACE(lCommand[2]);
+				return "";
+			} else if (lCommand[1] == "info") {
+				SS_CORE_INFO(lCommand[2]);
+				return "";
+			} else if (lCommand[1] == "warn") {
+				SS_CORE_WARN(lCommand[2]);
+				return "";
+			} else if (lCommand[1] == "error") {
+				SS_CORE_ERROR(lCommand[2]);
+				return "";
+			} else if (lCommand[1] == "fatal") {
+				SS_CORE_FATAL(lCommand[2]);
+				return "";
+			} else {
+				return "Unknown command";
+			}
+		}
+		else {
+			return "Expected more arguments";
 		}
 	}
 }

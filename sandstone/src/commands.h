@@ -71,4 +71,10 @@ namespace Sandstone {
 		give(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
 		virtual std::string run(std::string lCommand[]) override;
 	};
+
+	class log : public command {
+	public:
+		log(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
 }

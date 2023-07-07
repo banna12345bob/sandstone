@@ -1,5 +1,7 @@
 #include "Application.h"
+#ifdef SS_PLATFORM_WINDOWS
 #include <Windows.h>
+#endif
 #include <filesystem>
 #include "version.h"
 
@@ -10,7 +12,11 @@ namespace Sandstone {
 	{
 		char* pValue;
 		size_t len;
+#ifdef SS_PLATFORM_WINDOWS
 		_dupenv_s(&pValue, &len, "APPDATA");
+#elif defined(SS_PLATFORM_MACOS)
+        pValue = "~\\Library\\Application Support";
+#endif
 		std::string appData(pValue);
 		std::string m_SaveDir = appData + "\\sandstone\\";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {

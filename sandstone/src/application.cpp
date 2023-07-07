@@ -101,8 +101,15 @@ namespace Sandstone {
 				if (arr[1] == "") {
 					while (it != m_Commands.end())
 					{
-						std::cout << it->first << ": " << it->second->m_Description << std::endl;
-						it++;
+						if (it->second->m_DebugOnly && debugger().m_Enable) {
+							std::cout << it->first << ": " << it->second->m_Description << std::endl;
+							it++;
+						} else if (it->second->m_DebugOnly && !debugger().m_Enable) {
+							it++;
+						} else {
+							std::cout << it->first << ": " << it->second->m_Description << std::endl;
+							it++;
+						}
 					}
 				} else {
 					if (m_Commands.count(arr[1])) {
@@ -130,6 +137,7 @@ namespace Sandstone {
 				std::cout << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << std::endl;
 			}
 			else {
+				SS_CORE_WARN("{0}: unknown command", inp);
 				std::cout << "Unknown command" << std::endl;
 			}
 		}

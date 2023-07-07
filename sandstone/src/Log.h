@@ -22,7 +22,6 @@ namespace Sandstone {
 }
 
 
-#if !defined(SS_DIST)
 /* ------------------------- Core log macros ------------------------- */
 #define SS_CORE_TRACE(...)   ::Sandstone::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define SS_CORE_INFO(...)    ::Sandstone::Log::GetCoreLogger()->info(__VA_ARGS__)
@@ -36,18 +35,3 @@ namespace Sandstone {
 #define SS_WARN(...)         ::Sandstone::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define SS_ERROR(...)        ::Sandstone::Log::GetClientLogger()->error(__VA_ARGS__)
 #define SS_FATAL(...)        ::Sandstone::Log::GetClientLogger()->critical(__VA_ARGS__)
-#else
-/* ------------------------- Core log macros ------------------------- */
-#define SS_CORE_TRACE(...)
-#define SS_CORE_INFO(...)
-#define SS_CORE_WARN(...)
-#define SS_CORE_ERROR(...)
-#define SS_CORE_FATAL(...)
-
-/* ------------------------ Client log macros ------------------------ */
-#define SS_TRACE(...)
-#define SS_INFO(...)
-#define SS_WARN(...)
-#define SS_ERROR(...)
-#define SS_FATAL(...)
-#endif

@@ -9,14 +9,20 @@ namespace Sandstone {
 		std::string getAreaName() { return m_File[std::to_string(m_Area)]["name"]; }
 		std::string getRoomName() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["name"]; }
 		std::string getDesciption() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["description"]; }
+
 		// ----------- Furnature functions ----------- //
+		// Depricated functions removed in v2.0
 		//json getFurnature() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["furnature"]; }
 		//std::string getFurnatureDescription(std::string furnature) { return getFurnature()[furnature]["description"]; }
 		//json getFunratureObjects(std::string furnature) { return getFurnature()[furnature]["objects"]; }
 		//std::string getFunratureObjectLocation(std::string furnature, std::string object) { return getFunratureObjects(furnature)[object]["location"]; }
+
+		// ------------- Item functions ------------- //
 		std::vector<std::string> getItemsInRoom();
 		bool removeItemFromRoom(std::string item);
 		bool addItemToRoom(std::string item);
+
+
 		// -------------- NPC functions -------------- //
 		json getNpcs() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"]; }
 		// NPC dialogue will be done late when commands are implimented

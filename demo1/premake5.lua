@@ -44,9 +44,8 @@ project "demo1"
 
 	filter "configurations:Release"
 		defines "SS_RELEASE"
-		runtime "Release"
-		symbols "off"
-		optimize "on"
+		runtime "Debug"
+		symbols "on"
 
 	filter "configurations:Dist"
 		defines "SS_DIST"

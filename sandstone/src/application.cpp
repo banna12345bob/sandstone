@@ -117,7 +117,7 @@ namespace Sandstone {
 						if (description == "") {
 							description = "Description not found";
 						}
-							std::cout << arr[1] << ": " << description << std::endl;
+						std::cout << arr[1] << ": " << description << std::endl;
 					} else {
 						SS_ERROR("{0}: command nonexistent", arr[1]);
 						std::cout << arr[1] << ": Command not found" << std::endl;
@@ -134,7 +134,7 @@ namespace Sandstone {
 					m_Area = a[0];
 					m_Room = a[1];
 				}
-				std::cout << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << std::endl;
+				std::cout << "You are in the " << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << "\nIt is a " << room(m_Area, m_Room, m_RoomFile, m_Player).getDesciption() << std::endl;
 			}
 			else {
 				SS_CORE_WARN("{0}: unknown command", inp);

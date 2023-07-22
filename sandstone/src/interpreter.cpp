@@ -97,6 +97,10 @@ namespace Sandstone {
 			SS_CORE_ASSERT(m_File[std::to_string(vec[0])].contains(std::to_string(vec[1])), "Room doesn't exist");
 			return vec;
 		}
+		std::vector<int> error;
+		error.push_back(0);
+		error.push_back(0);
+		return error;
 	}
 
 	object::object(std::string name, std::string use)

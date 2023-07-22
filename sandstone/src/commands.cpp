@@ -170,6 +170,8 @@ namespace Sandstone {
 		return  lCommand[1] + " not found";
 	}
 
+	// ----------- Debug Commands ----------- //
+
 	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 	{
 		command::m_Area = area;

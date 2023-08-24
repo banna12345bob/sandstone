@@ -37,17 +37,17 @@ project "demo1"
 		systemversion "latest"
 		xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 
-	filter "configurations:Debug"
+	filter "configurations:Debug*"
 		defines "SS_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
-	filter "configurations:Release"
+	filter "configurations:Release*"
 		defines "SS_RELEASE"
 		runtime "Debug"
 		symbols "on"
 
-	filter "configurations:Dist"
+	filter "configurations:Dist*"
 		defines "SS_DIST"
 		runtime "Release"
 		optimize "on"

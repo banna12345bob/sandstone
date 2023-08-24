@@ -16,7 +16,11 @@
 		#define SS_PLATFORM_IOS
 		#error "Sandstone doesn't support IOS"
 	#elif TARGET_OS_MAC == 1
-		#define SS_PLATFORM_MACOS
+        #if TARGET_CPU_ARM64
+            #define SS_PLATFORM_MACOS_ARM64
+        #elif TARGET_CPU_X86
+            #define SS_PLATFORM_MACOS_x86
+        #endif
 	#else
 		#error "Unknown Apple platform!"
 	#endif
@@ -36,8 +40,10 @@
     #elif defined(SS_PLATFORM_LINUX)
         #include <signal.h>
         #define SS_DEBUGBREAK() raise(SIGTRAP)
-    #elif defined(SS_PLATFORM_MACOS)
+    #elif defined(SS_PLATFORM_MACOS_x86)
         #define SS_DEBUGBREAK() __asm__ volatile("int $0x03")
+    #elif defined(SS_PLATFORM_MACOS_ARM64)
+        #define SS_DEBUGBREAK()
     #else
         #error "Platform doesn't support debugbreak yet!"
     #endif

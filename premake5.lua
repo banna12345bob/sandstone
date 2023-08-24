@@ -1,13 +1,19 @@
 workspace "sandstone"
-	architecture "x86_64"
 	startproject "sandbox"
 
 	configurations
 	{
-		"Debug",
-		"Release",
-		"Dist"
+		"Debug_x86_64",
+		"Release_x86_64",
+		"Dist_x86_64",
+		"Debug_ARM64",
+		"Release_ARM64",
+		"Dist_ARM64",
 	}
+	filter "configurations:*_ARM64"
+		architecture "ARM64"
+	filter "configurations:*_x86_64"
+		architecture "x86_64"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 

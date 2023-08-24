@@ -10,22 +10,26 @@ namespace Sandstone {
 	Application::Application(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
-		char* pValue;
+		std::string pValue;
 		size_t len;
 #ifdef SS_PLATFORM_WINDOWS
 		_dupenv_s(&pValue, &len, "APPDATA");
-#elif defined(SS_PLATFORM_MACOS)
-        pValue = "~\\Library\\Application Support";
+#elif defined(SS_PLATFORM_MACOS_ARM64) || defined(SS_PLATFORM_MACOS_x86)
+        std::string const& key = "HOME";
+        char const* val = getenv(key.c_str());
+        std::string home = (val == NULL ? std::string() : std::string(val));
+        pValue = home + std::string("/Library/Application Support");
 #endif
 		std::string appData(pValue);
-		std::string m_SaveDir = appData + "\\sandstone\\";
+		std::string m_SaveDir = appData + "/sandstone/";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}
-		m_SaveDir = m_SaveDir + player + "\\";
+		m_SaveDir = m_SaveDir + player + "/";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}
+        SS_INFO("Save Directory: {0}", m_SaveDir);
 		m_SaveFile = m_SaveDir + saveFile;
 		m_RoomFile = m_SaveDir + roomFile.substr(0, roomFile.find_last_of(".")) + "Save" + roomFile.substr(roomFile.find_last_of("."));
 		JSON().Write(m_RoomFile, JSON().Read(roomFile));

@@ -16,10 +16,13 @@
 		#define SS_PLATFORM_IOS
 		#error "Sandstone doesn't support IOS"
 	#elif TARGET_OS_MAC == 1
+        #define SS_PLATFORM_MACOS
         #if TARGET_CPU_ARM64
             #define SS_PLATFORM_MACOS_ARM64
-        #elif TARGET_CPU_X86
+        #elif TARGET_CPU_X86_64
             #define SS_PLATFORM_MACOS_x86
+        #else
+            #error "Unknown Mac architecture!"
         #endif
 	#else
 		#error "Unknown Apple platform!"

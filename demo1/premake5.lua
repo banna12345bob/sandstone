@@ -27,6 +27,11 @@ project "demo1"
 		"sandstone"
 	}
 
+	postbuildcommands {
+		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Objects.json %{cfg.targetdir}",
+		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 

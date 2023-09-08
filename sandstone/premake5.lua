@@ -24,6 +24,10 @@ project "sandstone"
 		"vendor/json/include"
 	}
 
+	postbuildcommands {
+		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 

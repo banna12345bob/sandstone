@@ -46,7 +46,7 @@
     #elif defined(SS_PLATFORM_MACOS_x86)
         #define SS_DEBUGBREAK() __asm__ volatile("int $0x03")
     #elif defined(SS_PLATFORM_MACOS_ARM64)
-        #define SS_DEBUGBREAK()
+        #define SS_DEBUGBREAK() __builtin_trap()
     #else
         #error "Platform doesn't support debugbreak yet!"
     #endif

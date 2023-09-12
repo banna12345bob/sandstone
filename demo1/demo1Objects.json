@@ -1,7 +1,14 @@
 {
-    "version":"1.3.0",
+    "version": {
+      "major": 2,
+      "minor": 0,
+      "patch": 0
+    },
+    "null": {
+        "use": "null object. How did you get this item?"
+      },
     "spoon": {
-        "use":"You try to use the spoon but there is no soop around"
+        "use":"You try to use the spoon but there is no soup around"
     },
     "jailkey": {
         "use":"You need to find a door to use this \nHint: Type the direction you want to go and it will automatically unlock the door"

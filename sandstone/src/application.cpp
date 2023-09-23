@@ -4,6 +4,8 @@
 #endif
 #include <filesystem>
 #include "version.h"
+#include <pybind11/embed.h>
+namespace py = pybind11;
 
 namespace Sandstone {
 
@@ -39,6 +41,10 @@ namespace Sandstone {
 
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
+        py::scoped_interpreter guard{};
+        py::exec(R"(
+            print("Hello from python")
+        )");
 	}
 
 	Application::~Application()

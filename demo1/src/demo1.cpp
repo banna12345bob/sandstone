@@ -1,10 +1,10 @@
 #include <sandstone.h>
 
-class Demo1 : public Sandstone::Application
+class Demo1 : public Sandstone::ConsoleApplication
 {
 public:
 	Demo1()
-		: Sandstone::Application("demo1Rooms.json", "demo1Objects.json")
+		: Sandstone::ConsoleApplication("demo1Rooms.json", "demo1Objects.json")
 	{
 		
 	}

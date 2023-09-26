@@ -11,11 +11,11 @@ public:
 	}
 };
 
-class Sandbox : public Sandstone::Application
+class Sandbox : public Sandstone::ConsoleApplication
 {
 public:
 	Sandbox()
-		: Sandstone::Application("sandboxRooms.json", "sandboxObjects.json")
+		: Sandstone::ConsoleApplication("sandboxRooms.json", "sandboxObjects.json")
 	{
 		this->m_Commands["sand"] = new sand();
 	}

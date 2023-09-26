@@ -1,20 +1,21 @@
 #pragma once
 
-#include"Core.h"
+#include "core.h"
 #include <string>
 #include <sstream>
 #include <map>
 #include "commands.h"
+#include "Application.h"
 
 namespace Sandstone {
 
-	class Application
+	class ConsoleApplication : public Application
 	{
 	public:
-		Application(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "Player1");
-		virtual ~Application();
+        ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "Player1");
+		virtual ~ConsoleApplication();
 
-		void Run();
+		virtual void Run() override;
 		std::map<std::string, command*> m_Commands;
 	private:
 		std::string m_RoomFile;
@@ -25,5 +26,5 @@ namespace Sandstone {
 	};
 
 	//	To be defined in client
-	Application* CreateApplication();
+    Application* CreateApplication();
 }

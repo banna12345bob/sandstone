@@ -14,11 +14,11 @@ project "sandstone"
 	}
 
 	libdirs {
-		-- pythonLibPath
+		pythonLibPath
 	}
 
 	links {
-		-- pythonLib
+		pythonLib
 	}
 
 	includedirs
@@ -27,7 +27,7 @@ project "sandstone"
 		"vendor/spdlog/include",
 		"vendor/json/include",
 		"vendor/pybind11/include",
-		-- pythonIncludePath
+		pythonIncludePath
 	}
 
 	postbuildcommands {

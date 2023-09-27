@@ -14,6 +14,14 @@ project "demo1"
 		"**.json"
 	}
 
+	libdirs {
+		pythonLibPath
+	}
+
+	links {
+		pythonLib
+	}
+
 	includedirs
 	{
 		"%{wks.location}/sandstone/vendor/spdlog/include",

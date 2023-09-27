@@ -11,29 +11,26 @@ function queryTerminal(command)
 end
 
 function getPythonPath()
-    local p = queryTerminal('python3 -c "import sys; import os; print(os.path.dirname(sys.executable))"')
+    local p = queryTerminal('python -c "import sys; import os; print(os.path.dirname(sys.executable))"')
     
     -- sanitize path before returning it
-    p = string.gsub(p, "\\", "\\") -- replace double backslash
+    p = string.gsub(p, "\\\\", "\\") -- replace double backslash
     p = string.gsub(p, "\\", "/") -- flip slashes
     return p
 end
 
 function getPythonLib()
-    return queryTerminal("python3 -c \"import sys; import os; import glob; path = os.path.dirname(os.path.dirname(sys.executable)); libs = glob.glob(path + '/lib'); print(os.path.splitext(os.path.basename(libs[-1]))[0]);\"")
+    return queryTerminal("python -c \"import sys; import os; import glob; path = os.path.dirname(sys.executable); libs = glob.glob(path + '/libs/python*'); print(os.path.splitext(os.path.basename(libs[-1]))[0]);\"")
 end
 
 pythonPath      = getPythonPath()
-pythonIncludePath = pythonPath .. "/../include/python3.11"
-pythonLibPath     = pythonPath .. "/../lib"
+pythonIncludePath = pythonPath .. "/include/"
+pythonLibPath     = pythonPath .. "/libs/"
 pythonLib         = getPythonLib()
 
-if pythonPath == "" then
+if pythonPath == "" or pythonLib == "" then
     error("Failed to find python path!")
-elseif pythonLib == "" then
-    error("Failed to find python libary!")
 else
-	print("Python path: " .. pythonPath)
     print("Python includes: " .. pythonIncludePath)
     print("Python libs: " .. pythonLibPath)
     print("lib: " .. pythonLib)

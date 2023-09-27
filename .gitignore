@@ -26,3 +26,4 @@ data/save.json
 *.xcworkspacedata
 *.xcuserstate
 *.log
+*.pyc

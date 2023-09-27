@@ -42,9 +42,9 @@ namespace Sandstone {
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
         py::scoped_interpreter guard{};
-        py::exec(R"(
-            print("Hello from python")
-        )");
+		auto testPython = py::module::import("scripts.test");
+		auto func = testPython.attr("sayHello");
+		func();
 	}
 
     ConsoleApplication::~ConsoleApplication()

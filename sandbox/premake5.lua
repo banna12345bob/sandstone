@@ -14,6 +14,14 @@ project "sandbox"
 		"**.json"
 	}
 
+	libdirs {
+		pythonLibPath
+	}
+
+	links {
+		pythonLib
+	}
+
 	includedirs
 	{
 		"%{wks.location}/sandstone/vendor/spdlog/include",
@@ -29,7 +37,8 @@ project "sandbox"
 
 	postbuildcommands {
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Objects.json %{cfg.targetdir}",
-		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}"
+		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}",
+		"{COPY} %{wks.location}/%{prj.name}/scripts/* %{cfg.targetdir}/scripts/"
 	}
 
 	filter "system:windows"

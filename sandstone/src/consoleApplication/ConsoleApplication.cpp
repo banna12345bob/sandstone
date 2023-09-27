@@ -9,6 +9,15 @@ namespace py = pybind11;
 
 namespace Sandstone {
 
+	int cppFunc() {
+		std::cout << "[C++] Hello from c++!" << std::endl;
+		return 0;
+	}
+
+	PYBIND11_EMBEDDED_MODULE(sandstone, m) {
+		m.def("cppFunc", &cppFunc);
+	}
+
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
@@ -41,10 +50,18 @@ namespace Sandstone {
 
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
+
         py::scoped_interpreter guard{};
-		auto testPython = py::module::import("scripts.test");
-		auto func = testPython.attr("sayHello");
-		func();
+		try {
+			auto testPython = py::module::import("scripts.test");
+			auto func = testPython.attr("sayHello");
+			func();
+			auto addFunc = testPython.attr("add");
+			int result = addFunc(4, 7).cast<int>();
+			std::cout << "[C++] Python caculation result: " << result << std::endl;
+		} catch (py::error_already_set &e) {
+			SS_ERROR("{0}", e.what());
+		}
 	}
 
     ConsoleApplication::~ConsoleApplication()

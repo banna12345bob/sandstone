@@ -16,6 +16,9 @@ namespace Sandstone {
 
 	PYBIND11_EMBEDDED_MODULE(sandstone, m) {
 		m.def("cppFunc", &cppFunc);
+		py::class_<version>(m, "version")
+			.def(py::init<>())
+			.def("checkVersion", &version::checkVersion);
 	}
 
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)

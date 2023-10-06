@@ -11,7 +11,8 @@ project "sandbox"
 	{
 		"src/**.h",
 		"src/**.cpp",
-		"**.json"
+		"**.json",
+		"**.py"
 	}
 
 	libdirs {

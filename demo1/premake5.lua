@@ -11,7 +11,8 @@ project "demo1"
 	{
 		"src/**.h",
 		"src/**.cpp",
-		"**.json"
+		"**.json",
+		"**.py"
 	}
 
 	libdirs {

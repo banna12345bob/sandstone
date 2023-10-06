@@ -8,9 +8,9 @@ namespace Sandstone {
 		version() {
 			auto ver = JSON().Read("../sandstone/version.json");
 			if (ver != false) {
-				major = ver["major"];
-				minor = ver["minor"];
-				patch = ver["patch"];
+				major = ver["version"]["major"];
+				minor = ver["version"]["minor"];
+				patch = ver["version"]["patch"];
 			}
 			else {
 				SS_CORE_ASSERT(false, "version.json not found");

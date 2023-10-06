@@ -16,6 +16,9 @@ namespace Sandstone {
 
 	PYBIND11_EMBEDDED_MODULE(sandstone, m) {
 		m.def("cppFunc", &cppFunc);
+		py::class_<version>(m, "version")
+			.def(py::init<>())
+			.def("checkVersion", &version::checkVersion);
 	}
 
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
@@ -52,6 +55,11 @@ namespace Sandstone {
 		version().checkVersion(m_ObjectFile);
 
         py::scoped_interpreter guard{};
+		py::exec(R"(
+			import sys
+			major, minor, micro = sys.version_info[:3]
+			print(f"[PYTHON] Current version {major}.{minor}.{micro}")
+		)");
 		try {
 			auto testPython = py::module::import("scripts.test");
 			auto func = testPython.attr("sayHello");

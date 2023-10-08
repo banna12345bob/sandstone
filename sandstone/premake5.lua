@@ -13,21 +13,11 @@ project "sandstone"
 		"src/**.cpp"
 	}
 
-	libdirs {
-		pythonLibPath
-	}
-
-	links {
-		pythonLib
-	}
-
 	includedirs
 	{
 		"src",
 		"vendor/spdlog/include",
 		"vendor/json/include",
-		"vendor/pybind11/include",
-		pythonIncludePath
 	}
 
 	postbuildcommands {
@@ -36,6 +26,21 @@ project "sandstone"
 
 	filter "system:windows"
 		systemversion "latest"
+		defines "SS_PY_SCRIPTING"
+
+		libdirs {
+			pythonLibPath
+		}
+	
+		links {
+			pythonLib
+		}
+
+		includedirs
+		{
+			"vendor/pybind11/include",
+			pythonIncludePath
+		}
 
 	filter "system:linux"
 		systemversion "latest"

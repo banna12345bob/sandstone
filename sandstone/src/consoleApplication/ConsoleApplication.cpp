@@ -4,8 +4,10 @@
 #endif
 #include <filesystem>
 #include "version.h"
-#include <pybind11/embed.h>
-namespace py = pybind11;
+#ifdef SS_PY_SCRIPTING
+    #include <pybind11/embed.h>
+    namespace py = pybind11;
+#endif
 
 namespace Sandstone {
 
@@ -14,12 +16,14 @@ namespace Sandstone {
 		return 0;
 	}
 
+#ifdef SS_PY_SCRIPTING
 	PYBIND11_EMBEDDED_MODULE(sandstone, m) {
 		m.def("cppFunc", &cppFunc);
 		py::class_<version>(m, "version")
 			.def(py::init<>())
 			.def("checkVersion", &version::checkVersion);
 	}
+#endif
 
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
@@ -54,6 +58,7 @@ namespace Sandstone {
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
 
+#ifdef SS_PY_SCRIPTING
         py::scoped_interpreter guard{};
 		py::exec(R"(
 			import sys
@@ -70,6 +75,7 @@ namespace Sandstone {
 		} catch (py::error_already_set &e) {
 			SS_ERROR("{0}", e.what());
 		}
+#endif
 	}
 
     ConsoleApplication::~ConsoleApplication()

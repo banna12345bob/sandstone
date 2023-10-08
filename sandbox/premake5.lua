@@ -15,14 +15,6 @@ project "sandbox"
 		"**.py"
 	}
 
-	libdirs {
-		pythonLibPath
-	}
-
-	links {
-		pythonLib
-	}
-
 	includedirs
 	{
 		"%{wks.location}/sandstone/vendor/spdlog/include",
@@ -44,6 +36,14 @@ project "sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
+
+		libdirs {
+			pythonLibPath
+		}
+	
+		links {
+			pythonLib
+		}
 
 	filter "system:linux"
 		systemversion "latest"

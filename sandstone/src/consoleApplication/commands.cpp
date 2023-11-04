@@ -187,19 +187,32 @@ namespace Sandstone {
 	}
 
 	std::string talk::run(std::string lCommand[]) {
-		std::vector<std::string> npcs = room(m_Area, m_Room, m_roomFile, m_player).getNpcs();
-		//SS_CORE_TRACE("{0}", npcs);
+		std::vector<std::string> npcs = room(m_Area, m_Room, m_roomFile, m_player).getNpcList();
 		if (std::find(npcs.begin(), npcs.end(), lCommand[1]) != npcs.end())
 		{
+#ifdef SS_PY_SCRIPTING
+			py::scoped_interpreter guard{};
 			try {
-				SS_CORE_INFO("{0}", lCommand[1]);
-				auto testPython = py::module::import("scripts.test");
-				auto func = testPython.attr("sayHello");
-				func();
-			}
-			catch (py::error_already_set& e) {
+				auto npcModule = py::module::import("scripts.npcs");
+				std::string dump = room(m_Area, m_Room, m_roomFile, m_player).getNpcs()[lCommand[1]]["script"].dump();
+				if (dump != "null") {
+					// I have to do this because quotes are left on when dumping from json
+					dump.erase(0, 1);
+					dump.erase(dump.size() - 1);
+					const char* key = dump.c_str();
+					auto func = npcModule.attr(key);
+					return func().cast<std::string>();
+				}
+				SS_ERROR("[{0}][script] == null", lCommand[1]);
+				return "ERROR: Script not set";
+			} catch (py::error_already_set &e) {
 				SS_ERROR("{0}", e.what());
+				return "Python error";
 			}
+#else
+			SS_CORE_ERROR("Python scripting not supported");
+			return "Python not supported";
+#endif
 		}
 		return  lCommand[1] + " not found";
 	}

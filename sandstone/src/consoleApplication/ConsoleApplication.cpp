@@ -128,7 +128,11 @@ namespace Sandstone {
 			if (m_Commands.count(arr[0]))
 			{
 				if (!m_Commands[arr[0]]->m_DebugOnly) {
-					std::cout << m_Commands[arr[0]]->run(arr) << std::endl;
+					std::string run = m_Commands[arr[0]]->run(arr);
+					if (run != "quit")
+						std::cout << run << std::endl;
+					else
+						break;
 				}
 				else if (debugger().m_Enable) {
 					std::cout << m_Commands[arr[0]]->run(arr) << std::endl;

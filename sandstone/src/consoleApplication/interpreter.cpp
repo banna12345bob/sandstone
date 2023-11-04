@@ -41,7 +41,7 @@ namespace Sandstone {
 		return true;
 	}
 
-	std::vector<std::string> room::getNpcs()
+	std::vector<std::string> room::getNpcList()
 	{
 		std::vector<std::string> npcs;
 		json npc = m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"];

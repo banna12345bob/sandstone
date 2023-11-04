@@ -24,7 +24,8 @@ namespace Sandstone {
 
 
 		// -------------- NPC functions -------------- //
-		std::vector<std::string> getNpcs();
+		json getNpcs() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"]; }
+		std::vector<std::string> getNpcList();
 		// NPC dialogue will be done late when commands are implimented
 		/*json getNpcDialouge(std::string npc) { return getNpcs()[npc]["says"]; }
 		std::string getNpcDialougeExtension(std::string npc)*/
@@ -63,6 +64,7 @@ namespace Sandstone {
 	class objects {
 	public:
 		objects(std::string iFile);
+		objects() = default;
 		object* getObject(std::string name);
 	private:
 		json m_File;

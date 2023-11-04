@@ -1,4 +1,8 @@
 #include "inventory.h"
+#ifdef SS_PY_SCRIPTING
+#include <pybind11/embed.h>
+namespace py = pybind11;
+#endif
 
 namespace Sandstone {
 
@@ -31,6 +35,12 @@ namespace Sandstone {
 	std::vector<std::string> inventory::getInvnetory()
 	{
 		return m_Inventory;
+	}
+
+	void inventory::addToInventory(std::string lObject)
+	{
+		object* object = objects().getObject(lObject);
+		addToInventory(object);
 	}
 
 	void inventory::addToInventory(object* lObject)

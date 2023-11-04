@@ -16,6 +16,7 @@ namespace Sandstone {
 	public:
 		inventory(std::string saveFilePath);
 		std::vector<std::string> getInvnetory();
+		void addToInventory(std::string lObject);
 		void addToInventory(object* lObject);
 		bool removeFromInventory(object* lObject);
 	private:

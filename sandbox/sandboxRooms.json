@@ -16,12 +16,14 @@
             ],
             "npcs": {
                 "bobrick": {
+                    "script": "bobrick_talk",
                     "says":{
                         "start": "Hello child",
                         "gives": "spoon"
                     }
                 },
                 "rickbob": {
+                    "script": "rickbob_talk",
                     "says":{
                         "start": "Hello I am Rickbob and I will devour your soul",
                         "okay":{

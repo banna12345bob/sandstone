@@ -31,11 +31,13 @@ project "sandbox"
 	postbuildcommands {
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Objects.json %{cfg.targetdir}",
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}",
+		"{COPY} " .. pythonPath .. "/".. pythonLib .. ".dll %{cfg.targetdir}",
 		"{COPY} %{wks.location}/%{prj.name}/scripts/* %{cfg.targetdir}/scripts/"
 	}
 
 	filter "system:windows"
 		systemversion "latest"
+		defines "SS_PY_SCRIPTING"
 
 		libdirs {
 			pythonLibPath

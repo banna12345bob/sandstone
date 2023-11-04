@@ -24,7 +24,7 @@ namespace Sandstone {
 
 
 		// -------------- NPC functions -------------- //
-		json getNpcs() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"]; }
+		std::vector<std::string> getNpcs();
 		// NPC dialogue will be done late when commands are implimented
 		/*json getNpcDialouge(std::string npc) { return getNpcs()[npc]["says"]; }
 		std::string getNpcDialougeExtension(std::string npc)*/
@@ -32,8 +32,8 @@ namespace Sandstone {
 		// These functions should return an item but I need to impliment items
 		/*getNpcGives()
 		getNpcDrops()*/
-		bool checkItemGiven(std::string npc) { return getNpcs()["given"]; }
-		bool checkNpcKilled(std::string npc) { return getNpcs()["killed"]; }
+		// bool checkItemGiven(std::string npc) { return getNpcs()["given"]; }
+		// bool checkNpcKilled(std::string npc) { return getNpcs()["killed"]; }
 		//killNpc()
 
 		// ----------- Direction functions ----------- //

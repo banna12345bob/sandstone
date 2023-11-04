@@ -60,6 +60,12 @@ namespace Sandstone {
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
+	class talk : public command {
+	public:
+		talk(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
 	// ----------- Debug Commands ----------- //
 
 	class open : public command {

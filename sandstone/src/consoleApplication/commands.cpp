@@ -1,4 +1,8 @@
 #include "commands.h"
+#ifdef SS_PY_SCRIPTING
+	#include <pybind11/embed.h>
+	namespace py = pybind11;
+#endif
 
 namespace Sandstone {
 
@@ -165,6 +169,36 @@ namespace Sandstone {
 			if (inventory(m_saveFile).removeFromInventory(item)) {
 				room(m_Area, m_Room, m_roomFile, m_player).addItemToRoom(item->getName());
 				return "Removed item from inventory";
+			}
+		}
+		return  lCommand[1] + " not found";
+	}
+
+
+	talk::talk(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	{
+		command::m_Area = area;
+		command::m_Room = room;
+		command::m_roomFile = roomFile;
+		command::m_objectFile = objectFile;
+		command::m_saveFile = saveFile;
+		command::m_player = player;
+		m_Description = "Talk to an NPC";
+	}
+
+	std::string talk::run(std::string lCommand[]) {
+		std::vector<std::string> npcs = room(m_Area, m_Room, m_roomFile, m_player).getNpcs();
+		//SS_CORE_TRACE("{0}", npcs);
+		if (std::find(npcs.begin(), npcs.end(), lCommand[1]) != npcs.end())
+		{
+			try {
+				SS_CORE_INFO("{0}", lCommand[1]);
+				auto testPython = py::module::import("scripts.test");
+				auto func = testPython.attr("sayHello");
+				func();
+			}
+			catch (py::error_already_set& e) {
+				SS_ERROR("{0}", e.what());
 			}
 		}
 		return  lCommand[1] + " not found";

@@ -19,4 +19,10 @@ def rickbob_talk():
                     if inp == "don't believe you":
                         print("Oh well then looks like I'll have to end the game")
                         return "quit"
+                    else:
+                        break
+            else:
+                break
+        else:
+            break
     return ""

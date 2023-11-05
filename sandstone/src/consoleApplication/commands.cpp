@@ -16,7 +16,12 @@ namespace Sandstone {
 
 	std::string look::run(std::string lCommand[])
 	{
-		return "You are in " + m_roomPtr->getRoomName() + ":\nIt is " + m_roomPtr->getDesciption();
+		try {
+			return "You are in " + m_roomPtr->getRoomName() + ":\nIt is " + m_roomPtr->getDesciption();
+		} catch (...) {
+			SS_ASSERT(false, "Room doesn't exist");
+			return "ERROR: Room doesn't exist";
+		}
 	}
 
 	save::save(room* roomPtr, objects* objectsPtr, inventory* invPtr, std::string baseRoomFile)
@@ -236,6 +241,26 @@ namespace Sandstone {
 			}
 			m_invPtr->addToInventory(lObject);
 			return "Added " + lCommand[1] + " to inventory";
+		}
+		else {
+			return "Expected second argument";
+		}
+	}
+
+	go_to::go_to(room* roomPtr, objects* objectsPtr, inventory* invPtr)
+	{
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
+		m_DebugOnly = true;
+		m_Description = "Goto room                                   DEBUG ONLY";
+	}
+
+	std::string go_to::run(std::string lCommand[]) {
+		if (lCommand[1] != "" && lCommand[2] != "") {
+			m_roomPtr->m_Area = std::stoi(lCommand[1]);
+			m_roomPtr->m_Room = std::stoi(lCommand[2]);
+			return "You moved to room " + std::to_string(m_roomPtr->getArea()) + ":" + std::to_string(m_roomPtr->getRoom());
 		}
 		else {
 			return "Expected second argument";

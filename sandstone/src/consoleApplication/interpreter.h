@@ -6,6 +6,8 @@ namespace Sandstone {
 	class room {
 	public:
 		room(int area, int room, std::string iFile, std::string player);
+		int getArea() { return m_Area; }
+		int getRoom() { return m_Room; }
 		std::string getAreaName() { return m_File[std::to_string(m_Area)]["name"]; }
 		std::string getRoomName() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["name"]; }
 		std::string getDesciption() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["description"]; }

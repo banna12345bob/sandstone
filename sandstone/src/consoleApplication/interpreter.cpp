@@ -71,13 +71,16 @@ namespace Sandstone {
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
 					if (getDirections()[direction].contains("unlockedBy")/* in inv.getInventory(True)*/) {
+						// TODO: check if player has unlocking item in inventory
 
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
 						JSON().Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
 						std::cout << unlockMsg << std::endl;
 						rDirections = getDirections()[direction]["room"];
-						//if self.file[str(self.area)][str(self.room)]["directions"][direction]["breaks"][0] == True:
+						if (getDirections()[direction]["breaks"][0] == true)
+							// TODO: Remove item from inventory will probably have to move to different class
+							SS_CORE_WARN("TODO: Impliment item breaking when entering rooms");
 							//inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
 					}
 					else {

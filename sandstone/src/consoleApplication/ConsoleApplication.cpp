@@ -97,6 +97,11 @@ namespace Sandstone {
 		} else {
 			SS_CORE_WARN("Failed to find save file");
 		}
+
+		m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_Player);
+		m_objectsPtr = new objects(m_ObjectFile);
+		m_invPtr = new inventory(m_SaveFile);
+
 		while (true) {
 			std::string arr[100];
 			int arr_length = 0;
@@ -112,10 +117,6 @@ namespace Sandstone {
 			}
 			arr[arr_length] = inp;
 
-			m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_Player);
-			m_objectsPtr = new objects(m_ObjectFile);
-			m_invPtr = new inventory(m_SaveFile);
-
 			m_Commands["look"]    = new look(m_roomPtr, m_objectsPtr, m_invPtr);
 			m_Commands["save"]    = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
 			m_Commands["inv"]     = new inv(m_roomPtr, m_objectsPtr, m_invPtr);
@@ -128,6 +129,7 @@ namespace Sandstone {
 			// ----------- Debug Commands ----------- //
 			m_Commands["open"]    = new open(m_roomPtr, m_objectsPtr, m_invPtr);
 			m_Commands["give"]    = new give(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["goto"]    = new go_to(m_roomPtr, m_objectsPtr, m_invPtr);
 			m_Commands["log"]     = new log(m_roomPtr, m_objectsPtr, m_invPtr);
 			
 			if (m_Commands.count(arr[0]))
@@ -180,19 +182,21 @@ namespace Sandstone {
 			else if (arr[0] == "quit" || arr[0] == "exit") {
 				break;
 			}
-			else if (room(m_Area, m_Room, m_RoomFile, m_Player).getDirections().contains(arr[0])) {
-				auto a = room(m_Area, m_Room, m_RoomFile, m_Player).goDirection(arr[0]);
+			else if (m_roomPtr->getDirections().contains(arr[0])) {
+				auto a = m_roomPtr->goDirection(arr[0]);
 				if (a[0] != 0 || a[0] != 0) {
-					m_Area = a[0];
-					m_Room = a[1];
+					m_roomPtr->m_Area = a[0];
+					m_roomPtr->m_Room = a[1];
 				}
-				std::cout << "You are in the " << room(m_Area, m_Room, m_RoomFile, m_Player).getRoomName() << "\nIt is a " << room(m_Area, m_Room, m_RoomFile, m_Player).getDesciption() << std::endl;
+				std::cout << "You are in the " << m_roomPtr->getRoomName() << "\nIt is a " << m_roomPtr->getDesciption() << std::endl;
 			}
 			else {
 				SS_CORE_WARN("{0}: unknown command", inp);
 				std::cout << "Unknown command" << std::endl;
 			}
 		}
+		std::cout << "Press enter to quit...";
+		std::cin.ignore();
 	}
 
 }

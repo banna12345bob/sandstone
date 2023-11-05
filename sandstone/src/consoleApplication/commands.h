@@ -77,6 +77,12 @@ namespace Sandstone {
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
+	class go_to : public command {
+	public:
+		go_to(room* roomPtr, objects* objectsPtr, inventory* invPtr);
+		virtual std::string run(std::string lCommand[]) override;
+	};
+
 	class log : public command {
 	public:
 		log(room* roomPtr, objects* objectsPtr, inventory* invPtr);

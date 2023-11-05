@@ -6,25 +6,22 @@ namespace Sandstone {
 	public:
 		command() = default;
 		virtual std::string run(std::string lCommand[]) = 0;
-		int m_Area;
-		int m_Room;
-		std::string m_roomFile;
-		std::string m_objectFile;
-		std::string m_saveFile;
-		std::string m_player;
+		room* m_roomPtr;
+		objects* m_objectsPtr;
+		inventory* m_invPtr;
 		bool m_DebugOnly = false;
 		std::string m_Description;
 	};
 
 	class look : public command {
 	public:
-		look(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		look(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class save : public command {
 	public:
-		save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player, std::string baseRoomFile);
+		save(room* roomPtr, objects* objectsPtr, inventory* invPtr, std::string baseRoomFile);
 		virtual std::string run(std::string lCommand[]) override;
 	private:
 		std::string m_BaseRoomFile;
@@ -32,37 +29,37 @@ namespace Sandstone {
 
 	class inv : public command {
 	public:
-		inv(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		inv(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class use : public command {
 	public:
-		use(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		use(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class dir : public command {
 	public:
-		dir(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		dir(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class pickup : public command {
 	public:
-		pickup(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		pickup(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class drop : public command {
 	public:
-		drop(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		drop(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class talk : public command {
 	public:
-		talk(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		talk(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
@@ -70,19 +67,19 @@ namespace Sandstone {
 
 	class open : public command {
 	public:
-		open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		open(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class give : public command {
 	public:
-		give(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		give(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class log : public command {
 	public:
-		log(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player);
+		log(room* roomPtr, objects* objectsPtr, inventory* invPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 }

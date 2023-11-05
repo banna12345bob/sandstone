@@ -51,7 +51,8 @@ namespace Sandstone {
         SS_INFO("Save Directory: {0}", m_SaveDir);
 		m_SaveFile = m_SaveDir + saveFile;
 		m_RoomFile = m_SaveDir + roomFile.substr(0, roomFile.find_last_of(".")) + "Save" + roomFile.substr(roomFile.find_last_of("."));
-		JSON().Write(m_RoomFile, JSON().Read(roomFile));
+		if (!std::filesystem::exists(m_RoomFile))
+			JSON().Write(m_RoomFile, JSON().Read(roomFile));
 
 		m_baseRoomFile = roomFile;
 
@@ -111,19 +112,23 @@ namespace Sandstone {
 			}
 			arr[arr_length] = inp;
 
-			m_Commands["look"]    = new look(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["save"]    = new save(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player, m_baseRoomFile);
-			m_Commands["inv"]     = new inv(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["use"]     = new use(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["dir"]     = new dir(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["pickup"]  = new pickup(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["drop"]    = new drop(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["talk"]    = new talk (m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_Player);
+			m_objectsPtr = new objects(m_ObjectFile);
+			m_invPtr = new inventory(m_SaveFile);
+
+			m_Commands["look"]    = new look(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["save"]    = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
+			m_Commands["inv"]     = new inv(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["use"]     = new use(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["dir"]     = new dir(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["pickup"]  = new pickup(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["drop"]    = new drop(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["talk"]    = new talk (m_roomPtr, m_objectsPtr, m_invPtr);
 
 			// ----------- Debug Commands ----------- //
-			m_Commands["open"] = new open(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["give"] = new give(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
-			m_Commands["log"] = new log(m_Area, m_Room, m_RoomFile, m_ObjectFile, m_SaveFile, m_Player);
+			m_Commands["open"]    = new open(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["give"]    = new give(m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["log"]     = new log(m_roomPtr, m_objectsPtr, m_invPtr);
 			
 			if (m_Commands.count(arr[0]))
 			{

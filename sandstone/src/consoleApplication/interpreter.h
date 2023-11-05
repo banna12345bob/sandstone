@@ -42,12 +42,12 @@ namespace Sandstone {
 		std::vector<std::string> getDirection();
 		std::vector<int> goDirection(std::string direction);
 
-	private:
 		int m_Area;
 		int m_Room;
 		std::string m_Player;
 		std::string m_FileName;
 
+	private:
 		json m_File;
 	};
 
@@ -64,7 +64,6 @@ namespace Sandstone {
 	class objects {
 	public:
 		objects(std::string iFile);
-		objects() = default;
 		object* getObject(std::string name);
 	private:
 		json m_File;

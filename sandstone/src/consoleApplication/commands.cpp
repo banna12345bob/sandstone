@@ -6,61 +6,52 @@
 
 namespace Sandstone {
 
-	look::look(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	look::look(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Gets a description of the current room";
 	}
 
 	std::string look::run(std::string lCommand[])
 	{
-		return "You are in " + room(m_Area, m_Room, m_roomFile, m_player).getRoomName() + ":\nIt is " + room(m_Area, m_Room, m_roomFile, m_player).getDesciption();
+		return "You are in " + m_roomPtr->getRoomName() + ":\nIt is " + m_roomPtr->getDesciption();
 	}
 
-	save::save(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player, std::string baseRoomFile)
+	save::save(room* roomPtr, objects* objectsPtr, inventory* invPtr, std::string baseRoomFile)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_BaseRoomFile = baseRoomFile;
 		m_Description = "Saves the game";
 	}
 
 	std::string save::run(std::string lCommand[]) {
-		auto save = JSON().Read(m_saveFile);
+		auto save = JSON().Read(m_invPtr->m_SaveFilePath);
 		if(save == false || lCommand[1] == "reset") {
-			resetSave(m_saveFile).init();
-			JSON().Write(m_roomFile, JSON().Read(m_BaseRoomFile));
+			m_invPtr->resetSave();
+			JSON().Write(m_roomPtr->m_FileName, JSON().Read(m_BaseRoomFile));
 			return "Save reset";
 		} else {
-			save["currentRoom"] = m_Room;
-			save["currentArea"] = m_Area;
-			JSON().Write(m_saveFile, save);
+			save["currentRoom"] = m_roomPtr->m_Room;
+			save["currentArea"] = m_roomPtr->m_Area;
+			JSON().Write(m_invPtr->m_SaveFilePath, save);
 			return "File saved";
 		}
 	}
 
-	inv::inv(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	inv::inv(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Displays your inventory";
 	}
 
 	std::string inv::run(std::string lCommand[]) {
-		std::vector<std::string> u_Inventory = inventory(m_saveFile).getInvnetory();
+		std::vector<std::string> u_Inventory = m_invPtr->getInvnetory();
 		if (u_Inventory.size() <= 0)
 			return "No items in inventory";
 		for (int i = 0; i < u_Inventory.size() - 1; i++)
@@ -73,21 +64,18 @@ namespace Sandstone {
 		return u_Inventory[u_Inventory.size() - 1];
 	}
 
-	use::use(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	use::use(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Uses an item";
 	}
 
 	std::string use::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
-			object* lObject = objects(m_objectFile).getObject(lCommand[1]);
-			std::vector<std::string> u_Inventory = inventory(m_saveFile).getInvnetory();
+			object* lObject = m_objectsPtr->getObject(lCommand[1]);
+			std::vector<std::string> u_Inventory = m_invPtr->getInvnetory();
 			for (int i = 0; i < u_Inventory.size(); i++)
 			{
 				if (u_Inventory[i] == lObject->getName())
@@ -102,19 +90,16 @@ namespace Sandstone {
 		}
 	}
 
-	dir::dir(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	dir::dir(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Displays the directions you can go";
 	}
 
 	std::string dir::run(std::string lCommand[]) {
-		std::vector<std::string> directions = room(m_Area, m_Room, m_roomFile, m_player).getDirection();
+		std::vector<std::string> directions = m_roomPtr->getDirection();
 		if (directions.size() == 0)
 		{
 			SS_CORE_FATAL("No directions detected");
@@ -127,47 +112,41 @@ namespace Sandstone {
 		return directions[directions.size() - 1];
 	}
 
-	pickup::pickup(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	pickup::pickup(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Picks item up";
 	}
 
 	std::string pickup::run(std::string lCommand[]) {
-		std::vector<std::string> items = room(m_Area, m_Room, m_roomFile, m_player).getItemsInRoom();
+		std::vector<std::string> items = m_roomPtr->getItemsInRoom();
 		if(std::find(items.begin(), items.end(), lCommand[1]) != items.end())
 		{
-			object* item = objects(m_objectFile).getObject(lCommand[1]);
-			inventory(m_saveFile).addToInventory(item);
-			room(m_Area, m_Room, m_roomFile, m_player).removeItemFromRoom(item->getName());
+			object* item = m_objectsPtr->getObject(lCommand[1]);
+			m_invPtr->addToInventory(item);
+			m_roomPtr->removeItemFromRoom(item->getName());
 			return "Item added to inventory";
 		}
 		return "Item not found";
 	}
 
-	drop::drop(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	drop::drop(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Drops item from inventory";
 	}
 
 	std::string drop::run(std::string lCommand[]) {
-		std::vector<std::string> inven = inventory(m_saveFile).getInvnetory();
+		std::vector<std::string> inven = m_invPtr->getInvnetory();
 		if (std::find(inven.begin(), inven.end(), lCommand[1]) != inven.end())
 		{
-			object* item = objects(m_objectFile).getObject(lCommand[1]);
-			if (inventory(m_saveFile).removeFromInventory(item)) {
-				room(m_Area, m_Room, m_roomFile, m_player).addItemToRoom(item->getName());
+			object* item = m_objectsPtr->getObject(lCommand[1]);
+			if (m_invPtr->removeFromInventory(item)) {
+				m_roomPtr->addItemToRoom(item->getName());
 				return "Removed item from inventory";
 			}
 		}
@@ -175,26 +154,23 @@ namespace Sandstone {
 	}
 
 
-	talk::talk(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	talk::talk(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_Description = "Talk to an NPC";
 	}
 
 	std::string talk::run(std::string lCommand[]) {
-		std::vector<std::string> npcs = room(m_Area, m_Room, m_roomFile, m_player).getNpcList();
+		std::vector<std::string> npcs = m_roomPtr->getNpcList();
 		if (std::find(npcs.begin(), npcs.end(), lCommand[1]) != npcs.end())
 		{
 #ifdef SS_PY_SCRIPTING
 			py::scoped_interpreter guard{};
 			try {
 				auto npcModule = py::module::import("scripts.npcs");
-				std::string dump = room(m_Area, m_Room, m_roomFile, m_player).getNpcs()[lCommand[1]]["script"].dump();
+				std::string dump = m_roomPtr->getNpcs()[lCommand[1]]["script"].dump();
 				if (dump != "null") {
 					// I have to do this because quotes are left on when dumping from json
 					dump.erase(0, 1);
@@ -219,14 +195,11 @@ namespace Sandstone {
 
 	// ----------- Debug Commands ----------- //
 
-	open::open(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	open::open(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_DebugOnly = true;
 		m_Description = "Prints out the contents of a JSON file      DEBUG ONLY";
 	}
@@ -246,25 +219,22 @@ namespace Sandstone {
 		}
 	}
 
-	give::give(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	give::give(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_DebugOnly = true;
 		m_Description = "Give specified item                         DEBUG ONLY";
 	}
 
 	std::string give::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
-			object* lObject = objects(m_objectFile).getObject(lCommand[1]);
+			object* lObject = m_objectsPtr->getObject(lCommand[1]);
 			if (lObject->getName() == "null") {
 				return "Item named " + lCommand[1] + " doesn't exist";
 			}
-			inventory(m_saveFile).addToInventory(lObject);
+			m_invPtr->addToInventory(lObject);
 			return "Added " + lCommand[1] + " to inventory";
 		}
 		else {
@@ -272,14 +242,11 @@ namespace Sandstone {
 		}
 	}
 
-	log::log(int area, int room, std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
+	log::log(room* roomPtr, objects* objectsPtr, inventory* invPtr)
 	{
-		command::m_Area = area;
-		command::m_Room = room;
-		command::m_roomFile = roomFile;
-		command::m_objectFile = objectFile;
-		command::m_saveFile = saveFile;
-		command::m_player = player;
+		command::m_roomPtr = roomPtr;
+		command::m_objectsPtr = objectsPtr;
+		command::m_invPtr = invPtr;
 		m_DebugOnly = true;
 		m_Description = "Print message to log                         DEBUG ONLY";
 	}

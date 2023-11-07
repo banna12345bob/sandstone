@@ -25,7 +25,7 @@ namespace Sandstone {
 		if (std::find(items.begin(), items.end(), item) != items.end()) {
 			items.erase(std::find(items.begin(), items.end(), item));
 			m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-			JSON().Write(m_FileName, m_File);
+			JSON::Write(m_FileName, m_File);
 			return true;
 		}
 		return false;
@@ -37,7 +37,7 @@ namespace Sandstone {
 		std::vector<std::string> items = getItemsInRoom();
 		items.push_back(item);
 		m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-		JSON().Write(m_FileName, m_File);
+		JSON::Write(m_FileName, m_File);
 		return true;
 	}
 
@@ -74,7 +74,7 @@ namespace Sandstone {
 						// TODO: check if player has unlocking item in inventory
 
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
-						JSON().Write(m_FileName, m_File);
+						JSON::Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
 						std::cout << unlockMsg << std::endl;
 						rDirections = getDirections()[direction]["room"];

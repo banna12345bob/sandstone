@@ -124,7 +124,7 @@ namespace Sandstone {
 			m_Commands["dir"]     = new dir(m_roomPtr, m_objectsPtr, m_invPtr);
 			m_Commands["pickup"]  = new pickup(m_roomPtr, m_objectsPtr, m_invPtr);
 			m_Commands["drop"]    = new drop(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["talk"]    = new talk (m_roomPtr, m_objectsPtr, m_invPtr);
+			m_Commands["talk"]    = new talk(m_roomPtr, m_objectsPtr, m_invPtr);
 
 			// ----------- Debug Commands ----------- //
 			m_Commands["open"]    = new open(m_roomPtr, m_objectsPtr, m_invPtr);
@@ -195,6 +195,7 @@ namespace Sandstone {
 				std::cout << "Unknown command" << std::endl;
 			}
 		}
+        m_invPtr->~inventory();
 		std::cout << "Press enter to quit...";
 		std::cin.ignore();
 	}

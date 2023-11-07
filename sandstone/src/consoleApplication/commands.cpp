@@ -42,6 +42,7 @@ namespace Sandstone {
 		} else {
 			save["currentRoom"] = m_roomPtr->m_Room;
 			save["currentArea"] = m_roomPtr->m_Area;
+            save["inventory"]   = m_invPtr->m_Inventory;
 			JSON().Write(m_invPtr->m_SaveFilePath, save);
 			return "File saved";
 		}

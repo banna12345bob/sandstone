@@ -33,16 +33,18 @@ project "demo1"
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}"
 	}
 
-	filter "system:windows"
-		systemversion "latest"
-
+	if (pythonPath ~= "" or pythonLib ~= "") then
 		libdirs {
 			pythonLibPath
 		}
-	
+
 		links {
 			pythonLib
 		}
+	end
+
+	filter "system:windows"
+		systemversion "latest"
 
 	filter "system:linux"
 		systemversion "latest"

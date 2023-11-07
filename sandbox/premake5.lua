@@ -31,21 +31,24 @@ project "sandbox"
 	postbuildcommands {
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Objects.json %{cfg.targetdir}",
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}",
-		"{COPY} " .. pythonPath .. "/".. pythonLib .. ".dll %{cfg.targetdir}",
 		"{COPY} %{wks.location}/%{prj.name}/scripts/* %{cfg.targetdir}/scripts/"
 	}
-
-	filter "system:windows"
-		systemversion "latest"
+	
+	if (pythonPath ~= "" or pythonLib ~= "") then
 		defines "SS_PY_SCRIPTING"
-
+		
 		libdirs {
 			pythonLibPath
 		}
-	
+		
 		links {
 			pythonLib
 		}
+	end
+	
+	filter "system:windows"
+	systemversion "latest"
+	postbuildcommands { "{COPY} " .. pythonPath .. "/".. pythonLib .. ".dll %{cfg.targetdir}" }
 
 	filter "system:linux"
 		systemversion "latest"

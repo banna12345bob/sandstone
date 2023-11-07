@@ -24,14 +24,13 @@ project "sandstone"
 		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}"
 	}
 
-	filter "system:windows"
-		systemversion "latest"
+	if (pythonPath ~= "" or pythonLib ~= "") then
 		defines "SS_PY_SCRIPTING"
 
 		libdirs {
 			pythonLibPath
 		}
-	
+
 		links {
 			pythonLib
 		}
@@ -41,6 +40,10 @@ project "sandstone"
 			"vendor/pybind11/include",
 			pythonIncludePath
 		}
+	end
+
+	filter "system:windows"
+		systemversion "latest"
 
 	filter "system:linux"
 		systemversion "latest"

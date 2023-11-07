@@ -22,6 +22,7 @@ namespace Sandstone {
 
     inventory::~inventory()
     {
+        m_SaveFile = JSON::Read(m_SaveFilePath);
         m_SaveFile["inventory"] = m_Inventory;
         JSON().Write(m_SaveFilePath, m_SaveFile);
     }

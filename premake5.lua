@@ -23,11 +23,10 @@ function getPythonLib()
     return queryTerminal("python -c \"import sys; import os; import glob; path = os.path.dirname(sys.executable); libs = glob.glob(path + '/libs/python*'); print(os.path.splitext(os.path.basename(libs[-1]))[0]);\"")
 end
 
-print(os.host())
 if os.host() == "windows" then
     pythonPath      = getPythonPath()
-    pythonIncludePath = pythonPath .. "/../include/*"
-    pythonLibPath     = pythonPath .. "/../lib/"
+    pythonIncludePath = pythonPath .. "/include/"
+    pythonLibPath     = pythonPath .. "/libs/"
     -- pythonIncludePath = pythonPath .. "/include/"
     -- pythonLibPath     = pythonPath .. "/libs/"
     pythonLib         = getPythonLib()

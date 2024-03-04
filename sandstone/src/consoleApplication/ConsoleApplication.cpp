@@ -4,27 +4,9 @@
 #endif
 #include <filesystem>
 #include "version.h"
-#ifdef SS_PY_SCRIPTING
-    #include <pybind11/embed.h>
-    namespace py = pybind11;
-#endif
+
 
 namespace Sandstone {
-
-	int cppFunc() {
-		std::cout << "[C++] Hello from c++!" << std::endl;
-		return 0;
-	}
-
-#ifdef SS_PY_SCRIPTING
-	PYBIND11_EMBEDDED_MODULE(sandstone, m) {
-		m.def("cppFunc", &cppFunc);
-		py::class_<version>(m, "version")
-			.def(py::init<>())
-			.def("checkVersion", &version::checkVersion);
-	}
-#endif
-
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
@@ -59,48 +41,29 @@ namespace Sandstone {
 		version().checkVersion(m_RoomFile);
 		version().checkVersion(m_ObjectFile);
 
-#ifdef SS_PY_SCRIPTING
-        py::scoped_interpreter guard{};
-		py::exec(R"(
-			import sys
-			major, minor, micro = sys.version_info[:3]
-			print(f"[PYTHON] Current version {major}.{minor}.{micro}")
-		)");
-		try {
-			auto testPython = py::module::import("scripts.test");
-			auto func = testPython.attr("sayHello");
-			func();
-			auto addFunc = testPython.attr("add");
-			int result = addFunc(4, 7).cast<int>();
-			std::cout << "[C++] Python caculation result: " << result << std::endl;
-		} catch (py::error_already_set &e) {
-			SS_ERROR("{0}", e.what());
-		}
-#endif
-	}
-
-    ConsoleApplication::~ConsoleApplication()
-	{
-
-	}
-
-	void ConsoleApplication::Run()
-	{
 		int m_Area = 1;
 		int m_Room = 1;
-		std::string inp;
 		auto file = JSON().Read(m_SaveFile);
 		if (file != false) {
 			m_Area = file["currentArea"];
 			m_Room = file["currentRoom"];
 			SS_CORE_INFO("Autoloaded save");
-		} else {
+		}
+		else {
 			SS_CORE_WARN("Failed to find save file");
 		}
 
 		m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_Player);
 		m_objectsPtr = new objects(m_ObjectFile);
 		m_invPtr = new inventory(m_SaveFile);
+	}
+
+    ConsoleApplication::~ConsoleApplication()
+	{}
+
+	void ConsoleApplication::Run()
+	{
+		std::string inp;
 
 		while (true) {
 			std::string arr[100];
@@ -196,8 +159,10 @@ namespace Sandstone {
 			}
 		}
         m_invPtr->~inventory();
+#ifdef SS_DEBUG
 		std::cout << "Press enter to quit...";
 		std::cin.ignore();
+#endif
 	}
 
 }

@@ -4,6 +4,3 @@
 [submodule "sandstone/vendor/json"]
 	path = sandstone/vendor/json
 	url = https://github.com/nlohmann/json
-[submodule "sandstone/vendor/pybind11"]
-	path = sandstone/vendor/pybind11
-	url = https://github.com/banna12345bob/pybind11

@@ -11,8 +11,7 @@ project "demo1"
 	{
 		"src/**.h",
 		"src/**.cpp",
-		"**.json",
-		"**.py"
+		"**.json"
 	}
 
 	includedirs
@@ -32,16 +31,6 @@ project "demo1"
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Objects.json %{cfg.targetdir}",
 		"{COPY} %{wks.location}/%{prj.name}/%{prj.name}Rooms.json %{cfg.targetdir}"
 	}
-
-	if (pythonPath ~= "" or pythonLib ~= "") then
-		libdirs {
-			pythonLibPath
-		}
-
-		links {
-			pythonLib
-		}
-	end
 
 	filter "system:windows"
 		systemversion "latest"

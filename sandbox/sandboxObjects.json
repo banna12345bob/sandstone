@@ -4,9 +4,6 @@
     "minor": 0,
     "patch": 0
   },
-  "null": {
-    "use": "null object. How did you get this item?"
-  },
   "spoon": {
     "use": "You try to use the spoon but there is no soup around"
   },

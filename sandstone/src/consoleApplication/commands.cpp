@@ -220,7 +220,7 @@ namespace Sandstone {
 				return "Item named " + lCommand[1] + " doesn't exist";
 			}
 			m_invPtr->addToInventory(lObject);
-			return "Added " + lCommand[1] + " to inventory";
+			return "Added " + lObject->getName() + " to inventory";
 		}
 		else {
 			return "Expected second argument";

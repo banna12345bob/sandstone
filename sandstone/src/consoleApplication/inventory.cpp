@@ -16,7 +16,7 @@ namespace Sandstone {
 		}
 		for (int i = 0; i < m_SaveFile["inventory"].size(); i++)
 		{
-			m_Inventory.push_back(m_SaveFile["inventory"][i]);
+            m_Inventory.push_back(objects->getObject(m_SaveFile["inventory"][i])->getName());
 		}
 	}
 

@@ -75,7 +75,7 @@ namespace Sandstone {
 		{
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
-					if (std::find(m_inv->getInvnetory().begin(), m_inv->getInvnetory().end(), getDirections()[direction]["unlockedBy"]) != m_inv->getInvnetory().end()) {
+					if (std::find(m_inv->getInventory().begin(), m_inv->getInventory().end(), getDirections()[direction]["unlockedBy"]) != m_inv->getInventory().end()) {
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
 						JSON::Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];

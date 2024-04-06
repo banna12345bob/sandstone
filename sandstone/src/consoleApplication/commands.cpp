@@ -54,7 +54,7 @@ namespace Sandstone {
 	}
 
 	std::string inv::run(std::string lCommand[]) {
-		std::vector<std::string> u_Inventory = m_invPtr->getInvnetory();
+		std::vector<std::string> u_Inventory = m_invPtr->getInventory();
 		if (u_Inventory.size() <= 0)
 			return "No items in inventory";
 		for (int i = 0; i < u_Inventory.size() - 1; i++)
@@ -78,7 +78,7 @@ namespace Sandstone {
 	std::string use::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
 			object* lObject = m_objectsPtr->getObject(lCommand[1]);
-			std::vector<std::string> u_Inventory = m_invPtr->getInvnetory();
+			std::vector<std::string> u_Inventory = m_invPtr->getInventory();
 			for (int i = 0; i < u_Inventory.size(); i++)
 			{
 				if (u_Inventory[i] == lObject->getName())
@@ -144,7 +144,7 @@ namespace Sandstone {
 	}
 
 	std::string drop::run(std::string lCommand[]) {
-		std::vector<std::string> inven = m_invPtr->getInvnetory();
+		std::vector<std::string> inven = m_invPtr->getInventory();
 		if (std::find(inven.begin(), inven.end(), lCommand[1]) != inven.end())
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);

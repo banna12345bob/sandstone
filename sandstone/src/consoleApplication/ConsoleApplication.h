@@ -17,15 +17,15 @@ namespace Sandstone {
 
 		virtual void Run() override;
 		std::map<std::string, command*> m_Commands;
+        room* m_roomPtr;
+        objects* m_objectsPtr;
+        inventory* m_invPtr;
 	private:
 		std::string m_RoomFile;
 		std::string m_baseRoomFile;
 		std::string m_ObjectFile;
 		std::string m_SaveFile;
 		std::string m_Player;
-		room* m_roomPtr;
-		objects* m_objectsPtr;
-		inventory* m_invPtr;
 	};
 
 	//	To be defined in client

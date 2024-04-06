@@ -1,8 +1,4 @@
 #include "inventory.h"
-#ifdef SS_PY_SCRIPTING
-#include <pybind11/embed.h>
-namespace py = pybind11;
-#endif
 
 namespace Sandstone {
 
@@ -27,7 +23,7 @@ namespace Sandstone {
         JSON().Write(m_SaveFilePath, m_SaveFile);
     }
 
-	std::vector<std::string> inventory::getInvnetory()
+	std::vector<std::string> inventory::getInventory()
 	{
 		return m_Inventory;
 	}

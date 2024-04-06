@@ -9,7 +9,7 @@ namespace Sandstone {
 		inventory(std::string saveFilePath, objects* objects);
         ~inventory();
 		void resetSave();
-		std::vector<std::string> getInvnetory();
+		std::vector<std::string> getInventory();
 		void addToInventory(object* lObject);
 		bool removeFromInventory(object* lObject);
         bool removeFromInventory(std::string lObject);

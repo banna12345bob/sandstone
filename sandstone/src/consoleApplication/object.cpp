@@ -1,7 +1,5 @@
 #include "object.h"
 
-//#include "inventory.h"
-
 namespace Sandstone {
 
 	object::object(std::string name, std::string use)
@@ -12,7 +10,6 @@ namespace Sandstone {
 	objects::objects(std::string iFile)
 		:m_File(JSON::Read(iFile))
 	{
-		//SS_CORE_ERROR(m_File.dump());
         m_Objects.insert({ "null", new object("null", "Error object. How did you get this item?") });
 		for (auto& [key, value] : m_File.items()) {
 			if (key != "version") {

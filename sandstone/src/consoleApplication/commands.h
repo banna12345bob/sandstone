@@ -1,5 +1,6 @@
 #pragma once
 #include "inventory.h"
+#include "room.h"
 
 namespace Sandstone {
 	class command {

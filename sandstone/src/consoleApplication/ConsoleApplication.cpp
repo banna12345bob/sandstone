@@ -53,9 +53,9 @@ namespace Sandstone {
 			SS_CORE_WARN("Failed to find save file");
 		}
 
-		m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_Player);
 		m_objectsPtr = new objects(m_ObjectFile);
-		m_invPtr = new inventory(m_SaveFile);
+		m_invPtr = new inventory(m_SaveFile, m_objectsPtr);
+        m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_invPtr);
 	}
 
     ConsoleApplication::~ConsoleApplication()

@@ -1,11 +1,14 @@
 #include "json.h"
 #include "Log.h"
 
+#include "inventory.h"
+
 namespace Sandstone {
 
 	class room {
 	public:
-		room(int area, int room, std::string iFile, std::string player);
+		room(int area, int room, std::string iFile, inventory* inv);
+        void reload();
 		int getArea() { return m_Area; }
 		int getRoom() { return m_Room; }
 		std::string getAreaName() { return m_File[std::to_string(m_Area)]["name"]; }
@@ -46,31 +49,11 @@ namespace Sandstone {
 
 		int m_Area;
 		int m_Room;
-		std::string m_Player;
+		inventory* m_inv;
 		std::string m_FileName;
 
 	private:
 		json m_File;
 	};
-
-	class object {
-	public:
-		object(std::string name, std::string use);
-		std::string getUse() { return m_Use; }
-		std::string getName() { return m_Name; }
-	private:
-		std::string m_Name;
-		std::string m_Use;
-	};
-
-	class objects {
-	public:
-		objects(std::string iFile);
-		object* getObject(std::string name);
-	private:
-		json m_File;
-		std::map<std::string, object *> m_Objects;
-	};
-
 
 }

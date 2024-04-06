@@ -34,6 +34,7 @@ namespace Sandstone {
 		if(save == false || lCommand[1] == "reset") {
 			m_invPtr->resetSave();
 			JSON().Write(m_roomPtr->m_FileName, JSON().Read(m_BaseRoomFile));
+            m_roomPtr->reload();
 			return "Save reset";
 		} else {
 			save["currentRoom"] = m_roomPtr->m_Room;

@@ -1,12 +1,17 @@
-#include "interpreter.h"
+#include "room.h"
 
 namespace Sandstone {
 
-	room::room(int area, int room, std::string iFile, std::string player)
-		: m_Area(area), m_Room(room), m_Player(player), m_FileName(iFile)
+	room::room(int area, int room, std::string iFile, inventory* inv)
+		: m_Area(area), m_Room(room), m_inv(inv), m_FileName(iFile)
 	{
 		m_File = JSON::Read(iFile);
 	}
+
+    void room::reload()
+    {
+        m_File = JSON::Read(m_FileName);
+    }
 
 	std::vector<std::string> room::getItemsInRoom()
 	{
@@ -70,18 +75,14 @@ namespace Sandstone {
 		{
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
-					if (getDirections()[direction].contains("unlockedBy")/* in inv.getInventory(True)*/) {
-						// TODO: check if player has unlocking item in inventory
-
+					if (std::find(m_inv->getInvnetory().begin(), m_inv->getInvnetory().end(), getDirections()[direction]["unlockedBy"]) != m_inv->getInvnetory().end()) {
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
 						JSON::Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
 						std::cout << unlockMsg << std::endl;
 						rDirections = getDirections()[direction]["room"];
 						if (getDirections()[direction]["breaks"][0] == true)
-							// TODO: Remove item from inventory will probably have to move to different class
-							SS_CORE_WARN("TODO: Impliment item breaking when entering rooms");
-							//inv.removeFromInventory(self.file[str(self.area)][str(self.room)]["directions"][direction]["unlockedBy"])
+                            m_inv->removeFromInventory(getDirections()[direction]["unlockedBy"]);
 					}
 					else {
 						std::string a = getDirections()[direction]["lockedMsg"];
@@ -115,30 +116,6 @@ namespace Sandstone {
 		error.push_back(0);
 		error.push_back(0);
 		return error;
-	}
-
-	object::object(std::string name, std::string use)
-		: m_Name(name), m_Use(use)
-	{
-	}
-
-	objects::objects(std::string iFile)
-		:m_File(JSON::Read(iFile))
-	{
-		//SS_CORE_ERROR(m_File.dump());
-		for (auto& [key, value] : m_File.items()) {
-			if (key != "version") {
-				m_Objects.insert({ key, new object(key, m_File[key]["use"]) });
-			}
-		}
-	}
-
-	object* objects::getObject(std::string name)
-	{
-		if (m_Objects.count(name) == false) {
-			return m_Objects["null"];
-		}
-		return m_Objects[name];
 	}
 
 }

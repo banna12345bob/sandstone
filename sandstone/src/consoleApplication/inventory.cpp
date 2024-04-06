@@ -6,8 +6,8 @@ namespace py = pybind11;
 
 namespace Sandstone {
 
-	inventory::inventory(std::string saveFilePath)
-		: m_SaveFilePath(saveFilePath)
+	inventory::inventory(std::string saveFilePath, objects* objects)
+		: m_SaveFilePath(saveFilePath), m_Objects(objects)
 	{
 		m_SaveFile = JSON().Read(m_SaveFilePath);
 		if (m_SaveFile == false) {
@@ -48,6 +48,18 @@ namespace Sandstone {
 		}
 		return false;
 	}
+
+    bool inventory::removeFromInventory(std::string lObject)
+    {
+        if (std::find(m_Inventory.begin(), m_Inventory.end(), m_Objects->getObject(lObject)->getName()) != m_Inventory.end())
+        {
+            m_Inventory.erase(std::find(m_Inventory.begin(), m_Inventory.end(), m_Objects->getObject(lObject)->getName()));
+    //            m_SaveFile["inventory"] = m_Inventory;
+    //            JSON().Write(m_SaveFilePath, m_SaveFile);
+            return true;
+        }
+        return false;
+    }
 
 	void inventory::resetSave()
 	{

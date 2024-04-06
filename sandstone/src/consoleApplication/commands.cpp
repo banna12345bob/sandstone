@@ -39,7 +39,7 @@ namespace Sandstone {
 		} else {
 			save["currentRoom"] = m_roomPtr->m_Room;
 			save["currentArea"] = m_roomPtr->m_Area;
-            save["inventory"]   = m_invPtr->m_Inventory;
+            save["inventory"]   = m_invPtr->getInventoryString();
 			JSON().Write(m_invPtr->m_SaveFilePath, save);
 			return "File saved";
 		}
@@ -54,17 +54,17 @@ namespace Sandstone {
 	}
 
 	std::string inv::run(std::string lCommand[]) {
-		std::vector<std::string> u_Inventory = m_invPtr->getInventory();
+		std::vector<object*> u_Inventory = m_invPtr->getInventory();
 		if (u_Inventory.size() <= 0)
 			return "No items in inventory";
 		for (int i = 0; i < u_Inventory.size() - 1; i++)
 		{
-			std::cout << u_Inventory[i] << std::endl;
+			std::cout << u_Inventory[i]->getName() << std::endl;
 		}
-		if (u_Inventory[u_Inventory.size() - 1] == "") {
+		if (u_Inventory.size() == 0) {
 			return "No items in inventory";
 		}
-		return u_Inventory[u_Inventory.size() - 1];
+		return u_Inventory[u_Inventory.size() - 1]->getName();
 	}
 
 	use::use(room* roomPtr, objects* objectsPtr, inventory* invPtr)
@@ -78,10 +78,10 @@ namespace Sandstone {
 	std::string use::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
 			object* lObject = m_objectsPtr->getObject(lCommand[1]);
-			std::vector<std::string> u_Inventory = m_invPtr->getInventory();
+			std::vector<object*> u_Inventory = m_invPtr->getInventory();
 			for (int i = 0; i < u_Inventory.size(); i++)
 			{
-				if (u_Inventory[i] == lObject->getName())
+				if (u_Inventory[i] == lObject)
 				{
 					return lObject->getUse();
 				}
@@ -144,7 +144,7 @@ namespace Sandstone {
 	}
 
 	std::string drop::run(std::string lCommand[]) {
-		std::vector<std::string> inven = m_invPtr->getInventory();
+		std::vector<std::string> inven = m_invPtr->getInventoryString();
 		if (std::find(inven.begin(), inven.end(), lCommand[1]) != inven.end())
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);

@@ -10,7 +10,6 @@ extern Sandstone::Application* Sandstone::CreateApplication();
 		Sandstone::Log::Init();
 
 		SS_CORE_INFO("Sandstone Initialised");
-		SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::version().major, Sandstone::version().minor, Sandstone::version().patch);
 
 		auto app = Sandstone::CreateApplication();
 		app->Run();

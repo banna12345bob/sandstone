@@ -10,6 +10,7 @@ namespace Sandstone {
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
+        SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::version().major, Sandstone::version().minor, Sandstone::version().patch);
 #ifdef SS_PLATFORM_WINDOWS
         size_t len;
 		char* pValue;
@@ -59,7 +60,12 @@ namespace Sandstone {
 	}
 
     ConsoleApplication::~ConsoleApplication()
-	{}
+	{
+#ifdef SS_DEBUG
+        std::cout << "Press enter to quit...";
+        std::cin.ignore();
+#endif
+    }
 
 	void ConsoleApplication::Run()
 	{
@@ -159,10 +165,6 @@ namespace Sandstone {
 			}
 		}
         m_invPtr->~inventory();
-#ifdef SS_DEBUG
-		std::cout << "Press enter to quit...";
-		std::cin.ignore();
-#endif
 	}
 
 }

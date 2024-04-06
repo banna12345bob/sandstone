@@ -10,7 +10,7 @@ public:
 		command::m_DebugOnly = true;
 	}
 	virtual std::string run(std::string lCommand[]) override {
-        SS_WARN(m_roomPtr->m_Room);
+        SS_WARN("Current room {0}:{1}", m_roomPtr->m_Area, m_roomPtr->m_Room);
 		return "I hate sand it's rough it's coarse and it gets everywhere";
 	}
 };

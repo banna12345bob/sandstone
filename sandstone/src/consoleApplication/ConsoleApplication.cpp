@@ -4,13 +4,15 @@
 #endif
 #include <filesystem>
 #include "version.h"
-extern "C" {
-    #include <lua.h>
-    #include <lualib.h>
-    #include <lauxlib.h>
-}
 
 namespace Sandstone {
+	static int MyCppFunction(lua_State* L)
+	{
+		const char* str = lua_tostring(L, 1);
+		std::cout << "C++ function called from lua: " << str << std::endl;
+		return 0;
+	}
+
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
@@ -62,10 +64,25 @@ namespace Sandstone {
 		m_invPtr = new inventory(m_SaveFile, m_objectsPtr);
         m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_invPtr);
         
-        lua_State* L = luaL_newstate();
-        luaL_openlibs(L);
-        luaL_dofile(L, "main.lua");
-        
+		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["save"] = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
+		m_Commands["inv"] = new inv(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["use"] = new use(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["dir"] = new dir(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["pickup"] = new pickup(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["drop"] = new drop(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_invPtr);
+
+		// ----------- Debug Commands ----------- //
+		m_Commands["open"] = new open(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_invPtr);
+
+
+        luaL_openlibs(m_roomPtr->L);
+		lua_register(m_roomPtr->L, "MyCppFunction", MyCppFunction);
+		//luaL_dofile(L, "../sandstone/main.lua");
 	}
 
     ConsoleApplication::~ConsoleApplication()
@@ -95,20 +112,6 @@ namespace Sandstone {
 			}
 			arr[arr_length] = inp;
 
-			m_Commands["look"]    = new look(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["save"]    = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
-			m_Commands["inv"]     = new inv(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["use"]     = new use(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["dir"]     = new dir(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["pickup"]  = new pickup(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["drop"]    = new drop(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["talk"]    = new talk(m_roomPtr, m_objectsPtr, m_invPtr);
-
-			// ----------- Debug Commands ----------- //
-			m_Commands["open"]    = new open(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["give"]    = new give(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["goto"]    = new go_to(m_roomPtr, m_objectsPtr, m_invPtr);
-			m_Commands["log"]     = new log(m_roomPtr, m_objectsPtr, m_invPtr);
 			
 			if (m_Commands.count(arr[0]))
 			{

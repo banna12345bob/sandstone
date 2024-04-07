@@ -3,6 +3,12 @@
 
 #include "inventory.h"
 
+extern "C" {
+	#include <lua.h>
+	#include <lualib.h>
+	#include <lauxlib.h>
+}
+
 namespace Sandstone {
 
 	class room {
@@ -51,6 +57,8 @@ namespace Sandstone {
 		int m_Room;
 		inventory* m_inv;
 		std::string m_FileName;
+
+		lua_State* L;
 
 	private:
 		json m_File;

@@ -6,6 +6,7 @@ namespace Sandstone {
 		: m_Area(area), m_Room(room), m_inv(inv), m_FileName(iFile)
 	{
 		m_File = JSON::Read(iFile);
+		L = luaL_newstate();
 	}
 
     void room::reload()
@@ -75,7 +76,8 @@ namespace Sandstone {
 		{
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
-					if (std::find(m_inv->getInventory().begin(), m_inv->getInventory().end(), m_inv->m_Objects->getObject( getDirections()[direction]["unlockedBy"])) != m_inv->getInventory().end()) {
+					std::vector<object*> inv = m_inv->getInventory();
+					if (std::find(inv.begin(), inv.end(), m_inv->m_Objects->getObject(getDirections()[direction]["unlockedBy"])) != inv.end()) {
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
 						JSON::Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];

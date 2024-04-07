@@ -20,7 +20,6 @@ project "consoleSandbox"
 		"%{wks.location}/sandstone/vendor/spdlog/include",
 		"%{wks.location}/sandstone/vendor/json/include",
 		"%{wks.location}/sandstone/src",
-		"%{wks.location}/sandstone/vendor"
 	}
 
 	links

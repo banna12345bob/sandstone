@@ -1,7 +1,6 @@
-project "sandstone"
+project "lua"
 	kind "StaticLib"
-	language "C++"
-	cppdialect "C++17"
+	language "C"
 	staticruntime "on"
 
 	targetdir ("%{wks.location}/compile/bin/" .. outputdir .. "/%{prj.name}")
@@ -10,24 +9,13 @@ project "sandstone"
 	files
 	{
 		"src/**.h",
-		"src/**.cpp"
+		"src/**.hpp",
+		"src/**.c"
 	}
 
 	includedirs
 	{
-		"src",
-		"vendor/spdlog/include",
-		"vendor/json/include",
-		"vendor/lua/src"
-	}
-
-	links
-	{
-		"lua"
-	}
-
-	postbuildcommands {
-		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}"
+		"src"
 	}
 
 	filter "system:windows"

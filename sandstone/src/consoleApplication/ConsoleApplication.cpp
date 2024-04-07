@@ -4,7 +4,11 @@
 #endif
 #include <filesystem>
 #include "version.h"
-
+extern "C" {
+    #include <lua.h>
+    #include <lualib.h>
+    #include <lauxlib.h>
+}
 
 namespace Sandstone {
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
@@ -57,6 +61,11 @@ namespace Sandstone {
 		m_objectsPtr = new objects(m_ObjectFile);
 		m_invPtr = new inventory(m_SaveFile, m_objectsPtr);
         m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_invPtr);
+        
+        lua_State* L = luaL_newstate();
+        luaL_openlibs(L);
+        luaL_dofile(L, "main.lua");
+        
 	}
 
     ConsoleApplication::~ConsoleApplication()

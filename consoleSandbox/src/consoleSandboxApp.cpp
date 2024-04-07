@@ -15,15 +15,15 @@ public:
 	}
 };
 
-class Sandbox : public Sandstone::ConsoleApplication
+class ConsoleSandbox : public Sandstone::ConsoleApplication
 {
 public:
-	Sandbox()
-		: Sandstone::ConsoleApplication("sandboxRooms.json", "sandboxObjects.json")
+	ConsoleSandbox()
+		: Sandstone::ConsoleApplication("consoleSandboxRooms.json", "consoleSandboxObjects.json")
 	{
 		this->m_Commands["sand"] = new sand(m_roomPtr, m_objectsPtr, m_invPtr);
 	}
-	~Sandbox()
+	~ConsoleSandbox()
 	{
 
 	}
@@ -31,5 +31,5 @@ public:
 
 Sandstone::Application* Sandstone::CreateApplication()
 {
-	return new Sandbox();
+	return new ConsoleSandbox();
 }

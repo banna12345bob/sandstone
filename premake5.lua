@@ -18,5 +18,5 @@ workspace "sandstone"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "sandstone"
-include "sandbox"
+include "consoleSandbox"
 include "demo1"

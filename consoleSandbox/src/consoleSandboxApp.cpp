@@ -18,9 +18,9 @@ public:
 	virtual std::string run(std::string lCommand[]) override {
         SS_WARN("Current room {0}:{1}", m_roomPtr->m_Area, m_roomPtr->m_Room);
 		luaL_openlibs(m_roomPtr->L);
-		luaL_dofile(m_roomPtr->L, "../sandstone/main.lua");
+		luaL_dofile(m_roomPtr->L, "../sandstone/scripts/main.lua");
 		lua_getglobal(m_roomPtr->L, "MyLuaFunction");
-		lua_pushstring(m_roomPtr->L, "parse string");
+		lua_pushstring(m_roomPtr->L, "Testing string");
 		lua_pcall(m_roomPtr->L, 1, 0, 0);
 		return "I hate sand it's rough it's coarse and it gets everywhere";
 	}

@@ -27,7 +27,9 @@ project "sandstone"
 	}
 
 	postbuildcommands {
-		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}"
+		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
+		"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
+		"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
 	}
 
 	filter "system:windows"

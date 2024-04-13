@@ -10,6 +10,7 @@ namespace Sandstone {
 		room* m_roomPtr;
 		objects* m_objectsPtr;
 		inventory* m_invPtr;
+        scriptingEngine* m_scripingEngine;
 		bool m_DebugOnly = false;
 		std::string m_Description;
 	};

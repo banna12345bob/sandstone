@@ -20,6 +20,7 @@ namespace Sandstone {
         room* m_roomPtr;
         objects* m_objectsPtr;
         inventory* m_invPtr;
+        scriptingEngine* m_scripingEngine;
 	private:
 		std::string m_RoomFile;
 		std::string m_baseRoomFile;

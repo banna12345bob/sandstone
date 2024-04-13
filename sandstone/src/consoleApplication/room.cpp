@@ -6,7 +6,6 @@ namespace Sandstone {
 		: m_Area(area), m_Room(room), m_inv(inv), m_FileName(iFile)
 	{
 		m_File = JSON::Read(iFile);
-		L = luaL_newstate();
 	}
 
     void room::reload()

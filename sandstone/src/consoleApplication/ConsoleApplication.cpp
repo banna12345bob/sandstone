@@ -63,6 +63,10 @@ namespace Sandstone {
 		m_objectsPtr = new objects(m_ObjectFile);
 		m_invPtr = new inventory(m_SaveFile, m_objectsPtr);
         m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_invPtr);
+        m_scripingEngine = new scriptingEngine();
+        
+        // Defined after creation of the scripting engine so not call by it
+        lua_register(m_scripingEngine->L, "MyCppFunction", MyCppFunction);
         
 		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_invPtr);
 		m_Commands["save"] = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
@@ -78,11 +82,6 @@ namespace Sandstone {
 		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_invPtr);
 		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_invPtr);
 		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_invPtr);
-
-
-        luaL_openlibs(m_roomPtr->L);
-		lua_register(m_roomPtr->L, "MyCppFunction", MyCppFunction);
-		//luaL_dofile(L, "../sandstone/main.lua");
 	}
 
     ConsoleApplication::~ConsoleApplication()

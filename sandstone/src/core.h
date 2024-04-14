@@ -32,7 +32,6 @@
 	#error "Sandstone doesn't support Android"
 #elif defined(__linux__)
 	#define SS_PLATFORM_LINUX
-	#error "Sandstone doesn't support Linux"
 #else
 	#error "What kind of platform are you using? What ever it is it's not supported"
 #endif

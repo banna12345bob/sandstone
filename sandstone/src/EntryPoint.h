@@ -1,7 +1,7 @@
 #pragma once
 #include "version.h"
 
-#if defined(SS_PLATFORM_WINDOWS) || defined(SS_PLATFORM_MACOS_ARM64) || defined(SS_PLATFORM_MACOS_x86)
+#if defined(SS_PLATFORM_WINDOWS) || defined(SS_PLATFORM_MACOS_ARM64) || defined(SS_PLATFORM_MACOS_x86) || defined(SS_PLATFORM_LINUX)
 
 extern Sandstone::Application* Sandstone::CreateApplication();
 

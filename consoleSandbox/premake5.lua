@@ -25,7 +25,8 @@ project "consoleSandbox"
 
 	links
 	{
-		"sandstone"
+		"sandstone",
+		"lua"
 	}
 
 	postbuildcommands {

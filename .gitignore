@@ -28,3 +28,8 @@ data/save.json
 *.log
 *.pyc
 *.xcscheme
+
+# Linux specific
+Makefile
+*/Makefile
+*/*/*/Makefile

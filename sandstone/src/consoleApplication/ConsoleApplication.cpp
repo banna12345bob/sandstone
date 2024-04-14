@@ -27,6 +27,9 @@ namespace Sandstone {
         char const* val = getenv(key.c_str());
         std::string home = (val == NULL ? std::string() : std::string(val));
         pValue = home + std::string("/Library/Application Support");
+#elif defined(SS_PLATFORM_LINUX)
+		std::string pValue;
+		pValue = getenv("HOME");
 #endif
 		std::string appData(pValue);
 		std::string m_SaveDir = appData + "/sandstone/";

@@ -24,7 +24,8 @@ project "demo1"
 
 	links
 	{
-		"sandstone"
+		"sandstone",
+		"lua"
 	}
 
 	postbuildcommands {

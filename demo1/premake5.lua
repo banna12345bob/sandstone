@@ -24,8 +24,7 @@ project "demo1"
 
 	links
 	{
-		"sandstone",
-		"lua"
+		"sandstone"
 	}
 
 	postbuildcommands {
@@ -38,6 +37,7 @@ project "demo1"
 
 	filter "system:linux"
 		systemversion "latest"
+		links {"lua"}
 
 	filter "system:macosx"
 		systemversion "latest"

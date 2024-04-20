@@ -25,8 +25,7 @@ project "consoleSandbox"
 
 	links
 	{
-		"sandstone",
-		"lua"
+		"sandstone"
 	}
 
 	postbuildcommands {
@@ -35,10 +34,11 @@ project "consoleSandbox"
 	}
 	
 	filter "system:windows"
-	systemversion "latest"
+		systemversion "latest"
 
 	filter "system:linux"
 		systemversion "latest"
+		links {"lua"}
 
 	filter "system:macosx"
 		systemversion "latest"

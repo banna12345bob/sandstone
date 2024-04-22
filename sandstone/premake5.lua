@@ -26,21 +26,30 @@ project "sandstone"
 		"lua"
 	}
 
-	postbuildcommands {
-		"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
-		"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
-		"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
-	}
-
 	filter "system:windows"
 		systemversion "latest"
+		postbuildcommands {
+			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/scripts",
+			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../data/"
+		}
 
 	filter "system:linux"
 		systemversion "latest"
+		postbuildcommands {
+			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
+			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
+		}
 
 	filter "system:macosx"
 		systemversion "latest"
         xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
+		postbuildcommands {
+			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
+			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
+		}
 
 	filter "configurations:Debug*"
 		defines "SS_DEBUG"

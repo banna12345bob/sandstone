@@ -16,7 +16,7 @@ namespace Sandstone {
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
 	{
-        SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::version().major, Sandstone::version().minor, Sandstone::version().patch);
+        SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::getMajorVersion(), Sandstone::getMinorVersion(), Sandstone::getPatchVersion());
 #ifdef SS_PLATFORM_WINDOWS
         size_t len;
 		char* pValue;
@@ -48,8 +48,8 @@ namespace Sandstone {
 
 		m_baseRoomFile = roomFile;
 
-		version().checkVersion(m_RoomFile);
-		version().checkVersion(m_ObjectFile);
+		checkVersionForFile(m_RoomFile);
+		checkVersionForFile(m_ObjectFile);
 
 		int m_Area = 1;
 		int m_Room = 1;

@@ -68,12 +68,7 @@ namespace Sandstone {
 
     bool player::removeFromInventory(std::string lObject)
     {
-        if (std::find(m_Inventory.begin(), m_Inventory.end(), m_Objects->getObject(lObject)) != m_Inventory.end())
-        {
-            m_Inventory.erase(std::find(m_Inventory.begin(), m_Inventory.end(), m_Objects->getObject(lObject)));
-            return true;
-        }
-        return false;
+        return removeFromInventory(m_Objects->getObject(lObject));
     }
 
 	void player::resetSave()

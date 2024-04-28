@@ -2,8 +2,8 @@
 
 namespace Sandstone {
 
-	room::room(int area, int room, std::string iFile, inventory* inv)
-		: m_Area(area), m_Room(room), m_inv(inv), m_FileName(iFile)
+	room::room(int area, int room, std::string iFile, player* player)
+		: m_Area(area), m_Room(room), m_player(player), m_FileName(iFile)
 	{
 		m_File = JSON::Read(iFile);
 	}
@@ -75,15 +75,14 @@ namespace Sandstone {
 		{
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
-					std::vector<object*> inv = m_inv->getInventory();
-					if (std::find(inv.begin(), inv.end(), m_inv->m_Objects->getObject(getDirections()[direction]["unlockedBy"])) != inv.end()) {
+					if (m_player->inInventory(m_player->m_Objects->getObject(getDirections()[direction]["unlockedBy"]))) {
 						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
 						JSON::Write(m_FileName, m_File);
 						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
 						std::cout << unlockMsg << std::endl;
 						rDirections = getDirections()[direction]["room"];
-						if (getDirections()[direction]["breaks"][0] == true)
-                            m_inv->removeFromInventory(getDirections()[direction]["unlockedBy"]);
+						if (getDirections()[direction]["breaks"] == true)
+                            m_player->removeFromInventory(getDirections()[direction]["unlockedBy"]);
 					}
 					else {
 						std::string a = getDirections()[direction]["lockedMsg"];

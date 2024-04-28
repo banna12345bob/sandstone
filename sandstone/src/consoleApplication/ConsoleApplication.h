@@ -19,14 +19,14 @@ namespace Sandstone {
 		std::map<std::string, command*> m_Commands;
         room* m_roomPtr;
         objects* m_objectsPtr;
-        inventory* m_invPtr;
+        player* m_playerPtr;
         scriptingEngine* m_scripingEngine;
 	private:
 		std::string m_RoomFile;
 		std::string m_baseRoomFile;
 		std::string m_ObjectFile;
 		std::string m_SaveFile;
-		std::string m_Player;
+		std::string m_PlayerName;
 	};
 
 	//	To be defined in client

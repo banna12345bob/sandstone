@@ -1,18 +1,12 @@
 #include <sandstone.h>
 
-extern "C" {
-	#include <lua.h>
-	#include <lualib.h>
-	#include <lauxlib.h>
-}
-
 // Little demo of application commands
 class sand : public Sandstone::command {
 public:
-	sand(Sandstone::room* roomPtr, Sandstone::objects* objectsPtr, Sandstone::inventory* invPtr, Sandstone::scriptingEngine* scripingEngine) {
+	sand(Sandstone::room* roomPtr, Sandstone::objects* objectsPtr, Sandstone::player* playerPtr, Sandstone::scriptingEngine* scripingEngine) {
         command::m_roomPtr = roomPtr;
         command::m_objectsPtr = objectsPtr;
-        command::m_invPtr = invPtr;
+        command::m_playerPtr = playerPtr;
         command::m_scripingEngine = scripingEngine;
 		command::m_DebugOnly = true;
 	}
@@ -33,7 +27,7 @@ public:
 	ConsoleSandbox()
 		: Sandstone::ConsoleApplication("consoleSandboxRooms.json", "consoleSandboxObjects.json")
 	{
-		this->m_Commands["sand"] = new sand(m_roomPtr, m_objectsPtr, m_invPtr, m_scripingEngine);
+		this->m_Commands["sand"] = new sand(m_roomPtr, m_objectsPtr, m_playerPtr, m_scripingEngine);
 	}
 	~ConsoleSandbox()
 	{

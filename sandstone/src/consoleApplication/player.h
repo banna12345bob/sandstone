@@ -4,13 +4,16 @@
 
 namespace Sandstone {
 
-	class inventory {
+	class player {
 	public:
-		inventory(std::string saveFilePath, objects* objects);
-        ~inventory();
+		player(std::string saveFilePath, objects* objects);
+        ~player();
+        void loadInventory(objects* objects);
+        void saveInventory();
 		void resetSave();
-		std::vector<object*> getInventory();
-        std::vector<std::string> getInventoryString();
+        std::vector<object*> getInventory() {return m_Inventory;}
+        bool inInventory(object* object);
+        bool inInventory(std::string objectName);
 		void addToInventory(object* lObject);
 		bool removeFromInventory(object* lObject);
         bool removeFromInventory(std::string lObject);

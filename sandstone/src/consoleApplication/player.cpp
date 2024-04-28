@@ -1,25 +1,34 @@
-#include "inventory.h"
+#include "player.h"
 
 namespace Sandstone {
 
-	inventory::inventory(std::string saveFilePath, objects* objects)
+	player::player(std::string saveFilePath, objects* objects)
 		: m_SaveFilePath(saveFilePath), m_Objects(objects)
 	{
-		m_SaveFile = JSON().Read(m_SaveFilePath);
-		if (m_SaveFile == false) {
-			this->resetSave();
-			m_SaveFile = JSON().Read(m_SaveFilePath);
-		}
-		for (int i = 0; i < m_SaveFile["inventory"].size(); i++)
-		{
-            m_Inventory.push_back(objects->getObject(m_SaveFile["inventory"][i]));
-		}
+        loadInventory(objects);
 	}
 
-    inventory::~inventory()
+    player::~player()
+    {
+        saveInventory();
+    }
+
+    void player::loadInventory(objects* objects)
+    {
+        m_SaveFile = JSON().Read(m_SaveFilePath);
+        if (m_SaveFile == false) {
+            this->resetSave();
+            m_SaveFile = JSON().Read(m_SaveFilePath);
+        }
+        for (int i = 0; i < m_SaveFile["inventory"].size(); i++)
+        {
+            m_Inventory.push_back(objects->getObject(m_SaveFile["inventory"][i]));
+        }
+    }
+
+    void player::saveInventory()
     {
         m_SaveFile = JSON::Read(m_SaveFilePath);
-//        m_SaveFile["inventory"] = m_Inventory;
         std::vector<std::string> inv;
         for (int i = 0; i < m_Inventory.size(); i++)
         {
@@ -29,27 +38,23 @@ namespace Sandstone {
         JSON().Write(m_SaveFilePath, m_SaveFile);
     }
 
-	std::vector<object*> inventory::getInventory()
-	{
-		return m_Inventory;
-	}
 
-    std::vector<std::string> inventory::getInventoryString()
+    bool player::inInventory(object *object)
     {
-        std::vector<std::string> inven;
-        for (int i = 0; i < m_Inventory.size(); i++)
-        {
-            inven.push_back(m_Inventory[i]->getName());
-        }
-        return inven;
+        return (std::find(m_Inventory.begin(), m_Inventory.end(), object) != m_Inventory.end());
     }
 
-	void inventory::addToInventory(object* lObject)
+    bool player::inInventory(std::string objectName)
+    {
+        return inInventory(m_Objects->getObject(objectName));
+    }
+
+	void player::addToInventory(object* lObject)
 	{
 		m_Inventory.push_back(lObject);
 	}
 
-	bool inventory::removeFromInventory(object* lObject)
+	bool player::removeFromInventory(object* lObject)
 	{
 		if (std::find(m_Inventory.begin(), m_Inventory.end(), lObject) != m_Inventory.end())
 		{
@@ -61,7 +66,7 @@ namespace Sandstone {
 		return false;
 	}
 
-    bool inventory::removeFromInventory(std::string lObject)
+    bool player::removeFromInventory(std::string lObject)
     {
         if (std::find(m_Inventory.begin(), m_Inventory.end(), m_Objects->getObject(lObject)) != m_Inventory.end())
         {
@@ -71,7 +76,7 @@ namespace Sandstone {
         return false;
     }
 
-	void inventory::resetSave()
+	void player::resetSave()
 	{
 		json save;
 		save["currentRoom"] = 1;

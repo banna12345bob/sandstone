@@ -13,8 +13,8 @@ namespace Sandstone {
 		return 0;
 	}
 
-    ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string player)
-		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_Player(player)
+    ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string playerName)
+		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_PlayerName(playerName)
 	{
         SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::getMajorVersion(), Sandstone::getMinorVersion(), Sandstone::getPatchVersion());
 #ifdef SS_PLATFORM_WINDOWS
@@ -36,7 +36,7 @@ namespace Sandstone {
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}
-		m_SaveDir = m_SaveDir + player + "/";
+		m_SaveDir = m_SaveDir + m_PlayerName + "/";
 		if (!std::filesystem::is_directory(m_SaveDir) || !std::filesystem::exists(m_SaveDir)) {
 			std::filesystem::create_directory(m_SaveDir);
 		}
@@ -64,27 +64,27 @@ namespace Sandstone {
 		}
 
 		m_objectsPtr = new objects(m_ObjectFile);
-		m_invPtr = new inventory(m_SaveFile, m_objectsPtr);
-        m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_invPtr);
+        m_playerPtr = new player(m_SaveFile, m_objectsPtr);
+        m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_playerPtr);
         m_scripingEngine = new scriptingEngine();
         
         // Defined after creation of the scripting engine so not call by it
         lua_register(m_scripingEngine->L, "MyCppFunction", MyCppFunction);
         
-		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["save"] = new save(m_roomPtr, m_objectsPtr, m_invPtr, m_baseRoomFile);
-		m_Commands["inv"] = new inv(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["use"] = new use(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["dir"] = new dir(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["pickup"] = new pickup(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["drop"] = new drop(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["save"] = new save(m_roomPtr, m_objectsPtr, m_playerPtr, m_baseRoomFile);
+		m_Commands["inv"] = new inv(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["use"] = new use(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["dir"] = new dir(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["pickup"] = new pickup(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["drop"] = new drop(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_playerPtr);
 
 		// ----------- Debug Commands ----------- //
-		m_Commands["open"] = new open(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_invPtr);
-		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_invPtr);
+		m_Commands["open"] = new open(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_playerPtr);
 	}
 
     ConsoleApplication::~ConsoleApplication()
@@ -178,7 +178,7 @@ namespace Sandstone {
 				std::cout << "Unknown command" << std::endl;
 			}
 		}
-        m_invPtr->~inventory();
+        m_playerPtr->~player();
 	}
 
 }

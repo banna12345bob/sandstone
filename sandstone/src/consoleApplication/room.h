@@ -1,7 +1,7 @@
 #include "json.h"
 #include "Log.h"
 
-#include "inventory.h"
+#include "player.h"
 
 #include "scriptingEngine.h"
 
@@ -9,7 +9,7 @@ namespace Sandstone {
 
 	class room {
 	public:
-		room(int area, int room, std::string iFile, inventory* inv);
+		room(int area, int room, std::string iFile, player* player);
         void reload();
 		int getArea() { return m_Area; }
 		int getRoom() { return m_Room; }
@@ -51,7 +51,7 @@ namespace Sandstone {
 
 		int m_Area;
 		int m_Room;
-		inventory* m_inv;
+		player* m_player;
 		std::string m_FileName;
 	private:
 		json m_File;

@@ -30,7 +30,6 @@ project "sandstone"
 		systemversion "latest"
 		postbuildcommands {
 			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
-			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/scripts",
 			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../data/"
 		}
 
@@ -38,7 +37,6 @@ project "sandstone"
 		systemversion "latest"
 		postbuildcommands {
 			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
-			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
 			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
 		}
 
@@ -47,7 +45,6 @@ project "sandstone"
         xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 		postbuildcommands {
 			"{COPY} %{wks.location}/%{prj.name}/version.json %{cfg.targetdir}",
-			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/",
 			"{COPYDIR} %{wks.location}/%{prj.name}/../data/ %{cfg.targetdir}/../"
 		}
 

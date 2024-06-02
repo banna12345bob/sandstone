@@ -35,14 +35,23 @@ project "consoleSandbox"
 	
 	filter "system:windows"
 		systemversion "latest"
+		postbuildcommands {
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/scripts"
+		}
 
 	filter "system:linux"
 		systemversion "latest"
 		links {"lua"}
+		postbuildcommands {
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/"
+		}
 
 	filter "system:macosx"
 		systemversion "latest"
         xcodebuildsettings { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
+		postbuildcommands {
+			"{COPYDIR} %{wks.location}/%{prj.name}/scripts/ %{cfg.targetdir}/"
+		}
 
 	filter "configurations:Debug*"
 		defines "SS_DEBUG"

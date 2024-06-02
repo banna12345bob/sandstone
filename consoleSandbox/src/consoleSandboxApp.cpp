@@ -13,7 +13,7 @@ public:
 	virtual std::string run(std::string lCommand[]) override {
         SS_WARN("Current room {0}:{1}", m_roomPtr->m_Area, m_roomPtr->m_Room);
 		luaL_openlibs(m_scripingEngine->L);
-		luaL_dofile(m_scripingEngine->L, "../sandstone/scripts/main.lua");
+		luaL_dofile(m_scripingEngine->L, "scripts/main.lua"); // This doesn't reload the file everytime it gets called
 		lua_getglobal(m_scripingEngine->L, "MyLuaFunction");
 		lua_pushstring(m_scripingEngine->L, "Testing string");
 		lua_pcall(m_scripingEngine->L, 1, 0, 0);

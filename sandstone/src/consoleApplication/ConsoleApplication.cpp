@@ -6,13 +6,6 @@
 #include "version.h"
 
 namespace Sandstone {
-	static int MyCppFunction(lua_State* L)
-	{
-		const char* str = lua_tostring(L, 1);
-		std::cout << "C++ function called from lua: " << str << std::endl;
-		return 0;
-	}
-
     ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string playerName)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_PlayerName(playerName)
 	{
@@ -67,9 +60,7 @@ namespace Sandstone {
         m_playerPtr = new player(m_SaveFile, m_objectsPtr);
         m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_playerPtr);
         m_scripingEngine = new scriptingEngine();
-        
-        // Defined after creation of the scripting engine so not call by it
-        lua_register(m_scripingEngine->L, "MyCppFunction", MyCppFunction);
+    
         
 		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["save"] = new save(m_roomPtr, m_objectsPtr, m_playerPtr, m_baseRoomFile);

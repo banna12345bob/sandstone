@@ -59,8 +59,6 @@ namespace Sandstone {
 		if (std::find(m_Inventory.begin(), m_Inventory.end(), lObject) != m_Inventory.end())
 		{
 			m_Inventory.erase(std::find(m_Inventory.begin(), m_Inventory.end(), lObject));
-//			m_SaveFile["inventory"] = m_Inventory;
-//			JSON().Write(m_SaveFilePath, m_SaveFile);
 			return true;
 		}
 		return false;

@@ -76,6 +76,8 @@ namespace Sandstone {
 		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_playerPtr);
+
+		m_scripingEngine->registerFunctions();
 	}
 
     ConsoleApplication::~ConsoleApplication()

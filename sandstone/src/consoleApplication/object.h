@@ -1,3 +1,5 @@
+#pragma once
+
 #include "json.h"
 #include "Log.h"
 

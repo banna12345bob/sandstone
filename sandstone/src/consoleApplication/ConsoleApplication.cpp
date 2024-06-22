@@ -59,7 +59,7 @@ namespace Sandstone {
 		m_objectsPtr = new objects(m_ObjectFile);
         m_playerPtr = new player(m_SaveFile, m_objectsPtr);
         m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_playerPtr);
-        m_scripingEngine = new scriptingEngine();
+        m_scripingEngine = new scriptingEngine(m_objectsPtr, m_playerPtr, m_roomPtr);
     
         
 		m_Commands["look"] = new look(m_roomPtr, m_objectsPtr, m_playerPtr);

@@ -1,9 +1,9 @@
+#pragma once
+
 #include "json.h"
 #include "Log.h"
 
 #include "player.h"
-
-#include "scriptingEngine.h"
 
 namespace Sandstone {
 

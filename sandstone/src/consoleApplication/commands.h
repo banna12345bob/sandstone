@@ -1,6 +1,8 @@
 #pragma once
+
 #include "player.h"
 #include "room.h"
+#include "scriptingEngine.h"
 
 namespace Sandstone {
 	class command {

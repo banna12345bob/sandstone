@@ -4,7 +4,6 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include "consoleApplication/commands.h"
 
 namespace Sandstone {
 

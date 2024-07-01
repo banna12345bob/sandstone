@@ -1,52 +1,102 @@
 #include "room.h"
+#include "object.h"
 
 namespace Sandstone {
 
-	room::room(int area, int room, std::string iFile, player* player)
-		: m_Area(area), m_Room(room), m_player(player), m_FileName(iFile)
+	rooms::rooms(int larea, int lroom, std::string iFile, player* player, objects* objectsPtr)
+		: m_CurrentArea(larea-1), m_CurrentRoom(lroom-1), m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
 	{
-		m_File = JSON::Read(iFile);
+		this->reload();
 	}
 
-    void room::reload()
+    void rooms::reload()
     {
         m_File = JSON::Read(m_FileName);
+		for (json::iterator areaIt = m_File.begin(); areaIt != m_File.end(); ++areaIt)
+		{
+			if (areaIt.key() != "version") {
+				area* localArea = new area;
+
+				localArea->areaID = std::stoi(areaIt.key());
+
+				for (json::iterator roomIt = m_File[areaIt.key()].begin(); roomIt != m_File[areaIt.key()].end(); ++roomIt)
+				{
+					room* localRoom = new room;
+
+					localRoom->roomID = std::stoi(roomIt.key());
+					localRoom->name = m_File[areaIt.key()][roomIt.key()]["name"];
+					localRoom->description = m_File[areaIt.key()][roomIt.key()]["description"];
+					for each (auto i in m_File[areaIt.key()][roomIt.key()]["items"])
+					{
+						localRoom->items.push_back(m_ObjectsPtr->getObject(i));
+					}
+					localRoom->npcs = "Not implimented";
+					for (json::iterator dirIt = m_File[areaIt.key()][roomIt.key()]["directions"].begin(); dirIt != m_File[areaIt.key()][roomIt.key()]["directions"].end(); ++dirIt)
+					{
+						direction* localDirection = new direction;
+
+						std::string rDirections;
+						if (m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()].contains("room")) {
+							// Only gets called if the door is able to be locked or unlocked
+							rDirections = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["room"];
+
+							localDirection->locked = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["locked"];
+							localDirection->itemBreaksOnOpen = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["breaks"];
+							localDirection->unlockedBy = m_ObjectsPtr->getObject(m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["unlockedBy"]);
+							localDirection->lockedMsg = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["lockedMsg"];
+							localDirection->unlockMsg = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()]["unlockMsg"];
+						} else {
+							rDirections = m_File[areaIt.key()][roomIt.key()]["directions"][dirIt.key()];
+						}
+
+						// Gets the gotoID
+						size_t pos = 0;
+						std::string word;
+						while ((pos = rDirections.find(":")) != std::string::npos) {
+							word = rDirections.substr(0, pos);
+							localDirection->gotoID[pos-1] = std::stoi(word);
+							rDirections.erase(0, pos+1);
+						}
+						localDirection->gotoID[1] = std::stoi(rDirections);
+
+						localRoom->directions[dirIt.key()] = localDirection;
+					}
+					localArea->rooms.push_back(localRoom);
+				}
+
+				m_Areas.push_back(localArea);
+			}
+		}
     }
 
-	std::vector<std::string> room::getItemsInRoom()
+	std::vector<object*> rooms::getItemsInRoom()
 	{
-		std::vector<std::string> items;
-		json item = m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"];
-		for (int i = 0; i < item.size(); i++)
-		{
-			items.push_back(item[i]);
-		}
-		return items;
+		return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
 	}
 
-	bool room::removeItemFromRoom(std::string item)
+	bool rooms::removeItemFromRoom(object* item)
 	{
-		std::vector<std::string> items = getItemsInRoom();
+		std::vector<object*> items = m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
 		if (std::find(items.begin(), items.end(), item) != items.end()) {
-			items.erase(std::find(items.begin(), items.end(), item));
-			m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-			JSON::Write(m_FileName, m_File);
+			// TODO: Remove item from room currently causes a crash
+			m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.erase(std::find(items.begin(), items.end(), item));
+			//m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
+			//JSON::Write(m_FileName, m_File);
 			return true;
 		}
 		return false;
 
 	}
 
-	bool room::addItemToRoom(std::string item)
+	bool rooms::addItemToRoom(std::string item)
 	{
-		std::vector<std::string> items = getItemsInRoom();
-		items.push_back(item);
-		m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-		JSON::Write(m_FileName, m_File);
+		m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.push_back(m_ObjectsPtr->getObject(item));
+		//m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
+		//JSON::Write(m_FileName, m_File);
 		return true;
 	}
 
-	std::vector<std::string> room::getNpcList()
+	/*std::vector<std::string> rooms::getNpcList()
 	{
 		std::vector<std::string> npcs;
 		json npc = m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"];
@@ -55,23 +105,11 @@ namespace Sandstone {
 			npcs.push_back(it.key());
 		}
 		return npcs;
-	}
+	}*/
 
-	std::vector<std::string> room::getDirection()
+	std::vector<int> rooms::goDirection(std::string direction)
 	{
-		std::vector<std::string> directions;
-		json file = getDirections();
-		for (json::iterator it = file.begin(); it != file.end(); ++it)
-		{
-			directions.push_back(it.key());
-		}
-		return directions;
-	}
-
-	std::vector<int> room::goDirection(std::string direction)
-	{
-		std::string rDirections;
-		if (getDirections().contains(direction)) 
+		/*if (getDirections().contains(direction)) 
 		{
 			if (getDirections()[direction].contains("locked")) {
 				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
@@ -115,7 +153,35 @@ namespace Sandstone {
 		std::vector<int> error;
 		error.push_back(0);
 		error.push_back(0);
-		return error;
+		return error;*/
+
+		if (!m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked) {
+			if (!debugger().ignoreLocks) {
+				if (m_player->inInventory(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockedBy)) {
+					m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked = false;
+					std::cout << m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockMsg << std::endl;
+					if (m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->itemBreaksOnOpen == true)
+						m_player->removeFromInventory(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockedBy);
+				}
+				else {
+					std::cout << m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->lockedMsg << std::endl;
+					std::vector<int> error;
+					error.push_back(0);
+					error.push_back(0);
+					return error;
+				}
+			}
+		}
+
+		std::vector<int> vec;
+
+		for each (int i in m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->gotoID)
+		{
+			vec.push_back(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->gotoID[i]);
+		}
+
+		return vec;
+
 	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace Sandstone {
 
-	look::look(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	look::look(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -20,7 +20,7 @@ namespace Sandstone {
 		}
 	}
 
-	save::save(room* roomPtr, objects* objectsPtr, player* playerPtr, std::string baseRoomFile)
+	save::save(rooms* roomPtr, objects* objectsPtr, player* playerPtr, std::string baseRoomFile)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -37,15 +37,15 @@ namespace Sandstone {
             m_roomPtr->reload();
 			return "Save reset";
 		} else {
-			save["currentRoom"] = m_roomPtr->m_Room;
-			save["currentArea"] = m_roomPtr->m_Area;
+			save["currentArea"] = m_roomPtr->m_CurrentArea;
+			save["currentRoom"] = m_roomPtr->m_CurrentRoom;
 			JSON().Write(m_playerPtr->m_SaveFilePath, save);
             m_playerPtr->saveInventory();
             return "File saved";
 		}
 	}
 
-	inv::inv(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	inv::inv(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -67,7 +67,7 @@ namespace Sandstone {
 		return u_Inventory[u_Inventory.size() - 1]->getName();
 	}
 
-	use::use(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	use::use(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -87,7 +87,7 @@ namespace Sandstone {
 		}
 	}
 
-	dir::dir(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	dir::dir(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -109,7 +109,7 @@ namespace Sandstone {
 		return directions[directions.size() - 1];
 	}
 
-	pickup::pickup(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	pickup::pickup(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -118,18 +118,18 @@ namespace Sandstone {
 	}
 
 	std::string pickup::run(std::string lCommand[]) {
-		std::vector<std::string> items = m_roomPtr->getItemsInRoom();
-		if(std::find(items.begin(), items.end(), lCommand[1]) != items.end())
+		std::vector<object*> items = m_roomPtr->getItemsInRoom();
+		if(std::find(items.begin(), items.end(), m_objectsPtr->getObject(lCommand[1])) != items.end())
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);
 			m_playerPtr->addToInventory(item);
-			m_roomPtr->removeItemFromRoom(item->getName());
+			m_roomPtr->removeItemFromRoom(item);
 			return "Item added to inventory";
 		}
 		return "Item not found";
 	}
 
-	drop::drop(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	drop::drop(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -150,7 +150,7 @@ namespace Sandstone {
 	}
 
 
-	talk::talk(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	/*talk::talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -169,11 +169,11 @@ namespace Sandstone {
 #endif
 		}
 		return  lCommand[1] + " not found";
-	}
+	}*/
 
 	// ----------- Debug Commands ----------- //
 
-	open::open(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	open::open(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -197,7 +197,7 @@ namespace Sandstone {
 		}
 	}
 
-	give::give(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	give::give(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -220,7 +220,7 @@ namespace Sandstone {
 		}
 	}
 
-	go_to::go_to(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	go_to::go_to(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
@@ -231,16 +231,16 @@ namespace Sandstone {
 
 	std::string go_to::run(std::string lCommand[]) {
 		if (lCommand[1] != "" && lCommand[2] != "") {
-			m_roomPtr->m_Area = std::stoi(lCommand[1]);
-			m_roomPtr->m_Room = std::stoi(lCommand[2]);
-			return "You moved to room " + std::to_string(m_roomPtr->getArea()) + ":" + std::to_string(m_roomPtr->getRoom());
+			m_roomPtr->m_CurrentArea = std::stoi(lCommand[1]);
+			m_roomPtr->m_CurrentRoom = std::stoi(lCommand[2]);
+			return "You moved to room " + std::to_string(m_roomPtr->m_CurrentArea) + ":" + std::to_string(m_roomPtr->m_CurrentRoom);
 		}
 		else {
 			return "Expected second argument";
 		}
 	}
 
-	log::log(room* roomPtr, objects* objectsPtr, player* playerPtr)
+	log::log(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;

@@ -9,7 +9,7 @@ namespace Sandstone {
 	public:
 		command() = default;
 		virtual std::string run(std::string lCommand[]) = 0;
-		room* m_roomPtr;
+		rooms* m_roomPtr;
 		objects* m_objectsPtr;
 		player* m_playerPtr;
         scriptingEngine* m_scripingEngine;
@@ -19,13 +19,13 @@ namespace Sandstone {
 
 	class look : public command {
 	public:
-		look(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		look(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class save : public command {
 	public:
-		save(room* roomPtr, objects* objectsPtr, player* playerPtr, std::string baseRoomFile);
+		save(rooms* roomPtr, objects* objectsPtr, player* playerPtr, std::string baseRoomFile);
 		virtual std::string run(std::string lCommand[]) override;
 	private:
 		std::string m_BaseRoomFile;
@@ -33,37 +33,37 @@ namespace Sandstone {
 
 	class inv : public command {
 	public:
-		inv(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		inv(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class use : public command {
 	public:
-		use(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		use(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class dir : public command {
 	public:
-		dir(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		dir(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class pickup : public command {
 	public:
-		pickup(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		pickup(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class drop : public command {
 	public:
-		drop(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		drop(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class talk : public command {
 	public:
-		talk(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
@@ -71,25 +71,25 @@ namespace Sandstone {
 
 	class open : public command {
 	public:
-		open(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		open(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class give : public command {
 	public:
-		give(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		give(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class go_to : public command {
 	public:
-		go_to(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		go_to(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 
 	class log : public command {
 	public:
-		log(room* roomPtr, objects* objectsPtr, player* playerPtr);
+		log(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 }

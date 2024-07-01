@@ -58,7 +58,7 @@ namespace Sandstone {
 
 		m_objectsPtr = new objects(m_ObjectFile);
         m_playerPtr = new player(m_SaveFile, m_objectsPtr);
-        m_roomPtr = new room(m_Area, m_Room, m_RoomFile, m_playerPtr);
+        m_roomPtr = new rooms(m_Area, m_Room, m_RoomFile, m_playerPtr, m_objectsPtr);
         m_scripingEngine = new scriptingEngine(m_objectsPtr, m_playerPtr, m_roomPtr);
     
         
@@ -69,7 +69,7 @@ namespace Sandstone {
 		m_Commands["dir"] = new dir(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["pickup"] = new pickup(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["drop"] = new drop(m_roomPtr, m_objectsPtr, m_playerPtr);
-		m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_playerPtr);
+		//m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_playerPtr);
 
 		// ----------- Debug Commands ----------- //
 		m_Commands["open"] = new open(m_roomPtr, m_objectsPtr, m_playerPtr);
@@ -158,11 +158,11 @@ namespace Sandstone {
 			else if (arr[0] == "quit" || arr[0] == "exit") {
 				break;
 			}
-			else if (m_roomPtr->getDirections().contains(arr[0])) {
+			else if (m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->directions.find(arr[0]) != m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->directions.end()) {
 				auto a = m_roomPtr->goDirection(arr[0]);
 				if (a[0] != 0 || a[0] != 0) {
-					m_roomPtr->m_Area = a[0];
-					m_roomPtr->m_Room = a[1];
+					m_roomPtr->m_CurrentArea = a[0];
+					m_roomPtr->m_CurrentRoom = a[1];
 				}
 				std::cout << "You are in the " << m_roomPtr->getRoomName() << "\nIt is a " << m_roomPtr->getDesciption() << std::endl;
 			}

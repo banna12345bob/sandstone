@@ -3,7 +3,7 @@
 
 namespace Sandstone {
 
-    scriptingEngine::scriptingEngine(objects* objectsPtr, player* playerPtr, room* roomPtr)
+    scriptingEngine::scriptingEngine(objects* objectsPtr, player* playerPtr, rooms* roomPtr)
         : m_objectsPtr(objectsPtr), m_playerPtr(playerPtr), m_roomPtr(roomPtr)
     {
         L = luaL_newstate();

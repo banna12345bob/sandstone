@@ -5,7 +5,6 @@
         "patch": 0
     },
     "1": {
-        "name": "Area 1",
         "1": {
             "name": "foyer",
             "description": "Large room with a single chair in the corner",
@@ -74,7 +73,6 @@
         }
     },
     "2": {
-        "name": "Area 2",
         "1": {
             "name": "Area 2 room 1",
             "description": "Definitly a room",
@@ -89,7 +87,6 @@
         }
     },
     "3" : {
-        "name" : "SPOONS",
         "1": {
             "name": "SPOONS",
             "description": "You find yourself in a room filled with spoons",

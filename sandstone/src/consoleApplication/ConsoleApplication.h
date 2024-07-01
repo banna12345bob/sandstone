@@ -17,7 +17,7 @@ namespace Sandstone {
 
 		virtual void Run() override;
 		std::map<std::string, command*> m_Commands;
-        room* m_roomPtr;
+        rooms* m_roomPtr;
         objects* m_objectsPtr;
         player* m_playerPtr;
         scriptingEngine* m_scripingEngine;

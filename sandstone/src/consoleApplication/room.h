@@ -7,25 +7,45 @@
 
 namespace Sandstone {
 
-	class room {
+	struct direction {
+		int gotoID[2];
+		bool locked = false;
+		object* unlockedBy;
+		bool itemBreaksOnOpen = false;
+		std::string lockedMsg;
+		std::string unlockMsg;
+	};
+
+	struct room {
+		int roomID;
+		std::string name;
+		std::string description;
+		std::vector<object*> items;
+		std::string npcs;
+		std::map<std::string, direction*> directions;
+	};
+
+	struct area {
+		int areaID;
+		std::vector<room*> rooms;
+	};
+
+	class rooms {
 	public:
-		room(int area, int room, std::string iFile, player* player);
+		rooms(int larea, int room, std::string iFile, player* player, objects* objectsPtr);
         void reload();
-		int getArea() { return m_Area; }
-		int getRoom() { return m_Room; }
-		std::string getAreaName() { return m_File[std::to_string(m_Area)]["name"]; }
-		std::string getRoomName() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["name"]; }
-		std::string getDesciption() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["description"]; }
+		std::string getRoomName() { return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->name; }
+		std::string getDesciption() { return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->description; }
 
 		// ------------- Item functions ------------- //
-		std::vector<std::string> getItemsInRoom();
-		bool removeItemFromRoom(std::string item);
+		std::vector<object*> getItemsInRoom();
+		bool removeItemFromRoom(object* item);
 		bool addItemToRoom(std::string item);
 
 
 		// -------------- NPC functions -------------- //
-		json getNpcs() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"]; }
-		std::vector<std::string> getNpcList();
+		/*json getNpcs() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"]; }
+		std::vector<std::string> getNpcList();*/
 		// NPC dialogue will be done late when commands are implimented
 		/*json getNpcDialouge(std::string npc) { return getNpcs()[npc]["says"]; }
 		std::string getNpcDialougeExtension(std::string npc)*/
@@ -38,14 +58,15 @@ namespace Sandstone {
 		//killNpc()
 
 		// ----------- Direction functions ----------- //
-		json getDirections() { return m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"]; }
-		std::vector<std::string> getDirection();
+		std::vector<std::string> getDirection() { std::vector<std::string> a; return a; };
 		std::vector<int> goDirection(std::string direction);
 
-		int m_Area;
-		int m_Room;
+		int m_CurrentArea;
+		int m_CurrentRoom;
 		player* m_player;
+		objects* m_ObjectsPtr;
 		std::string m_FileName;
+		std::vector<area*> m_Areas;
 	private:
 		json m_File;
 	};

@@ -13,7 +13,7 @@ namespace Sandstone {
     
     class scriptingEngine{
     public:
-        scriptingEngine(objects* objectsPtr, player* playerPtr, room* roomPtr);
+        scriptingEngine(objects* objectsPtr, player* playerPtr, rooms* roomPtr);
 
         void registerFunctions();
 
@@ -27,6 +27,6 @@ namespace Sandstone {
         lua_State* L;
         objects* m_objectsPtr;
         player* m_playerPtr;
-        room* m_roomPtr;
+        rooms* m_roomPtr;
     };
 }

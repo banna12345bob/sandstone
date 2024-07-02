@@ -57,8 +57,8 @@ namespace Sandstone {
 		}
 
 		m_objectsPtr = new objects(m_ObjectFile);
-        m_playerPtr = new player(m_SaveFile, m_objectsPtr);
-        m_roomPtr = new rooms(m_Area, m_Room, m_RoomFile, m_playerPtr, m_objectsPtr);
+        m_playerPtr = new player(m_Area, m_Room, m_SaveFile, m_objectsPtr);
+        m_roomPtr = new rooms(m_RoomFile, m_playerPtr, m_objectsPtr);
         m_scripingEngine = new scriptingEngine(m_objectsPtr, m_playerPtr, m_roomPtr);
     
         
@@ -158,13 +158,13 @@ namespace Sandstone {
 			else if (arr[0] == "quit" || arr[0] == "exit") {
 				break;
 			}
-			else if (m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->directions.find(arr[0]) != m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->directions.end()) {
+			else if (m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->directions.find(arr[0]) != m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->directions.end()) {
 				auto a = m_roomPtr->goDirection(arr[0]);
 				if (a[0] != 0 || a[0] != 0) {
-					m_roomPtr->m_CurrentArea = a[0];
-					m_roomPtr->m_CurrentRoom = a[1];
+					m_playerPtr->m_CurrentArea = a[0];
+					m_playerPtr->m_CurrentRoom = a[1];
 				}
-				std::cout << "You are in the " << m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->name << "\nIt is a " << m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->description << std::endl;
+				std::cout << "You are in the " << m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->name << "\nIt is a " << m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->description << std::endl;
 			}
 			else {
 				SS_CORE_WARN("{0}: unknown command", inp);

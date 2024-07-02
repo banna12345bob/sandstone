@@ -7,7 +7,7 @@ namespace Sandstone {
 
 	class player {
 	public:
-		player(std::string saveFilePath, objects* objects);
+		player(int area, int room, std::string saveFilePath, objects* objects);
         ~player();
         void loadInventory(objects* objects);
         void saveInventory();
@@ -20,6 +20,8 @@ namespace Sandstone {
         bool removeFromInventory(std::string lObject);
 
 		std::string m_SaveFilePath;
+		int m_CurrentArea;
+		int m_CurrentRoom;
 	private:
         objects* m_Objects;
         std::vector<object*> m_Inventory;

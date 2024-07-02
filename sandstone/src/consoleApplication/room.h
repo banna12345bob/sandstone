@@ -17,7 +17,6 @@ namespace Sandstone {
 	};
 
 	struct room {
-		int roomID;
 		std::string name;
 		std::string description;
 		std::vector<object*> items;
@@ -26,13 +25,12 @@ namespace Sandstone {
 	};
 
 	struct area {
-		int areaID;
 		std::vector<room*> rooms;
 	};
 
 	class rooms {
 	public:
-		rooms(int larea, int room, std::string iFile, player* player, objects* objectsPtr);
+		rooms(std::string iFile, player* player, objects* objectsPtr);
         void reload();
 
 		// ------------- Item functions ------------- //
@@ -59,8 +57,6 @@ namespace Sandstone {
 		std::vector<std::string> getDirection() { std::vector<std::string> a; return a; };
 		std::vector<int> goDirection(std::string direction);
 
-		int m_CurrentArea;
-		int m_CurrentRoom;
 		player* m_player;
 		objects* m_ObjectsPtr;
 		std::string m_FileName;

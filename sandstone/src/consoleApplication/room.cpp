@@ -3,21 +3,22 @@
 
 namespace Sandstone {
 
-	rooms::rooms(int larea, int lroom, std::string iFile, player* player, objects* objectsPtr)
-		: m_CurrentArea(larea), m_CurrentRoom(lroom), m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
+	rooms::rooms(std::string iFile, player* player, objects* objectsPtr)
+		: m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
 	{
 		this->reload();
 	}
 
     void rooms::reload()
     {
+		// For some reason this gets called even whenever the point to the room class is called
+		//std::vector<area*> m_Areas;
+
         m_File = JSON::Read(m_FileName);
 
 		area* errorArea = new area;
-		errorArea->areaID = 0;
 
 		room* errorRoom = new room;
-		errorRoom->roomID = 0;
 		errorRoom->name = "Error Room";
 		errorRoom->description = "a very big error";
 		errorArea->rooms.push_back(errorRoom);
@@ -29,10 +30,7 @@ namespace Sandstone {
 			if (areaIt.key() != "version") {
 				area* localArea = new area;
 
-				localArea->areaID = std::stoi(areaIt.key());
-
 				room* errorRoom = new room;
-				errorRoom->roomID = 0;
 				errorRoom->name = "Error Room";
 				errorRoom->description = "a very big error";
 				localArea->rooms.push_back(errorRoom);
@@ -41,7 +39,6 @@ namespace Sandstone {
 				{
 					room* localRoom = new room;
 
-					localRoom->roomID = std::stoi(roomIt.key());
 					localRoom->name = m_File[areaIt.key()][roomIt.key()]["name"];
 					localRoom->description = m_File[areaIt.key()][roomIt.key()]["description"];
 					for each (auto i in m_File[areaIt.key()][roomIt.key()]["items"])
@@ -89,10 +86,10 @@ namespace Sandstone {
 
 	void rooms::removeItemFromRoom(object* item)
 	{
-		std::vector<object*> items = m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
+		std::vector<object*> items = m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->items;
 		if (std::find(items.begin(), items.end(), item) != items.end()) {
-			m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.erase(std::find(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.begin(), m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.end(), item));
-			saveRoom(m_CurrentArea, m_CurrentRoom);
+			m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->items.erase(std::find(m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->items.begin(), m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->items.end(), item));
+			saveRoom(m_player->m_CurrentArea, m_player->m_CurrentRoom);
 		}
 		return;
 
@@ -100,8 +97,8 @@ namespace Sandstone {
 
 	void rooms::addItemToRoom(std::string item)
 	{
-		m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.push_back(m_ObjectsPtr->getObject(item));
-		saveRoom(m_CurrentArea, m_CurrentRoom);
+		m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->items.push_back(m_ObjectsPtr->getObject(item));
+		saveRoom(m_player->m_CurrentArea, m_player->m_CurrentRoom);
 		return;
 	}
 
@@ -119,16 +116,16 @@ namespace Sandstone {
 
 	std::vector<int> rooms::goDirection(std::string direction)
 	{
-		if (m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked) {
+		if (m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->locked) {
 			if (!debugger().ignoreLocks) {
-				if (m_player->inInventory(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockedBy)) {
-					m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked = false;
-					std::cout << m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockMsg << std::endl;
-					if (m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->itemBreaksOnOpen == true)
-						m_player->removeFromInventory(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockedBy);
+				if (m_player->inInventory(m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->unlockedBy)) {
+					m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->locked = false;
+					std::cout << m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->unlockMsg << std::endl;
+					if (m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->itemBreaksOnOpen == true)
+						m_player->removeFromInventory(m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->unlockedBy);
 				}
 				else {
-					std::cout << m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->lockedMsg << std::endl;
+					std::cout << m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->lockedMsg << std::endl;
 					std::vector<int> error;
 					error.push_back(0);
 					error.push_back(0);
@@ -138,7 +135,7 @@ namespace Sandstone {
 		}
 
 		std::vector<int> vec;
-		for each (int i in m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->gotoID)
+		for each (int i in m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->gotoID)
 			vec.push_back(i);
 		return vec;
 

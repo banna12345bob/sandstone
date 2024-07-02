@@ -11,7 +11,7 @@ public:
 		command::m_DebugOnly = true;
 	}
 	virtual std::string run(std::string lCommand[]) override {
-        SS_WARN("Current room {0}:{1}", m_roomPtr->m_CurrentArea, m_roomPtr->m_CurrentRoom);
+        SS_WARN("Current room {0}:{1}", m_playerPtr->m_CurrentArea, m_playerPtr->m_CurrentRoom);
 		luaL_openlibs(m_scripingEngine->L);
 		luaL_dofile(m_scripingEngine->L, "scripts/main.lua"); // This only loads the file it doesn't reload it
 		lua_getglobal(m_scripingEngine->L, "MyLuaFunction");

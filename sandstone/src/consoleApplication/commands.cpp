@@ -13,7 +13,7 @@ namespace Sandstone {
 	std::string look::run(std::string lCommand[])
 	{
 		try {
-			return "You are in " + m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->name + ":\nIt is " + m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->description;
+			return "You are in " + m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->name + ":\nIt is " + m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->description;
 		} catch (...) {
 			SS_ASSERT(false, "Room doesn't exist");
 			return "ERROR: Room doesn't exist";
@@ -34,11 +34,13 @@ namespace Sandstone {
 		if(save == false || lCommand[1] == "reset") {
             m_playerPtr->resetSave();
 			JSON().Write(m_roomPtr->m_FileName, JSON().Read(m_BaseRoomFile));
-            m_roomPtr->reload();
+
+			// Broken
+            //m_roomPtr->reload();
 			return "Save reset";
 		} else {
-			save["currentArea"] = m_roomPtr->m_CurrentArea;
-			save["currentRoom"] = m_roomPtr->m_CurrentRoom;
+			save["currentArea"] = m_playerPtr->m_CurrentArea;
+			save["currentRoom"] = m_playerPtr->m_CurrentRoom;
 			JSON().Write(m_playerPtr->m_SaveFilePath, save);
             m_playerPtr->saveInventory();
             return "File saved";
@@ -118,7 +120,7 @@ namespace Sandstone {
 	}
 
 	std::string pickup::run(std::string lCommand[]) {
-		std::vector<object*> items = m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->items;
+		std::vector<object*> items = m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->items;
 		if(std::find(items.begin(), items.end(), m_objectsPtr->getObject(lCommand[1])) != items.end())
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);
@@ -231,9 +233,9 @@ namespace Sandstone {
 
 	std::string go_to::run(std::string lCommand[]) {
 		if (lCommand[1] != "" && lCommand[2] != "") {
-			m_roomPtr->m_CurrentArea = std::stoi(lCommand[1]);
-			m_roomPtr->m_CurrentRoom = std::stoi(lCommand[2]);
-			return "You moved to room " + std::to_string(m_roomPtr->m_CurrentArea) + ":" + std::to_string(m_roomPtr->m_CurrentRoom);
+			m_playerPtr->m_CurrentArea = std::stoi(lCommand[1]);
+			m_playerPtr->m_CurrentRoom = std::stoi(lCommand[2]);
+			return "You moved to room " + std::to_string(m_playerPtr->m_CurrentArea) + ":" + std::to_string(m_playerPtr->m_CurrentRoom);
 		}
 		else {
 			return "Expected second argument";

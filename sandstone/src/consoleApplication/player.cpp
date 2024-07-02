@@ -2,8 +2,8 @@
 
 namespace Sandstone {
 
-	player::player(std::string saveFilePath, objects* objects)
-		: m_SaveFilePath(saveFilePath), m_Objects(objects)
+	player::player(int area, int room, std::string saveFilePath, objects* objects)
+		: m_CurrentArea(area), m_CurrentRoom(room), m_SaveFilePath(saveFilePath), m_Objects(objects)
 	{
         loadInventory(objects);
 	}

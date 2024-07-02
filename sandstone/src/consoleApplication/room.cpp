@@ -87,37 +87,35 @@ namespace Sandstone {
 		}
     }
 
-	bool rooms::removeItemFromRoom(object* item)
+	void rooms::removeItemFromRoom(object* item)
 	{
 		std::vector<object*> items = m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
 		if (std::find(items.begin(), items.end(), item) != items.end()) {
 			m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.erase(std::find(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.begin(), m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.end(), item));
-			//m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-			//JSON::Write(m_FileName, m_File);
-			return true;
+			saveRoom(m_CurrentArea, m_CurrentRoom);
 		}
-		return false;
+		return;
 
 	}
 
-	bool rooms::addItemToRoom(std::string item)
+	void rooms::addItemToRoom(std::string item)
 	{
 		m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.push_back(m_ObjectsPtr->getObject(item));
-		//m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
-		//JSON::Write(m_FileName, m_File);
-		return true;
+		saveRoom(m_CurrentArea, m_CurrentRoom);
+		return;
 	}
 
-	/*std::vector<std::string> rooms::getNpcList()
+	void rooms::saveRoom(int area, int room)
 	{
-		std::vector<std::string> npcs;
-		json npc = m_File[std::to_string(m_Area)][std::to_string(m_Room)]["npcs"];
-		for (json::iterator it = npc.begin(); it != npc.end(); ++it)
-		{
-			npcs.push_back(it.key());
-		}
-		return npcs;
-	}*/
+		std::vector<std::string> items;
+		
+		for (object* item : m_Areas[area]->rooms[room]->items)
+			items.push_back(item->name);
+
+		m_File[std::to_string(area)][std::to_string(room)]["items"] = items;
+
+		JSON::Write(m_FileName, m_File);
+	}
 
 	std::vector<int> rooms::goDirection(std::string direction)
 	{

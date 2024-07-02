@@ -20,8 +20,8 @@ namespace Sandstone {
         bool removeFromInventory(std::string lObject);
 
 		std::string m_SaveFilePath;
-        objects* m_Objects;
 	private:
+        objects* m_Objects;
         std::vector<object*> m_Inventory;
 		json m_SaveFile;
 	};

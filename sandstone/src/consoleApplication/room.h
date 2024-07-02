@@ -36,8 +36,9 @@ namespace Sandstone {
         void reload();
 
 		// ------------- Item functions ------------- //
-		bool removeItemFromRoom(object* item);
-		bool addItemToRoom(std::string item);
+		void removeItemFromRoom(object* item);
+		void addItemToRoom(std::string item);
+		void saveRoom(int area, int room);
 
 
 		// -------------- NPC functions -------------- //

@@ -164,7 +164,7 @@ namespace Sandstone {
 					m_roomPtr->m_CurrentArea = a[0];
 					m_roomPtr->m_CurrentRoom = a[1];
 				}
-				std::cout << "You are in the " << m_roomPtr->getRoomName() << "\nIt is a " << m_roomPtr->getDesciption() << std::endl;
+				std::cout << "You are in the " << m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->name << "\nIt is a " << m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->description << std::endl;
 			}
 			else {
 				SS_CORE_WARN("{0}: unknown command", inp);

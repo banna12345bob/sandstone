@@ -13,7 +13,7 @@ namespace Sandstone {
 	std::string look::run(std::string lCommand[])
 	{
 		try {
-			return "You are in " + m_roomPtr->getRoomName() + ":\nIt is " + m_roomPtr->getDesciption();
+			return "You are in " + m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->name + ":\nIt is " + m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->description;
 		} catch (...) {
 			SS_ASSERT(false, "Room doesn't exist");
 			return "ERROR: Room doesn't exist";
@@ -59,12 +59,12 @@ namespace Sandstone {
 			return "No items in inventory";
 		for (int i = 0; i < u_Inventory.size() - 1; i++)
 		{
-			std::cout << u_Inventory[i]->getName() << std::endl;
+			std::cout << u_Inventory[i]->name << std::endl;
 		}
 		if (u_Inventory.size() == 0) {
 			return "No items in inventory";
 		}
-		return u_Inventory[u_Inventory.size() - 1]->getName();
+		return u_Inventory[u_Inventory.size() - 1]->name;
 	}
 
 	use::use(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
@@ -78,8 +78,8 @@ namespace Sandstone {
 	std::string use::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
 			object* lObject = m_objectsPtr->getObject(lCommand[1]);
-            if (m_playerPtr->inInventory(lObject))
-                return lObject->getUse();
+			if (m_playerPtr->inInventory(lObject))
+				return lObject->use;
 			return lCommand[1] + " not found in inventory";
 		}
 		else {
@@ -118,7 +118,7 @@ namespace Sandstone {
 	}
 
 	std::string pickup::run(std::string lCommand[]) {
-		std::vector<object*> items = m_roomPtr->getItemsInRoom();
+		std::vector<object*> items = m_roomPtr->m_Areas[m_roomPtr->m_CurrentArea]->rooms[m_roomPtr->m_CurrentRoom]->items;
 		if(std::find(items.begin(), items.end(), m_objectsPtr->getObject(lCommand[1])) != items.end())
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);
@@ -142,7 +142,7 @@ namespace Sandstone {
 		{
 			object* item = m_objectsPtr->getObject(lCommand[1]);
 			if (m_playerPtr->removeFromInventory(item)) {
-				m_roomPtr->addItemToRoom(item->getName());
+				m_roomPtr->addItemToRoom(item->name);
 				return "Removed item from inventory";
 			}
 		}
@@ -209,11 +209,11 @@ namespace Sandstone {
 	std::string give::run(std::string lCommand[]) {
 		if (lCommand[1] != "") {
 			object* lObject = m_objectsPtr->getObject(lCommand[1]);
-			if (lObject->getName() == "null") {
+			if (lObject->name == "null") {
 				return "Item named " + lCommand[1] + " doesn't exist";
 			}
 			m_playerPtr->addToInventory(lObject);
-			return "Added " + lObject->getName() + " to inventory";
+			return "Added " + lObject->name + " to inventory";
 		}
 		else {
 			return "Expected second argument";

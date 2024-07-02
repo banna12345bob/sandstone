@@ -34,11 +34,8 @@ namespace Sandstone {
 	public:
 		rooms(int larea, int room, std::string iFile, player* player, objects* objectsPtr);
         void reload();
-		std::string getRoomName() { return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->name; }
-		std::string getDesciption() { return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->description; }
 
 		// ------------- Item functions ------------- //
-		std::vector<object*> getItemsInRoom();
 		bool removeItemFromRoom(object* item);
 		bool addItemToRoom(std::string item);
 

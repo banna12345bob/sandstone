@@ -32,7 +32,7 @@ namespace Sandstone {
         std::vector<std::string> inv;
         for (int i = 0; i < m_Inventory.size(); i++)
         {
-            inv.push_back(m_Inventory[i]->getName());
+            inv.push_back(m_Inventory[i]->name);
         }
         m_SaveFile["inventory"] = inv;
         JSON().Write(m_SaveFilePath, m_SaveFile);

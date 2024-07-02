@@ -4,7 +4,7 @@
 namespace Sandstone {
 
 	rooms::rooms(int larea, int lroom, std::string iFile, player* player, objects* objectsPtr)
-		: m_CurrentArea(larea-1), m_CurrentRoom(lroom-1), m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
+		: m_CurrentArea(larea), m_CurrentRoom(lroom), m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
 	{
 		this->reload();
 	}
@@ -12,12 +12,30 @@ namespace Sandstone {
     void rooms::reload()
     {
         m_File = JSON::Read(m_FileName);
+
+		area* errorArea = new area;
+		errorArea->areaID = 0;
+
+		room* errorRoom = new room;
+		errorRoom->roomID = 0;
+		errorRoom->name = "Error Room";
+		errorRoom->description = "a very big error";
+		errorArea->rooms.push_back(errorRoom);
+
+		m_Areas.push_back(errorArea);
+
 		for (json::iterator areaIt = m_File.begin(); areaIt != m_File.end(); ++areaIt)
 		{
 			if (areaIt.key() != "version") {
 				area* localArea = new area;
 
 				localArea->areaID = std::stoi(areaIt.key());
+
+				room* errorRoom = new room;
+				errorRoom->roomID = 0;
+				errorRoom->name = "Error Room";
+				errorRoom->description = "a very big error";
+				localArea->rooms.push_back(errorRoom);
 
 				for (json::iterator roomIt = m_File[areaIt.key()].begin(); roomIt != m_File[areaIt.key()].end(); ++roomIt)
 				{
@@ -69,17 +87,11 @@ namespace Sandstone {
 		}
     }
 
-	std::vector<object*> rooms::getItemsInRoom()
-	{
-		return m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
-	}
-
 	bool rooms::removeItemFromRoom(object* item)
 	{
 		std::vector<object*> items = m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items;
 		if (std::find(items.begin(), items.end(), item) != items.end()) {
-			// TODO: Remove item from room currently causes a crash
-			m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.erase(std::find(items.begin(), items.end(), item));
+			m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.erase(std::find(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.begin(), m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->items.end(), item));
 			//m_File[std::to_string(m_Area)][std::to_string(m_Room)]["items"] = items;
 			//JSON::Write(m_FileName, m_File);
 			return true;
@@ -109,53 +121,7 @@ namespace Sandstone {
 
 	std::vector<int> rooms::goDirection(std::string direction)
 	{
-		/*if (getDirections().contains(direction)) 
-		{
-			if (getDirections()[direction].contains("locked")) {
-				if (getDirections()[direction]["locked"] == true && debugger().ignoreLocks == false) {
-					if (m_player->inInventory(m_player->m_Objects->getObject(getDirections()[direction]["unlockedBy"]))) {
-						m_File[std::to_string(m_Area)][std::to_string(m_Room)]["directions"][direction]["locked"] = false;
-						JSON::Write(m_FileName, m_File);
-						std::string unlockMsg = getDirections()[direction]["unlockMsg"];
-						std::cout << unlockMsg << std::endl;
-						rDirections = getDirections()[direction]["room"];
-						if (getDirections()[direction]["breaks"] == true)
-                            m_player->removeFromInventory(getDirections()[direction]["unlockedBy"]);
-					}
-					else {
-						std::string a = getDirections()[direction]["lockedMsg"];
-						std::cout << a << std::endl;
-						std::vector<int> error;
-						error.push_back(0);
-						error.push_back(0);
-						return error;
-					}
-				}
-			}
-			if (getDirections()[direction].contains("room")) {
-				rDirections = getDirections()[direction]["room"];
-			}
-			else {
-				rDirections = getDirections()[direction];
-			}
-			std::vector<int> vec;
-			size_t pos = 0;
-			std::string word;
-			while ((pos = rDirections.find(":")) != std::string::npos) {
-				word = rDirections.substr(0, pos);
-				vec.push_back(std::stoi(word));
-				rDirections.erase(0, pos + 1);
-			}
-			vec.push_back(std::stoi(rDirections));
-			SS_CORE_ASSERT(m_File[std::to_string(vec[0])].contains(std::to_string(vec[1])), "Room doesn't exist");
-			return vec;
-		}
-		std::vector<int> error;
-		error.push_back(0);
-		error.push_back(0);
-		return error;*/
-
-		if (!m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked) {
+		if (m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked) {
 			if (!debugger().ignoreLocks) {
 				if (m_player->inInventory(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->unlockedBy)) {
 					m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->locked = false;
@@ -174,12 +140,8 @@ namespace Sandstone {
 		}
 
 		std::vector<int> vec;
-
 		for each (int i in m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->gotoID)
-		{
-			vec.push_back(m_Areas[m_CurrentArea]->rooms[m_CurrentRoom]->directions[direction]->gotoID[i]);
-		}
-
+			vec.push_back(i);
 		return vec;
 
 	}

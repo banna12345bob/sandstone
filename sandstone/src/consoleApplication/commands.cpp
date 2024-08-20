@@ -35,8 +35,7 @@ namespace Sandstone {
             m_playerPtr->resetSave();
 			JSON().Write(m_roomPtr->m_FileName, JSON().Read(m_BaseRoomFile));
 
-			// Broken
-            //m_roomPtr->reload();
+            m_roomPtr->reload();
 			return "Save reset";
 		} else {
 			save["currentArea"] = m_playerPtr->m_CurrentArea;
@@ -152,26 +151,29 @@ namespace Sandstone {
 	}
 
 
-	/*talk::talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr)
+	talk::talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr, scriptingEngine* scripingEngine)
 	{
 		command::m_roomPtr = roomPtr;
 		command::m_objectsPtr = objectsPtr;
 		command::m_playerPtr = playerPtr;
+		command::m_playerPtr = playerPtr;
+		command::m_scripingEngine = scripingEngine;
 		m_Description = "Talk to an NPC";
 	}
 
 	std::string talk::run(std::string lCommand[]) {
-		std::vector<std::string> npcs = m_roomPtr->getNpcList();
+		std::vector<std::string> npcs = m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->npcs;
 		if (std::find(npcs.begin(), npcs.end(), lCommand[1]) != npcs.end())
 		{
-#ifdef SS_PY_SCRIPTING
-#else
-			SS_CORE_ERROR("Python scripting not supported");
-			return "Python not supported";
-#endif
+			std::string npcFunction = lCommand[1] + "Talk" + "1";
+			lua_getglobal(m_scripingEngine->L, npcFunction.c_str());
+			lua_pcall(m_scripingEngine->L, 0, 1, 0);
+			const char* s = lua_tostring(m_scripingEngine->L, -1);
+			SS_ASSERT(s, lCommand[1] + ": function doesn't return a string");
+			return s;
 		}
 		return  lCommand[1] + " not found";
-	}*/
+	}
 
 	// ----------- Debug Commands ----------- //
 

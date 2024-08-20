@@ -20,7 +20,7 @@ namespace Sandstone {
 		std::string name;
 		std::string description;
 		std::vector<object*> items;
-		std::string npcs;
+		std::vector<std::string> npcs;
 		std::map<std::string, direction*> directions;
 	};
 

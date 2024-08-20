@@ -69,15 +69,13 @@ namespace Sandstone {
 		m_Commands["dir"] = new dir(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["pickup"] = new pickup(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["drop"] = new drop(m_roomPtr, m_objectsPtr, m_playerPtr);
-		//m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_playerPtr);
+		m_Commands["talk"] = new talk(m_roomPtr, m_objectsPtr, m_playerPtr, m_scripingEngine);
 
 		// ----------- Debug Commands ----------- //
 		m_Commands["open"] = new open(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["give"] = new give(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["goto"] = new go_to(m_roomPtr, m_objectsPtr, m_playerPtr);
 		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_playerPtr);
-
-		m_scripingEngine->registerFunctions();
 	}
 
     ConsoleApplication::~ConsoleApplication()

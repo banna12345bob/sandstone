@@ -6,13 +6,15 @@ namespace Sandstone {
 	rooms::rooms(std::string iFile, player* player, objects* objectsPtr)
 		: m_player(player), m_FileName(iFile), m_ObjectsPtr(objectsPtr)
 	{
-		this->reload();
+		//if (!m_Areas.empty()) {
+			this->reload();
+		//}
 	}
 
     void rooms::reload()
     {
 		// For some reason this gets called even whenever the point to the room class is called
-		//std::vector<area*> m_Areas;
+		m_Areas.clear();
 
         m_File = JSON::Read(m_FileName);
 
@@ -45,7 +47,12 @@ namespace Sandstone {
 					{
 						localRoom->items.push_back(m_ObjectsPtr->getObject(i));
 					}
-					localRoom->npcs = "Not implimented";
+
+					for each (auto i in m_File[areaIt.key()][roomIt.key()]["npcs"])
+					{
+						localRoom->npcs.push_back(i);
+					}
+
 					for (json::iterator dirIt = m_File[areaIt.key()][roomIt.key()]["directions"].begin(); dirIt != m_File[areaIt.key()][roomIt.key()]["directions"].end(); ++dirIt)
 					{
 						direction* localDirection = new direction;

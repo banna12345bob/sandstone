@@ -63,7 +63,7 @@ namespace Sandstone {
 
 	class talk : public command {
 	public:
-		talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr);
+		talk(rooms* roomPtr, objects* objectsPtr, player* playerPtr, scriptingEngine* scripingEngine);
 		virtual std::string run(std::string lCommand[]) override;
 	};
 

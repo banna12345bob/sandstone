@@ -7,6 +7,9 @@ namespace Sandstone {
         : m_objectsPtr(objectsPtr), m_playerPtr(playerPtr), m_roomPtr(roomPtr)
     {
         L = luaL_newstate();
+        this->registerFunctions();
+        luaL_openlibs(L);
+        luaL_dofile(L, "scripts/main.lua");
     }
 
     void scriptingEngine::registerFunctions()

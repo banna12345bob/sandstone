@@ -13,35 +13,10 @@
                 "brick",
                 "stick"
             ],
-            "npcs": {
-                "bobrick": {
-                    "script": "bobrick_talk",
-                    "says":{
-                        "start": "Hello child",
-                        "gives": "spoon"
-                    }
-                },
-                "rickbob": {
-                    "script": "rickbob_talk",
-                    "says":{
-                        "start": "Hello I am Rickbob and I will devour your soul",
-                        "okay":{
-                            "start":"I will do it.",
-                            "no":{
-                                "start":"Just you watch",
-                                "i think not":{
-                                    "start":"I will",
-                                    "don't believe you":{
-                                        "start":"Oh well then looks like I'll have to end the game",
-                                        "gives":"quit"
-                                    }
-                                }
-                            }
-                        },
-                        "gives": "stick"
-                    }
-                }
-            },
+            "npcs": [
+                "bobrick",
+                "rickbob"
+            ],
             "directions": {
                 "north": {
                     "room": "1:2",
@@ -65,7 +40,6 @@
         "3": {
             "name": "Room 3",
             "description": "Room 3",
-            "items": [],
             "directions": {
                 "south": "1:2",
                 "north": "2:1"

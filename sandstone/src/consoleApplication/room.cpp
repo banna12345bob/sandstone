@@ -40,12 +40,12 @@ namespace Sandstone {
 
 					localRoom->name = m_File[areaIt.key()][roomIt.key()]["name"];
 					localRoom->description = m_File[areaIt.key()][roomIt.key()]["description"];
-					for each (auto i in m_File[areaIt.key()][roomIt.key()]["items"])
+					for (auto i : m_File[areaIt.key()][roomIt.key()]["items"])
 					{
 						localRoom->items.push_back(m_ObjectsPtr->getObject(i));
 					}
 
-					for each (auto i in m_File[areaIt.key()][roomIt.key()]["npcs"])
+					for (auto i : m_File[areaIt.key()][roomIt.key()]["npcs"])
 					{
 						localRoom->npcs.push_back(i);
 					}
@@ -139,7 +139,7 @@ namespace Sandstone {
 		}
 
 		std::vector<int> vec;
-		for each (int i in m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->gotoID)
+		for (int i : m_Areas[m_player->m_CurrentArea]->rooms[m_player->m_CurrentRoom]->directions[direction]->gotoID)
 			vec.push_back(i);
 		return vec;
 

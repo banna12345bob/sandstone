@@ -90,7 +90,7 @@ namespace Sandstone {
 	{
 		std::string inp;
 
-		while (true) {
+		while (running) {
 			std::string arr[100];
 			int arr_length = 0;
 			std::cout << "Command: ";
@@ -113,7 +113,7 @@ namespace Sandstone {
 					if (run != "quit")
 						std::cout << run << std::endl;
 					else
-						break;
+						this->running = false;
 				}
 				else if (debugger().m_Enable) {
 					std::cout << m_Commands[arr[0]]->run(arr) << std::endl;
@@ -154,7 +154,7 @@ namespace Sandstone {
 
 			}
 			else if (arr[0] == "quit" || arr[0] == "exit") {
-				break;
+				this->running = false;
 			}
 			else if (m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->directions.find(arr[0]) != m_roomPtr->m_Areas[m_playerPtr->m_CurrentArea]->rooms[m_playerPtr->m_CurrentRoom]->directions.end()) {
 				auto a = m_roomPtr->goDirection(arr[0]);

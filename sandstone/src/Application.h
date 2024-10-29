@@ -14,6 +14,8 @@ namespace Sandstone {
 		virtual ~Application();
 
 		virtual void Run() = 0;
+
+		bool running = true;
 	};
 
 	//	To be defined in client

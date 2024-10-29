@@ -1,4 +1,4 @@
-#include "ConsoleApplication.h"
+#include "GameApplication.h"
 #ifdef SS_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
@@ -6,7 +6,7 @@
 #include "version.h"
 
 namespace Sandstone {
-    ConsoleApplication::ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string playerName)
+	GameApplication::GameApplication(std::string roomFile, std::string objectFile, std::string saveFile, std::string playerName)
 		:m_RoomFile(roomFile), m_ObjectFile(objectFile), m_PlayerName(playerName)
 	{
         SS_CORE_INFO("Version: {0}.{1}.{2}", Sandstone::getMajorVersion(), Sandstone::getMinorVersion(), Sandstone::getPatchVersion());
@@ -78,7 +78,7 @@ namespace Sandstone {
 		m_Commands["log"] = new log(m_roomPtr, m_objectsPtr, m_playerPtr);
 	}
 
-    ConsoleApplication::~ConsoleApplication()
+    GameApplication::~GameApplication()
 	{
 #ifdef SS_DEBUG
         std::cout << "Press enter to quit...";
@@ -86,7 +86,7 @@ namespace Sandstone {
 #endif
     }
 
-	void ConsoleApplication::Run()
+	void GameApplication::Run()
 	{
 		std::string inp;
 

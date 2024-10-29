@@ -20,11 +20,11 @@ public:
 	}
 };
 
-class ConsoleSandbox : public Sandstone::ConsoleApplication
+class ConsoleSandbox : public Sandstone::GameApplication
 {
 public:
 	ConsoleSandbox()
-		: Sandstone::ConsoleApplication("consoleSandboxRooms.json", "consoleSandboxObjects.json")
+		: Sandstone::GameApplication("gameSandboxRooms.json", "gameSandboxObjects.json")
 	{
 		this->m_Commands["sand"] = new sand(m_roomPtr, m_objectsPtr, m_playerPtr, m_scripingEngine);
 	}

@@ -9,11 +9,11 @@
 
 namespace Sandstone {
 
-	class ConsoleApplication : public Application
+	class GameApplication : public Application
 	{
 	public:
-        ConsoleApplication(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "Player1");
-		virtual ~ConsoleApplication();
+        GameApplication(std::string roomFile, std::string objectFile, std::string saveFile = "save.json", std::string player = "Player1");
+		virtual ~GameApplication();
 
 		virtual void Run() override;
 		std::map<std::string, command*> m_Commands;

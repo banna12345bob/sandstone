@@ -1,6 +1,6 @@
 #pragma once
 
-#include "consoleApplication/ConsoleApplication.h"
+#include "gameApplication/GameApplication.h"
 #include "Log.h"
 
 /*-----------------------Entry Point------------------------*/

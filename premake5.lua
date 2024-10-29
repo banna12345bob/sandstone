@@ -1,5 +1,5 @@
 workspace "sandstone"
-	startproject "sandbox"
+	startproject "gameSandbox"
 
 	configurations
 	{
@@ -18,6 +18,6 @@ workspace "sandstone"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "sandstone"
-include "consoleSandbox"
+include "gameSandbox"
 include "demo1"
 include "sandstone/vendor/lua"

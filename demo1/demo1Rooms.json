@@ -19,10 +19,7 @@
                     "lockedMsg": "You need a key to open this door",
                     "unlockedBy": "jailkey",
                     "unlockMsg": "You reach around the door and use the jail key",
-                    "breaks": [
-                        true,
-                        "The key gets stuck in the door rending it useless"
-                    ]
+                    "breaks": true
                 }
             }
         },
@@ -61,7 +58,10 @@
             "name": "a hallway",
             "description": "a smaller room with a rat in the middle of it",
             "items": [],
-            "npcs": {
+            "npcs": [
+                "rat"
+            ],
+            "oldNPCS": {
                 "rat": {
                     "says": {
                         "start":"squeek"
@@ -77,7 +77,10 @@
             "name": "a hallway",
             "description": "a smaller room with a goon blocking the exit",
             "items": [],
-            "npcs": {
+            "npcs": [
+                "goon"
+            ],
+            "oldNPCS": {
                 "goon": {
                     "says": {
                         "start": "Do you want me to move?",
@@ -107,9 +110,7 @@
                     "lockedMsg": "You need a key to open this door",
                     "unlockedBy": "key",
                     "unlockMsg": "You use the key to open the door",
-                    "breaks": [
-                        false
-                    ]
+                    "breaks": false
                 },
                 "south": "1:5"
             }
@@ -172,7 +173,10 @@
             "name": "town center",
             "description": "a large fountain surrounded with shops. You see an old man sitting on the fountain.",
             "items": [],
-            "npcs": {
+            "npcs": [
+                "oldman"
+            ],
+            "oldNPCS": {
                 "oldman": {
                     "says": {
                         "start": "Hello adventure. What do you need?",
@@ -260,7 +264,10 @@
             "name": "throne room",
             "description": "a large room with a throne in it. There is a guy on the throne he looks like a king.",
             "items": [],
-            "npcs": {
+            "npcs": [
+                "king"
+            ],
+            "oldNPCS": {
                 "king": {
                     "says":{"start": "Weep mortal"}
                 }
@@ -282,7 +289,10 @@
             "name": "dungeon",
             "description": "a dark room. You hear cries come echo throughout the room. Somebody calls out to you 'help me' they cry.",
             "items": [],
-            "npcs": {
+            "npcs": [
+                "dungeon"
+            ],
+            "oldNPCS": {
                 "dungeon": {
                     "says": {
                         "start":"Hey what are you doing in here leave."
